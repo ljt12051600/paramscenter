@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
+            <div class="ms-title">工艺平台</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="username">
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import {loginUser} from "@/api/index"
 export default {
     data: function() {
         return {
@@ -43,9 +44,11 @@ export default {
     },
     methods: {
         submitForm() {
-            this.$refs.login.validate(valid => {
-                if (valid) {
-                    this.$message.success('登录成功');
+            this.$refs.login.validate(async(valid) => {
+                if  (valid) {
+                    let info=await loginUser();
+                    // this.$message.success('登录成功');
+                    // return
                     localStorage.setItem('ms_username', this.param.username);
                     this.$router.push('/');
                 } else {
@@ -74,6 +77,7 @@ export default {
     font-size: 20px;
     color: #fff;
     border-bottom: 1px solid #ddd;
+    color: #606266
 }
 .ms-login {
     position: absolute;
@@ -82,7 +86,7 @@ export default {
     width: 350px;
     margin: -190px 0 0 -175px;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 1);
     overflow: hidden;
 }
 .ms-content {

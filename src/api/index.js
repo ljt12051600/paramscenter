@@ -1,9 +1,9 @@
 
 
 import { request } from '@/utils/request'
-export const updateDictionaryGroup = async (data) => {
+export const loginUser = async (data) => {
     return await request({
-        url: '/updateDictionaryGroup',
+        url: '/user/loginUser',
         method: 'post',
         data: data,
        

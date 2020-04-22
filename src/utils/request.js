@@ -29,8 +29,8 @@ const buildErrorResponse = (err) => {
 
     // 发生错误，服务端返回404，500一个html串
     if (typeof res.data !== 'object') {
-        res.data = {
-            RetCd: 999,
+        res.resCode = {
+            code: 999,
             msg: '网络不给力，重试一下吧～'
         }
     }
@@ -48,7 +48,7 @@ export const request = async ({
     headers = {
         'Content-Type': 'application/json'
     },
-    login = false
+   
 }, {
     autoToastError = true
 } = {}) => {
@@ -56,14 +56,9 @@ export const request = async ({
     let baseUrl
 
     try {
-
-        baseUrl = process.env.apiBase;
-        if (login) {
-            baseUrl = process.env.loginBase
-        }
-
-
-
+       
+        baseUrl=process.env.NODE_ENV === 'development' ?  "/tcnp-web": process.env.VUE_APP_BASE_API+"tcnp-web"
+        console.log(baseUrl)
         res = await axios({
             url: `${baseUrl}${url}`,
             method,
@@ -75,29 +70,31 @@ export const request = async ({
             withCredentials
         })
     } catch (err) {
+        alert(err)
         res = buildErrorResponse(err)
     }
 
 
     if (autoToastError) {
+        console.log(res.data);
+        // return;
+        
 
         try {
-            if (res.data.RetCd == 99) {
-                $app.$router.push({
-                    name: "Login"
-                })
+            if (res.data.resCode == 999) {
+               
                 Vue.prototype.$notify.error({
-                    title: '错误',
-                    message: '接口报错了'
+                    title: '网络错误',
+                    message:res.data.msg
                 });
                 // return $app.$Message.error("登录已失效请重新登录")
 
 
             }
-            if (res.data.RetCd !== '000000') {
+            else if (res.data.resCode !== '0') {
                 Vue.prototype.$notify.error({
                     title: '错误',
-                    message: '接口报错了'
+                    message: res.data.resMsg
                 });
             }
         } catch (err) {
