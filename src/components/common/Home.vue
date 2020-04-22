@@ -13,22 +13,26 @@
                 <el-backtop target=".content"></el-backtop>
             </div>
         </div>
+      
     </div>
 </template>
 
 <script>
 
 import { mapState, mapMutations } from "vuex";
-console.log(mapState)
+
+
 import vHead from './Header.vue';
 import vSidebar from './Sidebar.vue';
 import vTags from './Tags.vue';
 import bus from './bus';
+
 export default {
     data() {
         return {
             tagsList: [],
-            collapse: false
+            collapse: false,
+            
         };
     },
     components: {
@@ -53,7 +57,9 @@ export default {
     },
     methods:{
         init(){
+            
             this.updateMainInfo();
+            
         },
         ...mapMutations(["updateMainInfo"])
     }

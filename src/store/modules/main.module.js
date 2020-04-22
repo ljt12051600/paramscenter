@@ -148,7 +148,7 @@ const mutations = {
 
 
         ];
-        console.log(state);
+        
     },
 
     async updatePageBtns(state, btns) {
