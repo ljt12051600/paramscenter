@@ -12,8 +12,8 @@ const buildErrorResponse = (err) => {
      */
     let res = {
         data: {
-            code: 999,
-            msg: '网络不给力，重试一下吧～'
+            resCode: 999,
+            resMsg: '网络不给力，重试一下吧～'
         },
         status: 999,
         statusText: '网络错误',
@@ -29,8 +29,8 @@ const buildErrorResponse = (err) => {
 
     // 发生错误，服务端返回404，500一个html串
     if (typeof res.data !== 'object') {
-        res.resCode = {
-            code: 999,
+        res.data = {
+            resCode: 999,
             msg: '网络不给力，重试一下吧～'
         }
     }
@@ -43,7 +43,7 @@ export const request = async ({
     method = 'GET',
     data = {},
     params = {},
-    timeout = 10000,
+    timeout = 1000,
     withCredentials = true,
     headers = {
         'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export const request = async ({
             withCredentials
         })
     } catch (err) {
-        alert(err)
+        
         res = buildErrorResponse(err)
     }
 
@@ -85,7 +85,7 @@ export const request = async ({
                
                 Vue.prototype.$notify.error({
                     title: '网络错误',
-                    message:res.data.msg
+                    message:res.data.resMsg
                 });
                 // return $app.$Message.error("登录已失效请重新登录")
 
