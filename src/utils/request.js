@@ -1,6 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import Vue from 'vue';
+import {getSessionId,deleteKey} from "./index.js"
 
 
 
@@ -38,10 +39,10 @@ const buildErrorResponse = (err) => {
     return res
 }
 
-export const request = async ({
+export let request = async ({
     url = '',
     method = 'GET',
-    data = {},
+    datas = {},
     params = {},
     timeout = 1000,
     withCredentials = true,
@@ -52,11 +53,18 @@ export const request = async ({
 }, {
     autoToastError = true
 } = {}) => {
+    console.log(datas);
     let res
-    let baseUrl
+    let baseUrl;
+    let data=deleteKey(datas);
+    data.env="env";
+    data.pjCode="klb3.0",
+    data.userId=getSessionId();
+    console.log(data);
+    
+    // return;
 
-    try {
-       
+    try { 
         baseUrl=process.env.NODE_ENV === 'development' ?  "/tcnp-web": process.env.VUE_APP_BASE_API+"tcnp-web"
         console.log(baseUrl)
         res = await axios({
@@ -70,6 +78,7 @@ export const request = async ({
             withCredentials
         })
     } catch (err) {
+        console.log(err);
         
         res = buildErrorResponse(err)
     }

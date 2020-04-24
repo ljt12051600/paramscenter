@@ -29,16 +29,15 @@
 
 <script>
 console.log(process.env)
-import {loginUser} from "@/api/index"
+import {loginUser} from "@/api/system"
+import {setSessionId,deleteKey} from "@/utils"
+
 export default {
     data: function() {
         return {
             param: {
                 userId: 'sunbq',
                 userPwd: '111111',
-                pjCode: "klb3.0", 
-                env: "dev"
-                
             },
             rules: {
                 userId: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -49,13 +48,19 @@ export default {
     methods: {
         submitForm() {
             this.$refs.login.validate(async(valid) => {
+
                 if  (valid) {
-                    let info=await loginUser(this.param);
+                    
+                    let params=deleteKey(this.param);
+                  
+                    console.log(params)
+                    let info=await loginUser(params);
                     if(info.resCode==="0"){
+                          setSessionId("userId",params.userId);
                          this.$router.push('/');
                     }
-                    // this.$message.success('登录成功');
-                    // return
+                    this.$message.success('登录成功');
+                    return
                    
                    
                 } else {

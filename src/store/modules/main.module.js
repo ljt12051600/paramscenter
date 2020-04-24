@@ -2,7 +2,7 @@
  * main.module
  * 主布局相关state
  */
-import {loginUser} from "@/api"
+import {loginUser} from "@/api/system"
 const state = () => {
     return {
         items: [],

@@ -175,3 +175,13 @@ a {
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
 }
+.header-button{
+    margin: 20px 0;
+}
+.head-container{
+    margin-top:10px;
+}
+.head-container .header-search{
+    text-align: right;
+    padding-right: 60px;
+}
