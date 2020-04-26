@@ -29,7 +29,7 @@ export default new Router({
                 {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '@/components/page/system/menu/button.vue'),
-                    meta: { title: '基础表格' }
+                    meta: { title: '系统按钮' }
                 },
                 {
                     path: '/tabs',

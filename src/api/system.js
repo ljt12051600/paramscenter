@@ -25,3 +25,19 @@ export const deleteSysButtons = async (data) => {
        
     })
 }
+export const createSysButtons = async (data) => {
+    return await request({
+        url: '/sysButtons/createSysButtons',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const updateSysButtons = async (data) => {
+    return await request({
+        url: '/sysButtons/updateSysButtons',
+        method: 'post',
+        datas: data,
+       
+    })
+}

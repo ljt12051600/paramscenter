@@ -54,12 +54,14 @@ export default {
                     let params=deleteKey(this.param);
                   
                     console.log(params)
+                     setSessionId("userId",params.userId);
                     let info=await loginUser(params);
                     if(info.resCode==="0"){
-                          setSessionId("userId",params.userId);
+                         
+                           this.$message.success('登录成功');
                          this.$router.push('/');
                     }
-                    this.$message.success('登录成功');
+                   
                     return
                    
                    
