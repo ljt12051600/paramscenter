@@ -40,7 +40,8 @@ module.exports = {
     resolve: {
       alias: {
         '@': resolve('src'),
-        '@crud': resolve('src/components/Crud')
+        '@crud': resolve('src/components/Crud'),
+        '@page': resolve('src/components/page'),
       }
     }
   },

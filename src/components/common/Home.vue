@@ -70,6 +70,11 @@
                         index: 'table',
                         title: '系统按钮'
                     },
+                    {
+                        icon: 'el-icon-lx-global',
+                        index: 'menu',
+                        title: '菜单管理'
+                    },
                     // {
                     //     icon: 'el-icon-lx-copy',
                     //     index: 'tabs',
@@ -126,11 +131,7 @@
                         }
                         ]
                     },
-                    {
-                        icon: 'el-icon-lx-global',
-                        index: 'i18n',
-                        title: '国际化功能'
-                    },
+                    
                     {
                         icon: 'el-icon-lx-warn',
                         index: '7',

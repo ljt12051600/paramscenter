@@ -1,6 +1,7 @@
 
 
 import { request } from '@/utils/request'
+// 系统按钮
 export const loginUser = async (data) => {
     return await request({
         url: '/user/loginUser',
@@ -41,3 +42,29 @@ export const updateSysButtons = async (data) => {
        
     })
 }
+//获取所有系统按钮
+export const querySysButtonsListAll = async (data) => {
+    return await request({
+        url: '/sysButtons/querySysButtonsListAll',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+//系统按钮结束
+
+
+
+
+//菜单
+
+export const queryMenu = async (data) => {
+    return await request({
+        url: '/menu/queryMenu',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+
+

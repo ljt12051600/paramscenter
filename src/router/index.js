@@ -28,7 +28,7 @@ export default new Router({
                 },
                 {
                     path: '/table',
-                    component: () => import(/* webpackChunkName: "table" */ '@/components/page/system/menu/button.vue'),
+                    component: () => import(/* webpackChunkName: "table" */ '@page/system/menu/button.vue'),
                     meta: { title: '系统按钮' }
                 },
                 {
@@ -79,9 +79,9 @@ export default new Router({
                 },
                 {
                     // 国际化组件
-                    path: '/i18n',
-                    component: () => import(/* webpackChunkName: "i18n" */ '../components/page/I18n.vue'),
-                    meta: { title: '国际化' }
+                    path: '/menu',
+                    component: () => import(/* webpackChunkName: "menu" */ "@page/system/menu/menu.vue"),
+                    meta: { title: '菜单管理' }
                 },
                 {
                     // 权限页面
