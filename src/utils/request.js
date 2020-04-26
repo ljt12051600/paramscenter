@@ -53,20 +53,20 @@ export let request = async ({
 }, {
     autoToastError = true
 } = {}) => {
-    console.log(datas);
+
     let res
     let baseUrl;
     let data=deleteKey(datas);
     data.env="env";
     data.pjCode="klb3.0",
     data.userId=getSessionId();
-    console.log(data);
+
     
     // return;
 
     try { 
         baseUrl=process.env.NODE_ENV === 'development' ?  "/tcnp-web": process.env.VUE_APP_BASE_API+"tcnp-web"
-        console.log(baseUrl)
+
         res = await axios({
             url: `${baseUrl}${url}`,
             method,
@@ -78,14 +78,14 @@ export let request = async ({
             withCredentials
         })
     } catch (err) {
-        console.log(err);
+
         
         res = buildErrorResponse(err)
     }
 
 
     if (autoToastError) {
-        console.log(res.data);
+
         // return;
         
 

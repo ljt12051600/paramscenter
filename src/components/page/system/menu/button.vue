@@ -33,7 +33,7 @@
         <!--表格渲染-->
         <el-table ref="table" align="center" :data="data.rows" style="width: 100%;">
           <el-table-column align="center" prop="buttonId" label="按钮id" />
-          <!-- <el-table-column align="center" prop="buttonName" label="按钮名称" /> -->
+          <el-table-column align="center" prop="buttonName" label="按钮名称" />
           <el-table-column align="center" prop="popId" label="弹框id" />
           <el-table-column label="操作" width="300" align="center" fixed="right">
             <template slot-scope="scope">
@@ -230,6 +230,7 @@
 
       },
       queryList() {
+        this.query.pageNum = 1;
         this.getList(1)
 
       },
