@@ -23,24 +23,31 @@ export default new Router({
                 },
                 {
                     path: '/icon',
-                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
+                    component: () => import(/* webpackChunkName: "system" */ '../components/page/Icon.vue'),
                     meta: { title: '自定义图标' }
                 },
                 {
-                    path: '/table',
-                    component: () => import(/* webpackChunkName: "table" */ '@page/system/menu/button.vue'),
+                    path: '/button',
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/button.vue'),
                     meta: { title: '系统按钮' }
+                },
+                {
+                    // vue-schart组件
+                    path: '/user',
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/user.vue'),
+                    meta: { title: '用户管理' }
+                },
+                {
+                    path: '/role',
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/role.vue'),
+                    meta: { title: '角色管理' }
                 },
                 {
                     path: '/tabs',
                     component: () => import(/* webpackChunkName: "tabs" */ '../components/page/Tabs.vue'),
                     meta: { title: 'tab选项卡' }
                 },
-                {
-                    path: '/form',
-                    component: () => import(/* webpackChunkName: "form" */ '../components/page/BaseForm.vue'),
-                    meta: { title: '基本表单' }
-                },
+             
                 {
                     // 富文本编辑器组件
                     path: '/editor',
@@ -59,12 +66,7 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "upload" */ '../components/page/Upload.vue'),
                     meta: { title: '文件上传' }
                 },
-                {
-                    // vue-schart组件
-                    path: '/charts',
-                    component: () => import(/* webpackChunkName: "chart" */ '../components/page/BaseCharts.vue'),
-                    meta: { title: 'schart图表' }
-                },
+             
                 {
                     // 拖拽列表组件
                     path: '/drag',

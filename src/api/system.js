@@ -51,7 +51,6 @@ export const querySysButtonsListAll = async (data) => {
        
     })
 }
-//系统按钮结束
 
 
 
@@ -66,5 +65,84 @@ export const queryMenu = async (data) => {
        
     })
 }
+export const updateMenu = async (data) => {
+    return await request({
+        url: '/menu/updateMenu',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryMenuForTree = async (data) => {
+    return await request({
+        url: '/menu/queryMenuForTree',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryMenuListByUserFuncId = async (data) => {
+    return await request({
+        url: '/menu/queryMenuListByUserFuncIdForTree',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+
+
+
+//用户
+
+export const queryUserList = async (data) => {
+    return await request({
+        url: '/user/queryUserList',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const createUser = async (data) => {
+    return await request({
+        url: '/user/createUser',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const updateUser = async (data) => {
+    return await request({
+        url: '/user/updateUser',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const deleteUser = async (data) => {
+    return await request({
+        url: '/user/deleteUser',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const resetPassword = async (data) => {
+    return await request({
+        url: '/user/resetPassword',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+//角色相关
+export const queryRoleList = async (data) => {
+    return await request({
+        url: '/role/queryRoleList',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+
 
 

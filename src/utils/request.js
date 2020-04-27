@@ -44,7 +44,7 @@ export let request = async ({
     method = 'GET',
     datas = {},
     params = {},
-    timeout = 1000,
+    timeout = 2000,
     withCredentials = true,
     headers = {
         'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ export let request = async ({
     let data=deleteKey(datas);
     data.env="env";
     data.pjCode="klb3.0",
-    data.userId=getSessionId();
+    data.userId=data.userId||getSessionId();
 
     
     // return;

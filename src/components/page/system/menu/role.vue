@@ -1,0 +1,313 @@
+<template>
+    <div class="app-container">
+        <el-row :gutter="20">
+
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                <!--工具栏-->
+                <div class="head-container">
+                    <el-card>
+                        <el-form ref="form" :inline="true" label-width="80px">
+                            <el-form-item label="用户id">
+                                <el-input style="width:200px;" v-model.trim="query.roleId"></el-input>
+                            </el-form-item>
+                            <el-form-item label="用户名">
+                                <el-input style="width:200px;" v-model.trim="query.roleName"></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮箱">
+                                <el-input style="width:200px;" v-model.trim="query.roleDesc"></el-input>
+                            </el-form-item>
+                          
+                        </el-form>
+                        <div class="header-search">
+                            <el-button @click="queryList" type="primary">查询</el-button>
+                            <el-button @click="clearSearch" type="warning">清除</el-button>
+
+                        </div>
+                    </el-card>
+                    <!-- <crudOperation show="" :permission="permission" /> -->
+                </div>
+                <div class="header-button">
+                    <el-button @click="doAdd" type="primary">添加</el-button>
+                </div>
+                <!--表单渲染-->
+
+                <!--表格渲染-->
+                <el-table ref="table" align="center" :data="data.rows" style="width: 100%;">
+                    <el-table-column align="center" prop="roleId" label="角色ID" />
+                    <el-table-column align="center" prop="roleName" label="角色名" />
+                    <el-table-column align="center" prop="roleDesc" label="角色描述" />
+                 
+
+
+                    <el-table-column label="操作" width="300" align="center" fixed="right">
+                        <template slot-scope="scope">
+                            <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
+                            <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
+                          
+
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+
+                <!--分页组件-->
+                <div class="pagination">
+                    <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
+                        :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
+                        @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
+                </div>
+
+            </el-col>
+        </el-row>
+        <div v-if="showAdd">
+            <el-dialog title="添加用户" :visible="showAdd" width="800px" :show-close="false">
+                <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="80px">
+                    <el-form-item label="用户id" prop="userId">
+                        <el-input style="width:200px;" v-model.trim="addObj.userId"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户名" prop="userName">
+                        <el-input style="width:200px;" v-model.trim="addObj.userName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱" prop="userMail">
+                        <el-input style="width:200px;" v-model.trim="addObj.userMail"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电话">
+                        <el-input style="width:200px;" v-model.trim="addObj.userPhone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号">
+                        <el-input style="width:200px;" v-model.trim="addObj.userIdno"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                        <el-select style="width:200px;" v-model="addObj.userSex" clearable placeholder="请选择">
+                            <el-option label="男" value="1"></el-option>
+                            <el-option label="女" value="0"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="doCloseAdd(false)">取 消</el-button>
+                    <el-button type="primary" @click="doCloseAdd(true)">确认添加</el-button>
+                </div>
+
+            </el-dialog>
+        </div>
+        <div v-if="showEdit">
+            <el-dialog title="编辑用户" :visible="showEdit" width="800px" :show-close="false">
+                <el-form ref="formEdit" :model="editObj" :rules="rules" :inline="true" label-width="80px">
+                    <el-form-item label="用户id" prop="userId">
+                        <el-input style="width:200px;" v-model.trim="editObj.userId"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户名" prop="userName">
+                        <el-input style="width:200px;" v-model.trim="editObj.userName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱" prop="userMail">
+                        <el-input style="width:200px;" v-model.trim="editObj.userMail"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电话">
+                        <el-input style="width:200px;" v-model.trim="editObj.userPhone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号">
+                        <el-input style="width:200px;" v-model.trim="editObj.userIdno"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                        <el-select style="width:200px;" v-model="editObj.userSex" clearable placeholder="请选择">
+                            <el-option label="男" value="1"></el-option>
+                            <el-option label="女" value="0"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="doCloseEdit(false)">取 消</el-button>
+                    <el-button type="primary" @click="doCloseEdit(true)">确认修改</el-button>
+                </div>
+            </el-dialog>
+        </div>
+    </div>
+</template>
+
+<script>
+    import { deleteKey } from "@/utils"
+
+    import { queryRoleList, deleteUser, createUser, updateUser,resetPassword } from "@/api/system"
+    export default {
+        data() {
+            return {
+                query: {
+                    roleId: "",
+                    roleName: "",
+                    roleDesc: "",
+                    pageNum: 1,
+                    numPerPage: 10,
+
+                },
+                sexDic: {
+                    "1": '男',
+                    "0": "女"
+                },
+
+                showAdd: false,
+                addObj: {
+                    buttonId: "",
+                    buttonName: "",
+                    popId: "",
+                },
+                showEdit: false,
+                editObj: {
+                    buttonId: "",
+                    buttonName: "",
+                    popId: "",
+                },
+             
+
+                data: {
+                    total: 0,
+
+                    rows: []
+                },
+                rules: {
+                    userId: [
+                        { required: true, message: '请输入用户ID', trigger: 'blur' },
+                    ],
+                    userName: [
+                        { required: true, message: '请输入用户名字', trigger: 'blur' },
+                    ],
+                    userMail: [
+                        { required: true, message: '请输入用户邮箱', trigger: 'blur' },
+                        { type: "email", message: '请输入正确的邮箱', trigger: 'blur' },
+                    ],
+
+                }
+            }
+        },
+        methods: {
+            clearSearch() {
+                this.query = {
+                    roleId: "",
+                    roleName: "",
+                    roleDesc: "",
+                    userPhoneSearch: "",
+                    userIdnoSearch: "",
+                    userSexSearch: "",
+                    pageNum: 1,
+                    numPerPage: 10,
+                }
+            },
+            doDelete(item) {
+                let postObj = { id: item.id };
+                this.$msgbox({
+                    title: "删除",
+                    message:"确认删除此该用户吗？",
+                    
+                    beforeClose: async (action, instance, done) => {
+                        if (action == "confirm") {
+                            let info = await deleteUser(postObj);
+                            if (info.resCode === "0") {
+                                this.$message.success('删除成功');
+                                this.getList();
+                            }
+                            done();
+
+                        }
+                        else {
+                            done();
+                        }
+                    }
+                })
+
+                console.log(item);
+
+            },
+        
+            doAdd() {
+                this.showAdd = true;
+                this.addObj = {};
+               
+
+            },
+            doCloseAdd(bol) {
+                if (bol) {
+                    this.$refs['formAdd'].validate(async (valid) => {
+                        if (valid) {
+                            let info = await createUser(this.addObj);
+                            if (info.resCode === "0") {
+                                this.$message.success('添加成功');
+                                this.queryList();
+                                this.showAdd = false;
+                            }
+                        }
+                    });
+                }
+                else {
+                    this.showAdd = false;
+                }
+            },
+            doEdit(item) {
+                this.showEdit = true;
+                this.editObj = {
+                    id: item.id,
+                    userId:  item.userId,
+                    userName:  item.userName,
+                    userMail:  item.userMail,
+                    userPhone: item.userPhone,
+                    userIdno: item.userIdno,
+                    userSex:  item.userSex,
+                 
+
+
+                }
+               
+            },
+            doCloseEdit(bol) {
+                if (bol) {
+                    this.$refs['formEdit'].validate(async (valid) => {
+                        if (valid) {
+                            let info = await updateUser(this.editObj);
+                            if (info.resCode === "0") {
+                                this.$message.success('修改成功');
+                                this.getList();
+                                this.showEdit = false;
+                            }
+                        }
+                    });
+                }
+                else {
+                    this.showEdit = false;
+                }
+            },
+            async getList(num) {
+                console.log(this.query)
+                let postObj = deleteKey(this.query);
+                postObj.pageNum--;
+
+                let info = await queryRoleList(postObj);
+                if (info.resCode === "0") {
+                    this.data = {
+                        total: info.total,
+                        rows: info.rows || []
+                    }
+                }
+
+            },
+            queryList() {
+                this.query.pageNum = 1;
+                this.getList(1)
+
+            },
+            handlePageChange(num) {
+                this.query.pageNum = num;
+                this.getList(num);
+            },
+            handleSizeChange(num) {
+                this.query.pageNum = 1;
+                this.query.numPerPage = num;
+                this.getList(num)
+            }
+
+
+        }
+        , mounted() {
+            this.getList();
+        },
+    }
+</script>

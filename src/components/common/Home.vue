@@ -67,7 +67,7 @@
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'table',
+                        index: 'button',
                         title: '系统按钮'
                     },
                     {
@@ -75,48 +75,22 @@
                         index: 'menu',
                         title: '菜单管理'
                     },
-                    // {
-                    //     icon: 'el-icon-lx-copy',
-                    //     index: 'tabs',
-                    //     title: 'tab选项卡'
-                    // },
+                     {
+                        icon: 'el-icon-user-solid',
+                        index: 'user',
+                        title: '用户管理'
+                    },
                     {
-                        icon: 'el-icon-lx-calendar',
-                        index: '3',
-                        title: '表单相关',
-                        subs: [{
-                            index: 'form',
-                            title: '基本表单'
-                        },
-                        {
-                            index: '3-2',
-                            title: '三级菜单',
-                            subs: [{
-                                index: 'editor',
-                                title: '富文本编辑器'
-                            },
-                            {
-                                index: 'markdown',
-                                title: 'markdown编辑器'
-                            }
-                            ]
-                        },
-                        {
-                            index: 'upload',
-                            title: '文件上传'
-                        }
-                        ]
+                        icon: 'el-icon-user',
+                        index: 'role',
+                        title: '角色管理',
                     },
                     {
                         icon: 'el-icon-lx-emoji',
                         index: 'icon',
                         title: '自定义图标'
                     },
-                    {
-                        icon: 'el-icon-pie-chart',
-                        index: 'charts',
-                        title: 'schart图表'
-                    },
+                   
                     {
                         icon: 'el-icon-rank',
                         index: '6',
