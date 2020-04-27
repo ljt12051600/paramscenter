@@ -39,6 +39,7 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         
+                        <el-dropdown-item divided command="changePassword">修改密码</el-dropdown-item>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -48,6 +49,7 @@
 </template>
 <script>
 import bus from '../common/bus';
+ import { updatePassword } from "@/api/system"
 export default {
     data() {
         return {
@@ -69,6 +71,10 @@ export default {
             if (command == 'loginout') {
                 localStorage.removeItem('ms_username');
                 this.$router.push('/login');
+            }
+            else if (command == 'changePassword') {
+                alert(1);
+              
             }
         },
         // 侧边栏折叠

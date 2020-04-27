@@ -32,6 +32,7 @@
 
         <!--表格渲染-->
         <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
+          <el-table-column align="center" type="index" label="序号" width="50"/>
           <el-table-column align="center" prop="buttonId" label="按钮id" />
           <el-table-column align="center" prop="buttonName" label="按钮名称" />
           <el-table-column align="center" prop="popId" label="弹框id" />
@@ -96,7 +97,7 @@
 
 <script>
   import { deleteKey } from "@/utils"
-  import { querySysButtons, deleteSysButtons, createSysButtons,updateSysButtons } from "@/api/system"
+  import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons } from "@/api/system"
   export default {
     data() {
       return {
@@ -121,7 +122,7 @@
           buttonName: "",
           popId: "",
         },
-        
+
         data: {
           total: 20,
 
@@ -189,10 +190,10 @@
           this.showAdd = false;
         }
       },
-      doEdit(item){
-        this.showEdit=true;
-        this.editObj={
-          id:item.id,
+      doEdit(item) {
+        this.showEdit = true;
+        this.editObj = {
+          id: item.id,
           buttonId: item.buttonId,
           buttonName: item.buttonName,
           popId: item.popId,

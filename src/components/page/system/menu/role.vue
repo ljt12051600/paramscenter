@@ -6,6 +6,7 @@
                 <div class="head-container">
                     <el-card>
                         <el-form ref="form" :inline="true" label-width="80px">
+
                             <el-form-item label="用户id">
                                 <el-input style="width:200px;" v-model.trim="query.roleId"></el-input>
                             </el-form-item>
@@ -30,6 +31,7 @@
 
                 <!--表格渲染-->
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
+                    <el-table-column align="center" type="index" label="序号" width="50"/>
                     <el-table-column align="center" prop="roleId" label="角色ID" />
                     <el-table-column align="center" prop="roleName" label="角色名" />
                     <el-table-column align="center" prop="roleDesc" label="角色描述" />
@@ -230,12 +232,10 @@ export default {
             this.showEdit = true;
             this.editObj = {
                 id: item.id,
-                userId: item.userId,
-                userName: item.userName,
-                userMail: item.userMail,
-                userPhone: item.userPhone,
-                userIdno: item.userIdno,
-                userSex: item.userSex
+                 roleId: item.roleId,
+                roleName: item.roleName,
+                roleDesc: item.roleDesc,
+               
             };
         },
         doCloseEdit(bol) {

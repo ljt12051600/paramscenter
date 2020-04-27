@@ -6,7 +6,7 @@
                 <!--工具栏-->
                 <div class="head-container">
                     <el-card>
-                        <el-form  ref="form" :inline="true" label-width="80px">
+                        <el-form ref="form" :inline="true" label-width="80px">
                             <el-form-item label="用户id">
                                 <el-input style="width:200px;" v-model.trim="query.userIdSearch"></el-input>
                             </el-form-item>
@@ -45,6 +45,7 @@
 
                 <!--表格渲染-->
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
+                    <el-table-column align="center" type="index" label="序号" width="50" />
                     <el-table-column align="center" prop="userId" label="用户ID" />
                     <el-table-column align="center" prop="userName" label="用户名" />
                     <el-table-column align="center" prop="userPhone" label="电话" />
@@ -59,12 +60,13 @@
                     </el-table-column>
 
 
-                    <el-table-column label="操作" width="300" align="center" fixed="right">
+                    <el-table-column label="操作" width="380" align="center" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
                             <el-button @click="doResetPassword(scope.row,scope.index)" type="warning">重置密码</el-button>
+                            <el-button @click="doShowRole(scope.row,scope.index)" type="primary">分配角色</el-button>
                             <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
-                          
+
 
                         </template>
                     </el-table-column>
@@ -144,13 +146,27 @@
                 </div>
             </el-dialog>
         </div>
+        <div v-if="showRole">
+            <el-dialog :title="'修改'+selectPeople.userName+'的角色'" :visible="showRole" width="800px" :show-close="false">
+                <el-checkbox-group v-model="checkedRole">
+                    <el-checkbox style="width:130px;margin-left:20px;" v-for="item in roleAll" :label="item.roleId"
+                        :key="item.roleId">{{item.roleName}}
+                    </el-checkbox>
+                </el-checkbox-group>
+                <div slot="footer" class="dialog-footer">
+
+                    <el-button @click="doCloseRole(false)">取 消</el-button>
+                    <el-button type="primary" @click="doCloseRole(true)">确认分配</el-button>
+                </div>
+            </el-dialog>
+        </div>
     </div>
 </template>
 
 <script>
     import { deleteKey, getSessionId } from "@/utils"
 
-    import { queryUserList, deleteUser, createUser, updateUser,resetPassword } from "@/api/system"
+    import { queryUserList, deleteUser, createUser, updateUser, resetPassword, queryRoleListAll, queryUserRoleAll, saveUserRole } from "@/api/system"
     export default {
         data() {
             return {
@@ -177,18 +193,22 @@
                     popId: "",
                 },
                 showEdit: false,
+                showRole: false,
                 editObj: {
                     buttonId: "",
                     buttonName: "",
                     popId: "",
                 },
-                updateUser:getSessionId(),
+                updateUser: getSessionId(),
 
                 data: {
                     total: 0,
 
                     rows: []
                 },
+                selectPeople: "",
+                checkedRole: [],
+                roleAll: [],//所有角色
                 rules: {
                     userId: [
                         { required: true, message: '请输入用户ID', trigger: 'blur' },
@@ -221,8 +241,8 @@
                 let postObj = { id: item.id };
                 this.$msgbox({
                     title: "删除",
-                    message:"确认删除此该用户吗？",
-                    
+                    message: "确认删除此该用户吗？",
+
                     beforeClose: async (action, instance, done) => {
                         if (action == "confirm") {
                             let info = await deleteUser(postObj);
@@ -246,8 +266,8 @@
                 let postObj = { id: item.id };
                 this.$msgbox({
                     title: "重置密码",
-                    message:"确认重置该用户的密码？",
-                    
+                    message: "确认重置该用户的密码？",
+
                     beforeClose: async (action, instance, done) => {
                         if (action == "confirm") {
                             let info = await resetPassword(postObj);
@@ -265,6 +285,55 @@
                 })
 
                 console.log(item);
+
+            },
+            async doShowRole(item) {
+                this.selectPeople = item;
+                this.checkedRole = [];
+                this.showRole = true;
+                let info = await queryUserRoleAll({ userId: item.userId });
+                if (info.resCode === "0") {
+                    if (info.rows) {
+
+                        this.checkedRole = info.rows.map(item1 => {
+
+                            return item1.roleId;
+
+                        });
+                    }
+
+
+                }
+
+
+            },
+            async doCloseRole(bol) {
+                if (bol) {
+                    let rows = this.checkedRole.map(item => {
+                        return { userId: this.selectPeople.userId, roleId: item }
+                    })
+                   
+
+
+                    let obj = {
+                        userId: this.selectPeople.userId,
+                        rows,
+
+                    }
+                    let info = await saveUserRole(obj);
+                    if (info.resCode === "0") {
+                        this.$message.success('分配成功');
+                        this.getList();
+                        this.showRole = false;
+                    }
+
+
+
+
+                }
+                else {
+                    this.showRole = false;
+                }
 
             },
             doAdd() {
@@ -294,17 +363,17 @@
                 this.showEdit = true;
                 this.editObj = {
                     id: item.id,
-                    userId:  item.userId,
-                    userName:  item.userName,
-                    userMail:  item.userMail,
+                    userId: item.userId,
+                    userName: item.userName,
+                    userMail: item.userMail,
                     userPhone: item.userPhone,
                     userIdno: item.userIdno,
-                    userSex:  item.userSex,
-                    updateUser:this.updateUser,
+                    userSex: item.userSex,
+                    updateUser: this.updateUser,
 
 
                 }
-               
+
             },
             doCloseEdit(bol) {
                 if (bol) {
@@ -350,11 +419,19 @@
                 this.query.pageNum = 1;
                 this.query.numPerPage = num;
                 this.getList(num)
+            },
+            async init() {
+                let info = await queryRoleListAll();
+                if (info.resCode === "0") {
+                    this.roleAll = info.rows || [];
+                }
+
             }
 
 
         }
         , mounted() {
+            this.init();
             this.getList();
         },
     }

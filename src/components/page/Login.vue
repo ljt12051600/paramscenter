@@ -30,7 +30,7 @@
 <script>
 console.log(process.env)
 import {loginUser} from "@/api/system"
-import {setSessionId,deleteKey} from "@/utils"
+import {setSessionId,clearSession,deleteKey} from "@/utils"
 
 export default {
     data: function() {
@@ -61,6 +61,9 @@ export default {
                            this.$message.success('登录成功');
                          this.$router.push('/');
                     }
+                    else{
+                        clearSession();
+                    }
                    
                     return
                    
@@ -68,6 +71,7 @@ export default {
                 } else {
                     this.$message.error('请输入账号和密码');
                     console.log('error submit!!');
+                     clearSession();
                     return false;
                 }
             });

@@ -134,6 +134,14 @@ export const resetPassword = async (data) => {
        
     })
 }
+export const updatePassword = async (data) => {
+    return await request({
+        url: '/user/updatePassword',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 //角色相关
 export const queryRoleList = async (data) => {
     return await request({
@@ -167,10 +175,36 @@ export const createRole = async (data) => {
        
     })
 }
+export const queryRoleListAll = async (data) => {
+    return await request({
+        url: '/role/queryRoleListAll',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 //用户角色
 export const searchUser = async (data) => {
     return await request({
         url: '/userRole/searchUser',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const saveUserRole = async (data) => {
+    return await request({
+        url: '/userRole/saveUserRole',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+
+//获取改用户有哪些菜单
+export const queryUserRoleAll = async (data) => {
+    return await request({
+        url: '/userRole/queryUserRoleAll',
         method: 'post',
         datas: data,
        
