@@ -6,7 +6,7 @@
                 <!--工具栏-->
                 <div class="head-container">
                     <el-card>
-                        <el-form ref="form" :inline="true" label-width="80px">
+                        <el-form  ref="form" :inline="true" label-width="80px">
                             <el-form-item label="用户id">
                                 <el-input style="width:200px;" v-model.trim="query.userIdSearch"></el-input>
                             </el-form-item>
@@ -44,7 +44,7 @@
                 <!--表单渲染-->
 
                 <!--表格渲染-->
-                <el-table ref="table" align="center" :data="data.rows" style="width: 100%;">
+                <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" prop="userId" label="用户ID" />
                     <el-table-column align="center" prop="userName" label="用户名" />
                     <el-table-column align="center" prop="userPhone" label="电话" />

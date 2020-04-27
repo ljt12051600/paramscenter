@@ -32,7 +32,7 @@
                 <!--表单渲染-->
 
                 <!--表格渲染-->
-                <el-table ref="table" align="center" :data="data.rows" style="width: 100%;">
+                <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" prop="roleId" label="角色ID" />
                     <el-table-column align="center" prop="roleName" label="角色名" />
                     <el-table-column align="center" prop="roleDesc" label="角色描述" />
