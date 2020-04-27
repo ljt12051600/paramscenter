@@ -143,6 +143,41 @@ export const queryRoleList = async (data) => {
        
     })
 }
+export const deleteRole = async (data) => {
+    return await request({
+        url: '/role/deleteRole',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const updateRole = async (data) => {
+    return await request({
+        url: '/role/updateRole',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const createRole = async (data) => {
+    return await request({
+        url: '/role/createRole',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+//用户角色
+export const searchUser = async (data) => {
+    return await request({
+        url: '/userRole/searchUser',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+
+
 
 
 
