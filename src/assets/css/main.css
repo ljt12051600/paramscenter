@@ -192,3 +192,8 @@ a {
 .app-container .el-transfer-panel__list.is-filterable{
     height: 300px;
 }
+.app-container .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+    background:#409EFF;
+    color:white;
+
+}
