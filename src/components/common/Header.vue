@@ -66,7 +66,7 @@
 </template>
 <script>
     import bus from '../common/bus';
-    import { updatePassword  } from "@/api/system"
+    import { updatePassword } from "@/api/system"
     import { deleteKey } from '@/utils';
     export default {
         data() {
@@ -97,18 +97,19 @@
                 if (bol) {
                     this.$refs['form'].validate(async valid => {
                         if (valid) {
-                            console.log(this.postObj)
-                          
-                            if(this.postObj.newPassword!=this.postObj.newPassword1){
+                            let postObj = deleteKey(this.postObj);
+                            if (postObj.newPassword != postObj.newPassword1) {
                                 return this.$message.error("两次密码不一致，请重新输入")
                             }
-                            let postObj=deleteKey(this.postObj);
-                            delete postObj.newPassword1
+                            delete postObj.newPassword1;
+                            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/.test(postObj.newPassword)) {
+                                return this.$message.error("密码必须保护大小写字母和数字")
+                            }
                             let info = await updatePassword(postObj);
                             if (info.resCode === '0') {
-                                 this.$message.success("操作成功,下次登录请使用新密码");
-                                 this.showPassWord = false;
-                              
+                                this.$message.success("操作成功,下次登录请使用新密码");
+                                this.showPassWord = false;
+
                             }
                         }
                     });

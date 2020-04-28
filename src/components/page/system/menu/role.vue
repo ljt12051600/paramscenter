@@ -98,13 +98,13 @@
                     :inline="true"
                     label-width="80px"
                 >
-                    <el-form-item label="角色id" prop="userId">
+                    <el-form-item label="角色id" prop="roleId">
                         <el-input style="width:200px;" v-model.trim="editObj.roleId"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色名" prop="userName">
+                    <el-form-item label="角色名" prop="roleName">
                         <el-input style="width:200px;" v-model.trim="editObj.roleName"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色描述" prop="userMail">
+                    <el-form-item label="角色描述">
                         <el-input style="width:200px;" v-model.trim="editObj.roleDesc"></el-input>
                     </el-form-item>
                 </el-form>
