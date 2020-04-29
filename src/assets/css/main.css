@@ -193,7 +193,7 @@ a {
     height: 300px;
 }
 .app-container .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
-    background:#409EFF;
+    background:#47C7EA;
     color:white;
 
 }

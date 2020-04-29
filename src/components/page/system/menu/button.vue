@@ -97,7 +97,7 @@
 
 <script>
   import { deleteKey } from "@/utils"
-  import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons } from "@/api/system"
+  import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons,querySysButtonsListAll } from "@/api/system"
   export default {
     data() {
       return {

@@ -89,6 +89,30 @@ export const queryMenuListByUserFuncId = async (data) => {
        
     })
 }
+export const queryRoleMenuAll = async (data) => {
+    return await request({
+        url: '/roleMenu/queryRoleMenuAll',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const deleteMenu = async (data) => {
+    return await request({
+        url: '/menu/deleteMenu',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const createMenu = async (data) => {
+    return await request({
+        url: '/menu/createMenu',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 
 
 

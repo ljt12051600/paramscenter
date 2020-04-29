@@ -6,10 +6,16 @@
                 <el-card class="min-height">
                     <div slot="header" class="clearfix">
                         <span>菜单结构</span>
+                        <el-button @click="doAdd(true)" size="big"
+                            style="float: right; padding: 3px 0;width: 100px;height: 30px;margin-left:20px;"
+                            type="primary">
+                            新增一级菜单</el-button>
                     </div>
-                    <el-tree @node-click="nodeClick" highlight-current accordion :data="TreeData">
+                    <el-tree node-key="menuId" :default-expanded-keys="openArr" @node-click="nodeClick" highlight-current
+                        accordion :data="TreeData">
 
                     </el-tree>
+
                 </el-card>
             </el-col>
 
@@ -18,35 +24,43 @@
                 <el-card class="min-height">
                     <div slot="header" class="clearfix">
                         <span>菜单内容</span>
-                        <el-button v-if="showDelete" size="big"
-                            style="float: right; padding: 3px 0;width: 100px;height: 30px;margin-left:20px;"
-                            type="danger">
-                            <i class="el-icon-lx-redpacket_fill"></i>删除菜单</el-button>
+                        <div style="width: 100%">
 
-                        <el-button @click="edit" size="big"
-                            style="float: right; padding: 3px 0;width: 100px;height: 30px;margin-left:20px;"
-                            type="warning">
-                            <i class="el-icon-edit"></i>修改</el-button>
 
-                        <el-button size="big"
-                            style="float: right; padding: 3px 0;width: 100px;height: 30px;margin-left:20px;"
-                            type="primary">
-                            <i class="el-icon-plus"></i>新增子菜单</el-button>
+                            <div v-if="!actionType">
+                                <el-button @click="doDelete" size="big" class="button_style" type="danger">
+                                    <i class="el-icon-lx-redpacket_fill"></i>删除菜单</el-button>
+
+                                <el-button @click="edit" size="big" class="button_style" type="warning">
+                                    <i class="el-icon-edit"></i>修改</el-button>
+
+                                <el-button @click="doAdd(false)" size="big" class="button_style" type="primary">
+                                    <i class="el-icon-plus"></i>新增子菜单</el-button>
+                            </div>
+                            <div v-if="actionType=='edit'">
+                                <el-button @click="saveEdit" size="big" class="button_style" type="primary">
+                                    确认修改</el-button>
+                                <el-button @click="cancel" size="big" class="button_style" 取消</el-button> </div> <div
+                                    v-if="actionType=='add'">
+                                    <el-button @click="saveAdd" size="big" class="button_style" type="primary">
+                                        确认添加</el-button>
+                            </div>
+                        </div>
 
 
                     </div>
 
                     <el-form :disabled="formDisabled" :rules="rules" :model="postObj" ref="form" label-width="100px">
                         <el-row :gutter="20">
-                            <el-col align="left" :span="12">
+                            <el-col v-if="actionType=='add'" align="left" :span="12">
                                 <el-form-item label="父级菜单">
-                                    根目录
+                                    {{parentName}}
                                 </el-form-item>
                             </el-col>
                             <el-col align="left" :span="12">
                                 <el-form-item label="菜单类型" prop="menuType">
-                                    <el-select style="width:200px;" v-model="postObj.menuType" clearable
-                                        placeholder="请选择">
+                                    <el-select :disabled="!!(selectItem.children&&selectItem.children.length)"
+                                        style="width:200px;" v-model="postObj.menuType" clearable placeholder="请选择">
                                         <el-option label="F-父级菜单" value="F"></el-option>
                                         <el-option label="L-子菜单" value="L"></el-option>
                                     </el-select>
@@ -89,12 +103,12 @@
                             </el-col>
 
                         </el-row>
-                        {{postObj.buttonPerms}}
+
                         <el-transfer v-if="postObj.menuType=='L'" :props="{
                             key: 'buttonId',
                             label: 'buttonName'
-                          }" style="margin-left:100px;" filterable v-model="buttonPerms"
-                            :titles="['可选按钮', '已选按钮']" :data="allButtons">
+                          }" style="margin-left:100px;" filterable v-model="buttonPerms" :titles="['可选按钮', '已选按钮']"
+                            :data="allButtons">
 
                         </el-transfer>
 
@@ -114,8 +128,8 @@
 
 <script>
 
-    import { deleteKey } from "@/utils"
-    import { queryMenu, querySysButtonsListAll, updateMenu, queryMenuForTree } from "@/api/system"
+    import { deleteKey, deepClone } from "@/utils"
+    import { queryMenu, createMenu, deleteMenu, querySysButtonsListAll, updateMenu, queryMenuForTree } from "@/api/system"
     export default {
         data() {
             return {
@@ -125,22 +139,31 @@
                     key: 'success',
                     label: "123",
                 }],
+                parentName: "",
 
                 showDelete: false,
                 formDisabled: true,
                 postObj: {},
+                postObjZan: {},//放到暂存区；
+
+
                 allButtons: [],
-                buttonPerms:[],
+                buttonPerms: [],
+                buttonPermsZan: [],//放到暂存区；
+                actionType: "",
+                selectItem: {},
+                parentName: "",
+                openArr: [],
                 rules: {
                     menuType: [
                         { required: true, message: '请输入菜单类型', trigger: 'change' },
 
                     ],
                     menuId: [
-                        { required: true, message: '请输入菜单号', trigger: 'blur' }
+                        { required: true, message: '请输入菜单号', trigger: 'change' }
                     ],
                     name: [
-                        { required: true, message: '请输入菜单名称', trigger: 'blur' }
+                        { required: true, message: '请输入菜单名称', trigger: 'change' }
                     ],
                 }
 
@@ -153,26 +176,162 @@
                 if (info.resCode === "0") {
                     this.TreeData = info.rows;
                 }
-                let info_button = await querySysButtonsListAll();
-                if (info_button.resCode === "0") {
-                    this.allButtons = info_button.rows;
+               
+
+            },
+            async initAllButton(){
+                let info = await querySysButtonsListAll();
+                if (info.resCode === "0") {
+                    this.allButtons = info.rows;
                 }
+              
 
             },
             edit() {
-               this.formDisabled=false;
+                if (!this.selectItem.id) {
+                    return this.$message.error("请重新左侧节点选择后修改");
+
+                }
+                this.formDisabled = false;
+                this.actionType = "edit";
+                this.postObjZan = deepClone(this.postObj);
+                this.buttonPermsZan = deepClone(this.buttonPerms);
+
             },
+            doAdd(bol) {
+                if (!this.selectItem.id && !bol) {
+                    return this.$message.error("请重新左侧节点选择后添加");
+
+
+                }
+                this.formDisabled = false;
+                this.actionType = "add";
+                this.buttonPerms = [];
+                this.parentName = this.postObj.name;
+                
+                this.postObj = {
+                    pId: this.postObj.menuId,
+                    name: "",
+                    menuId: "",
+                    menuType: "F",
+                    flowKey: "",
+                    isEdition: "",
+                    tranName: "",
+                    menuUrl: "",
+
+                }
+                if (bol) {
+                    this.postObj.pId = "0";
+                    this.parentName = "根目录";
+                    this.init();
+                    this.openArr=[];
+                    this.selectItem={};
+
+                }
+
+            },
+            async saveAdd() {
+
+                let obj = deepClone(this.postObj);
+                obj.buttonPerms = this.buttonPerms.join(",");
+                let info = await createMenu(obj);
+                if (info.resCode === "0") {
+                    this.$message.success("添加成功");
+                    this.formDisabled = true;
+                    this.actionType = "";
+                    this.openArr=[];
+                    this.openArr[0] = this.selectItem.menuId;
+
+                    this.init();
+                   
+                    this.selectItem = {};
+                }
+            },
+
+
+            async saveEdit() {
+                console.log(this.postObj, this.buttonPerms)
+                let obj = deepClone(this.postObj);
+                obj.buttonPerms = this.buttonPerms.join(",");
+                let info = await updateMenu(obj);
+                if (info.resCode === "0") {
+                    this.$message.success("操作成功");
+                    this.formDisabled = true;
+                    this.actionType = "";
+                    this.openArr=[];
+                    this.openArr[0] = this.selectItem.menuId;
+                    // this.$set(this.openArr,0,this.selectItem.id);
+                    console.log(this.openArr)
+                    this.init();
+                   
+                    this.selectItem = {};
+
+                }
+            },
+            async doDelete() {
+                if (!this.selectItem.id) {
+                    return this.$message.error("请重新左侧节点选择后修改");
+
+                }
+                this.$msgbox({
+                    title: "确认删除此菜单吗？",
+                    beforeClose: async (action, instance, done) => {
+                        if (action == "confirm") {
+                            let info = await deleteMenu({ id: this.selectItem.id });
+
+                            if (info.resCode === "0") {
+                                this.openArr = [];
+                                this.openArr[0] = this.selectItem.pId;
+                                
+                             
+                                this.$message.success("操作成功");
+                                this.selectItem = {};
+                                this.init();
+
+
+                            }
+                            done();
+
+                        }
+                        else {
+                            done();
+                        }
+                    }
+                })
+
+
+            },
+            cancel() {
+                this.formDisabled = true;
+                this.actionType = "";
+                this.postObj = deepClone(this.postObjZan);
+                this.buttonPerms = deepClone(this.buttonPermsZan);
+            },
+
+
+
+
+
             nodeClick(item, index) {
-                this.buttonPerms=[];
+                this.formDisabled = true;
+                this.buttonPerms = [];
+                this.actionType = "";
+                this.selectItem = item;
 
                 this.postObj = {
-                    id:item.id,
-                    pId:item.pId,
-                    name:item.name,
-                    menuId:item.menuId,
-                    menuType:item.menuType
+                    id: item.id,
+                    pId: item.pId,
+                    name: item.name,
+                    menuId: item.menuId,
+                    menuType: item.menuType,
+                    flowKey: "",
+                    isEdition: "",
+                    tranName: "",
+                    menuUrl: "",
+
+
                 }
-                
+
                 if (item.menuType == 'L') {
                     this.postObj.flowKey = item.flowKey;
                     this.postObj.isEdition = item.isEdition;
@@ -188,9 +347,9 @@
                         this.buttonPerms = item.buttonPerms.split(",")
 
                     }
-                 
 
-                   
+
+
                 }
 
 
@@ -210,6 +369,7 @@
         }
         , mounted() {
             this.init();
+            this.initAllButton();
         },
     }
 </script>
@@ -219,6 +379,10 @@
     }
     .el-transfer-panel{
         height: 300px;
+    }
+    .button_style{
+        float: right; padding: 3px 0;width: 100px;height: 30px;margin-left:20px;margin-top:-20px;
+
     }
 
 </style>
