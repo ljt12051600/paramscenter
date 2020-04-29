@@ -107,8 +107,10 @@
             <el-dialog title="分配菜单和按钮权限" :visible="showTree" width="800px" :show-close="false">
                 <el-row :gutter="20">
                     <el-col :span="12">
+                        <el-input placeholder="输入关键字进行过滤" v-model="filterText">
+                        </el-input>
                         <el-tree ref="tree" @node-click="nodeClick" node-key="menuId" show-checkbox accordion
-                            highlight-current :data="treeData" />
+                            :filter-node-method="filterNode" highlight-current :data="treeData" />
                     </el-col>
                     <el-col v-if="selectItem.menuType=='L'" :span="12">
                         <!-- <div v-for="item in buttonAll">{{item}}</div> -->
@@ -188,9 +190,19 @@
                 aa: [],
                 selectItem: {},
                 minusList: [],
+                filterText: "",
             };
         },
+        watch: {
+            filterText(val) {
+                this.$refs.tree.filter(val);
+            }
+        },
         methods: {
+            filterNode(value, data) {
+                if (!value) return true;
+                return data.label.indexOf(value) !== -1;
+            },
             clearSearch() {
                 this.query = {
                     roleId: '',
@@ -352,9 +364,9 @@
 
                     })
                     this.minusList.forEach(ite => {
-                        
+
                         if (ite.menuId == item.menuId) {
-                            console.log(ite,item)
+                            console.log(ite, item)
                             if (ite.buttonPerms) {
 
 
