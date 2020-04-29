@@ -187,6 +187,7 @@
                 treeData: [],
                 aa: [],
                 selectItem: {},
+                minusList: [],
             };
         },
         methods: {
@@ -276,29 +277,30 @@
 
             },
             async doShareRole(item) {//先处理父节点删除
+                this.minusList = [];
                 let info = await queryRoleMenuAll({ roleId: item.roleId });
                 let listSelected = [];
                 if (info.resCode === '0') {
                     this.showTree = true;
-                    listSelected = info.rows||[];
+                    listSelected = info.rows || [];
                 };
                 let info1 = await queryMenu();
                 let listOne = [];
                 if (info1.resCode === '0') {
                     listOne = info1.rows || [];
                     for (let i = 0; i < listSelected.length; i++) {
-                       
+
                         for (let j = 0; j < listOne.length; j++) {
-                           
-                            if ( listSelected[i].menuId === listOne[j].pId) {
+
+                            if (listSelected[i].menuId === listOne[j].pId) {
                                 listSelected.splice(i, 1);
                                 i--;
                                 break;
                             }
                         }
                     }
-                    console.log(listSelected);
-                    let arr=listSelected.map(ite=>{
+                    this.minusList = listSelected;
+                    let arr = listSelected.map(ite => {
                         return ite.menuId
                     });
                     this.$refs.tree.setCheckedKeys(arr);
@@ -334,6 +336,7 @@
             },
             nodeClick(item) {
                 this.selectItem = item;
+                this.aa = [];
 
 
                 this.buttonAll = [];
@@ -347,6 +350,17 @@
                             this.buttonAll.push({ buttonId: item.buttonId, buttonName: item.buttonName })
                         }
 
+                    })
+                    this.minusList.forEach(ite => {
+                        
+                        if (ite.menuId == item.menuId) {
+                            console.log(ite,item)
+                            if (ite.buttonPerms) {
+
+
+                                this.aa = ite.buttonPerms.split(",")
+                            }
+                        }
                     })
 
 
@@ -397,7 +411,8 @@
                 let info1 = await querySysButtonsListAll();
                 if (info1.resCode === '0') {
                     this.buttonAllList = info1.rows || [];
-                }
+                };
+
             }
         },
         mounted() {
