@@ -61,9 +61,10 @@ export default {
                     let info=await loginUser(params);
                     if(info.resCode==="0"){
                         setSessionId("username",info.userName)
-                         
-                          
+                       
                          this.$router.push('/');
+                         window.location.reload();
+                         
                     }
                     else{
                         clearSession();
