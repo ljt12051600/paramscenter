@@ -103,7 +103,7 @@
                 this.updateMainInfo(data);
                
                 router.beforeEach((to, from, next) => {
-                    console.log(menuArr)
+                    
                     if (to.path == "/403" || to.path == "/404" || to.path == "/login") {
                         next(); 
                     }

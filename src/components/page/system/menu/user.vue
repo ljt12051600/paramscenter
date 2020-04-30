@@ -259,7 +259,7 @@
                     }
                 })
 
-                console.log(item);
+              
 
             },
             doResetPassword(item) {
@@ -284,7 +284,7 @@
                     }
                 })
 
-                console.log(item);
+              
 
             },
             async doShowRole(item) {
@@ -393,7 +393,7 @@
                 }
             },
             async getList(num) {
-                console.log(this.query)
+           
                 let postObj = deleteKey(this.query);
                 postObj.pageNum--;
 

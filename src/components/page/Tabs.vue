@@ -97,7 +97,7 @@
         methods: {
             handleRead(index) {
                 const item = this.unread.splice(index, 1);
-                console.log(item);
+            
                 this.read = item.concat(this.read);
             },
             handleDel(index) {

@@ -254,7 +254,7 @@
 
 
             async saveEdit() {
-                console.log(this.postObj, this.buttonPerms)
+               
                 let obj = deepClone(this.postObj);
                 obj.buttonPerms = this.buttonPerms.join(",");
                 let info = await updateMenu(obj);
@@ -265,7 +265,7 @@
                     this.openArr=[];
                     this.openArr[0] = this.selectItem.menuId;
                     // this.$set(this.openArr,0,this.selectItem.id);
-                    console.log(this.openArr)
+                  
                     this.init();
                    
                     this.selectItem = {};

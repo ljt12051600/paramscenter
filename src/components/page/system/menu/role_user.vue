@@ -71,7 +71,7 @@
         },
         methods: {
             async getList(num) {
-                console.log(this.query)
+               
                 let postObj = deleteKey(this.query);
                 postObj.roleId=this.item.roleId;
                 postObj.roleName=this.item.roleName;

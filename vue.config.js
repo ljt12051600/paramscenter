@@ -8,7 +8,7 @@ function resolve(dir) {
 
 
 const port = 8013 // 端口配置
-console.log(process.env.VUE_APP_BASE_API)
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   publicPath: '/',

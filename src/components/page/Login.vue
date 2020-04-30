@@ -28,7 +28,7 @@
 </template>
 
 <script>
-console.log(process.env)
+// console.log(process.env)
 import {loginUser} from "@/api/system"
 import {setSessionId,clearSession,deleteKey} from "@/utils"
 
@@ -56,7 +56,7 @@ export default {
                     
                     let params=deleteKey(this.param);
                   
-                    console.log(params)
+                  
                     setSessionId("userId",params.userId);
                     let info=await loginUser(params);
                     if(info.resCode==="0"){
@@ -75,7 +75,7 @@ export default {
                    
                 } else {
                     this.$message.error('请输入账号和密码');
-                    console.log('error submit!!');
+                  
                      clearSession();
                     return false;
                 }

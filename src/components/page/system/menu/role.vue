@@ -201,7 +201,7 @@
             }, aa(val) {
 
                 var num = 0;
-                console.log(1);
+               
                 this.minusList.forEach((item, index) => {
                     if (item.menuId === this.selectItem.menuId) {
                         this.minusList[index].buttonList = val;
@@ -214,7 +214,7 @@
                     this.minusList.push(this.selectItem);
 
                 }
-                console.log(this.minusList)
+              
             },
 
         },
