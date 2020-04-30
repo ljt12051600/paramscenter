@@ -99,7 +99,7 @@
 
 <script>
   import { deleteKey } from "@/utils"
-  import MIXIN from "@/components/mixin/1.js"
+  import MIXIN from "@/components/mixin/button"
   import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons,querySysButtonsListAll } from "@/api/system"
   export default {
     mixins: [MIXIN],

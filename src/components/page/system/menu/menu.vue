@@ -128,7 +128,8 @@
 </template>
 
 <script>
-    import MIXIN from "@/components/mixin/1.js"
+   
+  import MIXIN from "@/components/mixin/button"
 
     import { deleteKey, deepClone } from "@/utils"
     import { queryMenu, createMenu, deleteMenu, querySysButtonsListAll, updateMenu, queryMenuForTree } from "@/api/system"
