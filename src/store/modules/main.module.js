@@ -6,10 +6,7 @@ import {loginUser} from "@/api/system"
 const state = () => {
     return {
         items: [],
-        userInfo: {
-            username: "testname",
-            orgName: "",
-        },
+        username:"",
         pageBtns: [
             // {
             //   label: '新建',
@@ -52,9 +49,10 @@ const actions = {
 // mutations
 const mutations = {
     async updateMainInfo(state, data) {
+      
         
-        state.userInfo.username = data.username;
-        state.userInfo.orgName = data.orgName;
+        state.username = data.name;
+       
        
         state.items = data.items;
 

@@ -21,6 +21,7 @@
 
     import { mapState, mapMutations } from "vuex";
     import { getSessionId, deleteKey } from "@/utils"
+    import { queryMenuListByUserFuncIdForTree } from "@/api/system"
 
     import vHead from './Header.vue';
     import vSidebar from './Sidebar.vue';
@@ -54,97 +55,56 @@
                 this.tagsList = arr;
             });
             this.init();
+           
         },
         methods: {
             async init() {
-
-                let data = {
-                    name: " 杨建忠",
-                    items: [{
-                        icon: 'el-icon-lx-home',
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'button',
-                        title: '系统按钮'
-                    },
-                    {
-                        icon: 'el-icon-lx-global',
-                        index: 'menu',
-                        title: '菜单管理'
-                    },
-                     {
-                        icon: 'el-icon-user-solid',
-                        index: 'user',
-                        title: '用户管理'
-                    },
-                    {
-                        icon: 'el-icon-user',
-                        index: 'role',
-                        title: '角色管理',
-                    },
-                    {
-                        icon: 'el-icon-lx-emoji',
-                        index: 'icon',
-                        title: '自定义图标'
-                    },
+                let data = {};
+                let info = await queryMenuListByUserFuncIdForTree();
+                if (info.resCode === '0') {
                    
-                    {
-                        icon: 'el-icon-rank',
-                        index: '6',
-                        title: '拖拽组件',
-                        subs: [{
-                            index: 'drag',
-                            title: '拖拽列表'
-                        },
-                        {
-                            index: 'dialog',
-                            title: '拖拽弹框'
-                        }
-                        ]
-                    },
-                    
-                    {
-                        icon: 'el-icon-lx-warn',
-                        index: '7',
-                        title: '错误处理',
-                        subs: [{
-                            index: 'permission',
-                            title: '权限测试'
-                        },
-                        {
-                            index: '404',
-                            title: '404页面'
-                        }
-                        ]
-                    },
-                    ]
+                    data = {
+                        name: getSessionId("username"),
+                        items: info.rows || []
+                    }
+                   
+                    if(data.items.length===0){
+                        // this.$message.error("请添加权限后再进入系统")
+                        // this.$router.push('/login');
+                      
+                    }
+                    data.items.unshift({
+                        icon: 'el-icon-lx-home',
+                        menuUrl: 'dashboard',
+                        name: '系统首页'
+                    })
+                    // data.items.length=2;
+
+
+
 
                 }
+               
                 let menuArr = [];
-
                 ; (function getMenuArr(Arr) {
+                   
                     if (Arr.length) {
                         Arr.forEach(item => {
-                            if (item.subs && item.subs.length > 0) {
-                                getMenuArr(item.subs)
+                            if (item.children && item.children.length > 0) {
+                                getMenuArr(item.children)
                             }
-
-                            else { menuArr.push(item.index) }
+                            else { menuArr.push(item.menuUrl) }
 
                         })
-
                     }
-                })(data.items)
-                console.log(menuArr);
-                this.updateMainInfo(data);
+                })(data.items);
+                console.log(data);
 
+                this.updateMainInfo(data);
+                console.log(menuArr)
                 router.beforeEach((to, from, next) => {
                     if (to.path == "/403" || to.path == "/404" || to.path == "/login") {
-
-                        next();
+                        next(); 
                     }
                     else if (!menuArr.includes(to.path.substr(1))) {
                         next("/403")

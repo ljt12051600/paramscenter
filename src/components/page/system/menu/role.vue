@@ -142,7 +142,7 @@
     import { deleteKey } from '@/utils';
     import roleUser from './role_user';
 
-    import { queryRoleList, deleteRole, createRole, updateRole, queryRoleMenuAll, queryMenuForTree, querySysButtonsListAll, queryMenu } from '@/api/system';
+    import { queryRoleList, deleteRole, createRole, updateRole, queryRoleMenuAll, queryMenuForTree, querySysButtonsListAll, queryMenu,saveRoleMenu} from '@/api/system';
     export default {
         components: { roleUser },
         data() {
@@ -182,6 +182,7 @@
 
                     rows: []
                 },
+                roleId: "",//选中的id
                 rules: {
                     roleId: [{ required: true, message: '请输入角色ID', trigger: 'blur' }],
                     roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
@@ -191,12 +192,31 @@
                 selectItem: {},
                 minusList: [],
                 filterText: "",
+                changeList: [],
             };
         },
         watch: {
             filterText(val) {
                 this.$refs.tree.filter(val);
-            }
+            }, aa(val) {
+
+                var num = 0;
+                console.log(1);
+                this.minusList.forEach((item, index) => {
+                    if (item.menuId === this.selectItem.menuId) {
+                        this.minusList[index].buttonList = val;
+                        num = 1;
+
+                    }
+                })
+                if (!num) {
+                    this.selectItem.buttonList = val;
+                    this.minusList.push(this.selectItem);
+
+                }
+                console.log(this.minusList)
+            },
+
         },
         methods: {
             filterNode(value, data) {
@@ -289,7 +309,10 @@
 
             },
             async doShareRole(item) {//先处理父节点删除
+                this.selectItem = {};
+                this.roleId = item.roleId;
                 this.minusList = [];
+                this.aa = [];
                 let info = await queryRoleMenuAll({ roleId: item.roleId });
                 let listSelected = [];
                 if (info.resCode === '0') {
@@ -321,19 +344,50 @@
                     return ""
                 };
 
-
-
-
-
-
-
-
-
-
-
             },
             async closeTree(bol) {
                 if (bol) {
+                    let allList = this.$refs.tree.getCheckedNodes(false, true);
+
+                    let rows = allList.map(item => {
+                        let num = 0;
+                        let newObj = {}
+                        this.minusList.forEach(ite => {
+                            if (item.menuId == ite.menuId && ite.buttonList) {
+
+                                num = 1;
+                                newObj = { roleId: this.roleId, menuId: item.menuId, buttonPerms: ite.buttonList.join(",") }
+                            }
+                        })
+                        if (!num) {
+                            if (item.menuType == 'L') {
+                                return { roleId: this.roleId, menuId: item.menuId, buttonPerms: item.buttonPerms };
+
+                            }
+                            else {
+                                return { roleId: this.roleId, menuId: item.menuId};
+
+                            }
+
+                        }
+                        else {
+                            return newObj;
+                        }
+                    })
+                    let info = await saveRoleMenu({
+                        roleId: this.roleId,
+                        rows,
+                    });
+                    if (info.resCode === '0') {
+                        this.$message.success('添加成功');
+                        this.showTree=false;
+
+                    }
+
+
+
+
+
 
 
                 }
@@ -348,7 +402,9 @@
             },
             nodeClick(item) {
                 this.selectItem = item;
-                this.aa = [];
+                if (item.menuType == "F") return;
+                if (item.menuId == this.selectItem.menuId)
+                    this.aa = [];
 
 
                 this.buttonAll = [];
@@ -359,21 +415,26 @@
 
                     this.buttonAllList.forEach(item => {
                         if (list.includes(item.buttonId)) {
-                            this.buttonAll.push({ buttonId: item.buttonId, buttonName: item.buttonName })
+                            this.buttonAll.push({ buttonId: item.buttonId, buttonName: item.buttonName });
+
                         }
 
                     })
                     this.minusList.forEach(ite => {
 
                         if (ite.menuId == item.menuId) {
-                            console.log(ite, item)
-                            if (ite.buttonPerms) {
 
+                            if (ite.buttonList) {
+                                this.aa = ite.buttonList
 
-                                this.aa = ite.buttonPerms.split(",")
+                            }
+                            else if (ite.buttonPerms) {
+                                this.aa = ite.buttonPerms.split(",");
                             }
                         }
                     })
+                    // this.selectItem.buttonPerms=this.aa;
+
 
 
                 }

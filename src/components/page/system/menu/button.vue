@@ -1,11 +1,13 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
+      {{PERMISSON}}
 
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
         <!--工具栏-->
         <div class="head-container">
           <el-card>
+           
             <el-form ref="form" :inline="true" label-width="80px">
               <el-form-item label="按钮id">
                 <el-input style="width:200px;" v-model.trim="query.buttonId"></el-input>
@@ -97,8 +99,10 @@
 
 <script>
   import { deleteKey } from "@/utils"
+  import MIXIN from "@/components/mixin/1.js"
   import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons,querySysButtonsListAll } from "@/api/system"
   export default {
+    mixins: [MIXIN],
     data() {
       return {
         query: {
@@ -165,7 +169,7 @@
           }
         })
 
-        console.log(item);
+      
 
       },
       doAdd() {
@@ -217,7 +221,7 @@
         }
       },
       async getList(num) {
-        console.log(this.query)
+       
         let postObj = deleteKey(this.query);
         postObj.pageNum--;
 

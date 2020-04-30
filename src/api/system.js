@@ -81,7 +81,7 @@ export const queryMenuForTree = async (data) => {
        
     })
 }
-export const queryMenuListByUserFuncId = async (data) => {
+export const queryMenuListByUserFuncIdForTree = async (data) => {
     return await request({
         url: '/menu/queryMenuListByUserFuncIdForTree',
         method: 'post',
@@ -92,6 +92,14 @@ export const queryMenuListByUserFuncId = async (data) => {
 export const queryRoleMenuAll = async (data) => {
     return await request({
         url: '/roleMenu/queryRoleMenuAll',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const saveRoleMenu = async (data) => {
+    return await request({
+        url: '/roleMenu/saveRoleMenu',
         method: 'post',
         datas: data,
        
@@ -234,6 +242,7 @@ export const queryUserRoleAll = async (data) => {
        
     })
 }
+
 
 
 

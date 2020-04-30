@@ -45,6 +45,9 @@ export default {
             },
         };
     },
+    mounted(){
+        // window.location.reload();
+    },
     methods: {
         submitForm() {
             this.$refs.login.validate(async(valid) => {
@@ -54,11 +57,12 @@ export default {
                     let params=deleteKey(this.param);
                   
                     console.log(params)
-                     setSessionId("userId",params.userId);
+                    setSessionId("userId",params.userId);
                     let info=await loginUser(params);
                     if(info.resCode==="0"){
+                        setSessionId("username",info.userName)
                          
-                           this.$message.success('登录成功');
+                          
                          this.$router.push('/');
                     }
                     else{

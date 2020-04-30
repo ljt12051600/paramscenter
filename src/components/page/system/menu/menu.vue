@@ -1,6 +1,7 @@
 <template>
     <div class="app-container">
         <el-row :gutter="20">
+            {{PERMISSON}}
 
             <el-col :span="8">
                 <el-card class="min-height">
@@ -127,10 +128,12 @@
 </template>
 
 <script>
+    import MIXIN from "@/components/mixin/1.js"
 
     import { deleteKey, deepClone } from "@/utils"
     import { queryMenu, createMenu, deleteMenu, querySysButtonsListAll, updateMenu, queryMenuForTree } from "@/api/system"
     export default {
+          mixins: [MIXIN],
         data() {
             return {
                 TreeData: [],

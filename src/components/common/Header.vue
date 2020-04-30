@@ -26,11 +26,12 @@
                 <!-- 用户头像 -->
                 <div class="user-avator">
                     <img src="../../assets/img/img.jpg" />
+                  
                 </div>
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
-                        {{username}}
+                       {{username}}
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
@@ -61,6 +62,7 @@
                 </div>
             </el-dialog>
         </div>
+   
 
     </div>
 </template>
@@ -68,12 +70,13 @@
     import bus from '../common/bus';
     import { updatePassword } from "@/api/system"
     import { deleteKey } from '@/utils';
+    import { mapState, mapMutations } from "vuex";
     export default {
         data() {
             return {
                 collapse: false,
                 fullscreen: false,
-                name: 'linxin',
+               
                 message: 2,
                 showPassWord: false,
                 postObj: {
@@ -83,15 +86,16 @@
                     oldPassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
                     newPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
                     newPassword1: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-                }
+                },
+                  ...mapState,
             };
         },
-        computed: {
-            username() {
-                let username = localStorage.getItem('ms_username');
-                return username ? username : this.name;
-            }
+        computed:{
+           ...mapState({
+               username:state=>state.main.username
+           })
         },
+       
         methods: {
             doClosePassword(bol) {
                 if (bol) {
@@ -121,7 +125,7 @@
             // 用户名下拉菜单选择事件
             handleCommand(command) {
                 if (command == 'loginout') {
-                    localStorage.removeItem('ms_username');
+                 
                     this.$router.push('/login');
                 }
                 else if (command == 'changePassword') {
