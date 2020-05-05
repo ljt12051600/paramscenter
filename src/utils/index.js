@@ -28,3 +28,22 @@ export const deleteKey = (obj) => {
     return JSON.parse(JSON.stringify(obj))
 
   }
+  export const  getTree =function(oldArr){
+    oldArr.forEach(element => {
+      let pid = element.pid;
+      if(pid !== '-1'){
+        oldArr.forEach(ele => {
+          if(ele.menuId == pid){ //当内层循环的ID== 外层循环的parendId时，（说明有children），需要往该内层id里建个children并push对应的数组；
+            if(!ele.children){
+              ele.children = [];
+            }
+            ele.children.push(element);
+          }
+        });
+      }
+    });
+    
+    oldArr = oldArr.filter(ele => ele.pid === '-1'); //这一步是过滤，按树展开，将多余的数组剔除；
+  
+    return oldArr;
+  }

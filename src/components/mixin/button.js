@@ -20,7 +20,7 @@ let MIXIN = {
     data() {
         return {
             name: 'mixin',
-            MENUID: "",
+            menuId: "",
             PERMISSON:{
             },
         }
@@ -30,15 +30,15 @@ let MIXIN = {
 
     },
     mounted() {
-        this.getNode();
+        this.getMenuNode();
 
 
     },
     methods: {
-        getNode() {
+        getMenuNode() {
             getItem(this.items, this.$route.path.substr(1));
            
-            this.MENUID = itemsss.menuId;
+            this.menuId = itemsss.menuId;
             if (itemsss.buttonPerms && itemsss.buttonPerms.length > 0) {
                 let list=itemsss.buttonPerms.split(",");
                 list.forEach(item=>{

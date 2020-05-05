@@ -8,15 +8,10 @@
                     <el-card>
                         <el-form ref="form" :inline="true" label-width="80px">
 
-                            <el-form-item label="用户id">
-                                <el-input style="width:200px;" v-model.trim="query.roleId"></el-input>
+                            <el-form-item label="搜索条件">
+                                <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
                             </el-form-item>
-                            <el-form-item label="用户名">
-                                <el-input style="width:200px;" v-model.trim="query.roleName"></el-input>
-                            </el-form-item>
-                            <el-form-item label="邮箱">
-                                <el-input style="width:200px;" v-model.trim="query.roleDesc"></el-input>
-                            </el-form-item>
+                           
                         </el-form>
                         <div class="header-search">
                             <el-button @click="queryList" type="primary">查询</el-button>
@@ -148,9 +143,7 @@
         data() {
             return {
                 query: {
-                    roleId: '',
-                    roleName: '',
-                    roleDesc: '',
+                    tblSearch: '',
                     pageNum: 1,
                     numPerPage: 10
                 },
@@ -225,12 +218,7 @@
             },
             clearSearch() {
                 this.query = {
-                    roleId: '',
-                    roleName: '',
-                    roleDesc: '',
-                    userPhoneSearch: '',
-                    userIdnoSearch: '',
-                    userSexSearch: '',
+                    tblSearch: '',
                     pageNum: 1,
                     numPerPage: 10
                 };

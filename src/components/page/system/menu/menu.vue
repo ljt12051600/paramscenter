@@ -59,6 +59,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col align="left" :span="12">
+                               
                                 <el-form-item label="菜单类型" prop="menuType">
                                     <el-select :disabled="!!(selectItem.children&&selectItem.children.length)"
                                         style="width:200px;" v-model="postObj.menuType" clearable placeholder="请选择">
@@ -208,10 +209,14 @@
 
 
                 }
+                this.selectItem={
+                       menuId:this.selectItem.menuId,
+                };
                 this.formDisabled = false;
                 this.actionType = "add";
                 this.buttonPerms = [];
                 this.parentName = this.postObj.name;
+            
                 
                 this.postObj = {
                     pId: this.postObj.menuId,
@@ -229,7 +234,9 @@
                     this.parentName = "根目录";
                     this.init();
                     this.openArr=[];
-                    this.selectItem={};
+                    this.selectItem={
+                     
+                    };
 
                 }
 

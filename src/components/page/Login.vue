@@ -4,14 +4,14 @@
             <div class="ms-title">工艺平台</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="userId">
-                    <el-input v-model="param.userId" placeholder="userPwd">
+                    <el-input v-model="param.userId" placeholder="请输入用户名">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="userPwd">
                     <el-input
                         type="password"
-                        placeholder="userPwd"
+                        placeholder="请输入密码"
                         v-model="param.userPwd"
                         @keyup.enter.native="submitForm()"
                     >

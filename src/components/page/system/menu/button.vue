@@ -9,15 +9,10 @@
           <el-card>
            
             <el-form ref="form" :inline="true" label-width="80px">
-              <el-form-item label="按钮id">
-                <el-input style="width:200px;" v-model.trim="query.buttonId"></el-input>
+              <el-form-item label="搜索条件">
+                <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
               </el-form-item>
-              <el-form-item label="按钮名称">
-                <el-input style="width:200px;" v-model.trim="query.buttonName"></el-input>
-              </el-form-item>
-              <el-form-item label="弹框id">
-                <el-input style="width:200px;" v-model.trim="query.popId"></el-input>
-              </el-form-item>
+           
             </el-form>
             <div class="header-search">
               <el-button @click="queryList" type="primary">查询</el-button>
@@ -106,9 +101,7 @@
     data() {
       return {
         query: {
-          buttonId: "",
-          buttonName: "",
-          popId: "",
+         tblSearch: "",
           pageNum: 1,
           numPerPage: 10,
 
@@ -145,9 +138,8 @@
     },
     methods: {
       clearSearch() {
-        this.query.buttonId = "";
-        this.query.buttonName = "";
-        this.query.popId = "";
+        this.query.tblSearch = "";
+        
       },
       doDelete(item) {
         let postObj = { id: item.id };

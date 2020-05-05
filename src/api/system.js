@@ -242,7 +242,54 @@ export const queryUserRoleAll = async (data) => {
        
     })
 }
+export const searchMenu = async (data) => {
+    return await request({
+        url: '/tp0003/searchMenu',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const searchMenuAll = async (data) => {
+    return await request({
+        url: '/tp0003/searchMenuAll',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+    
+export const createTp0003 = async (data) => {
+    return await request({
+        url: '/tp0003/createTp0003',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+    
 
+    //    var tree = [{
+    //        id:"parent",
+    //        parentId:"",
+    //        name:"一级节点",
+    //        childs:[{
+    //            id:"child1",
+    //            parentId:"parent",
+    //            name:"一级节点",
+    //            childs:[]
+    //        },{
+    //            id:"child2",
+    //            parentId:"parent",
+    //            name:"一级节点",
+    //            childs:[]
+    //        }]
+    //    }]
+
+    //    var arr = pub.treeTransArray(tree,'childs'); 
+    //    console.log(arr);
+    //    var _tree = pub.arrayTransTree(arr,'parentId');/
+    //    console.log(_tree);
 
 
 
