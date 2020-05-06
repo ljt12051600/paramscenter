@@ -127,6 +127,7 @@
                 if (command == 'loginout') {
                  
                     this.$router.push('/login');
+                    window.location.reload();
                 }
                 else if (command == 'changePassword') {
                     this.showPassWord = true;

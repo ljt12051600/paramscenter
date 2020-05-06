@@ -63,7 +63,7 @@ export default {
                         setSessionId("username",info.userName)
                        
                          this.$router.push('/');
-                         window.location.reload();
+                     
                          
                     }
                     else{

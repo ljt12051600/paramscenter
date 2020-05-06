@@ -21,40 +21,41 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
                     meta: { title: '系统首页' }
                 },
-                {
-                    path: '/icon',
-                    component: () => import(/* webpackChunkName: "system" */ '../components/page/Icon.vue'),
-                    meta: { title: '自定义图标' }
-                },
+               
                 {
                     path: '/button',
-                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/button.vue'),
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/button.vue'),
                     meta: { title: '系统按钮' }
                 },
                 {
                     // vue-schart组件
                     path: '/user',
-                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/user.vue'),
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/user.vue'),
                     meta: { title: '用户管理' }
                 },
                 {
                     path: '/role',
-                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/role.vue'),
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/role.vue'),
                     meta: { title: '角色管理' }
                 },
                 {
                     path: '/rolerelation',
-                    component: () => import(/* webpackChunkName: "system" */ '@page/system/menu/rolerelation.vue'),
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/rolerelation.vue'),
                     meta: { title: '系统权限' }
                 },
               
            
                 {
-                    // 国际化组件
                     path: '/menu',
-                    component: () => import(/* webpackChunkName: "menu" */ "@page/system/menu/menu.vue"),
+                    component: () => import(/* webpackChunkName: "menu" */ "@page/system/menu.vue"),
                     meta: { title: '菜单管理' }
                 },
+                {
+                    path: '/vocab',
+                    component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/vocab.vue"),
+                    meta: { title: '词根' }
+                },
+
               
                 {
                     path: '/404',
