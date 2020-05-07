@@ -81,6 +81,22 @@ export const queryMenuForTree = async (data) => {
        
     })
 }
+export const createTp0004 = async (data) => {
+    return await request({
+        url: '/menu/createTp0004',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryFuncList = async (data) => {
+    return await request({
+        url: '/menu/queryFuncList',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 export const queryMenuListByUserFuncIdForTree = async (data) => {
     return await request({
         url: '/menu/queryMenuListByUserFuncIdForTree',

@@ -40,7 +40,7 @@
 <script>
 
 
-    import MIXIN from "@/components/mixin/button"
+    import MIXIN from "@views/mixin/button"
 
     import { deleteKey, deepClone, getTree } from "@/utils"
     import { searchMenu, queryRoleListAll, searchMenuAll, createTp0003 } from "@/api/system"

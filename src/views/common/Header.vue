@@ -126,7 +126,7 @@
             handleCommand(command) {
                 if (command == 'loginout') {
                  
-                    this.$router.push('/login');
+                   window.location.href="./#/login"
                     window.location.reload();
                 }
                 else if (command == 'changePassword') {

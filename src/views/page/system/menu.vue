@@ -130,7 +130,7 @@
 
 <script>
    
-  import MIXIN from "@/components/mixin/button"
+    import MIXIN from "@views/mixin/button"
 
     import { deleteKey, deepClone } from "@/utils"
     import { queryMenu, createMenu, deleteMenu, querySysButtonsListAll, updateMenu, queryMenuForTree } from "@/api/system"

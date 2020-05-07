@@ -13,12 +13,12 @@ export default new Router({
         },
         {
             path: '/',
-            component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
+            component: () => import(/* webpackChunkName: "home" */ '@/views/common/Home.vue'),
             meta: { title: '自述文件' },
             children: [
                 {
                     path: '/dashboard',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@page/Dashboard.vue'),
                     meta: { title: '系统首页' }
                 },
                
@@ -59,12 +59,12 @@ export default new Router({
               
                 {
                     path: '/404',
-                    component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
+                    component: () => import(/* webpackChunkName: "404" */ '@page/404.vue'),
                     meta: { title: '404' }
                 },
                 {
                     path: '/403',
-                    component: () => import(/* webpackChunkName: "403" */ '../components/page/403.vue'),
+                    component: () => import(/* webpackChunkName: "403" */ '@page/403.vue'),
                     meta: { title: '403' }
                 },
               
@@ -72,7 +72,7 @@ export default new Router({
         },
         {
             path: '/login',
-            component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
+            component: () => import(/* webpackChunkName: "login" */ '@page/Login.vue'),
             meta: { title: '登录' }
         },
         {
