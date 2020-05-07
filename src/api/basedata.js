@@ -26,3 +26,53 @@ export const queryVocabList = async (data) => {
        
     })
 }
+
+export const queryVocab = async (data) => {
+    return await request({
+        url: '/vocab/queryVocab',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const createVocab = async (data) => {
+    return await request({
+        url: '/vocab/createVocab',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const updateVocab = async (data) => {
+    return await request({
+        url: '/vocab/updateVocab',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const deleteVocab = async (data) => {
+    return await request({
+        url: '/vocab/deleteVocab',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryDictList = async (data) => {
+    return await request({
+        url: '/dict/queryDictList',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+//數據字典類型和數據類型
+export const queryOptionCodeNoPage = async (data) => {
+    return await request({
+        url: '/optionDetail/queryOptionCodeNoPage',
+        method: 'post',
+        datas: data,
+       
+    })
+}

@@ -74,7 +74,7 @@
                 </el-table>
 
                 <!--分页组件-->
-                <div class="pagination">
+                 <div v-if="data.total"  class="pagination">
                     <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
                         :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
                         @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>

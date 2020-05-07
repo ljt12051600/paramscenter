@@ -38,7 +38,7 @@ let MIXIN = {
         getMenuNode() {
             getItem(this.items, this.$route.path.substr(1));
            
-            this.clickMenuId = itemsss.clickMenuId;
+            this.clickMenuId = itemsss.menuId;
             if (itemsss.buttonPerms && itemsss.buttonPerms.length > 0) {
                 let list=itemsss.buttonPerms.split(",");
                 list.forEach(item=>{

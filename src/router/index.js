@@ -55,6 +55,11 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/vocab.vue"),
                     meta: { title: '词根' }
                 },
+                {
+                    path: '/dic',
+                    component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/dic.vue"),
+                    meta: { title: '词根' }
+                },
 
               
                 {
