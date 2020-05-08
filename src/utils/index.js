@@ -47,3 +47,12 @@ export const deleteKey = (obj) => {
   
     return oldArr;
   }
+  export const getSplitArr=(str)=>{//"abC1D2"转成ab,c1,d2
+   return  str.replace(/([A-Z])/g, ",$1").toLowerCase()
+        
+  }
+  export const getStrLowCase=(item)=>{
+    return item.replace(item[0], item[0].toUpperCase())
+
+  }
+  

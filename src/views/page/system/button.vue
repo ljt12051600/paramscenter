@@ -7,12 +7,12 @@
         <!--工具栏-->
         <div class="head-container">
           <el-card>
-           
+
             <el-form ref="form" :inline="true" label-width="80px">
               <el-form-item label="搜索条件">
                 <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
               </el-form-item>
-           
+
             </el-form>
             <div class="header-search">
               <el-button @click="queryList" type="primary">查询</el-button>
@@ -28,8 +28,10 @@
         <!--表单渲染-->
 
         <!--表格渲染-->
+      
         <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
-          <el-table-column align="center" type="index" label="序号" width="50"/>
+
+          <el-table-column align="center" type="index" label="序号" width="50" />
           <el-table-column align="center" prop="buttonId" label="按钮id" />
           <el-table-column align="center" prop="buttonName" label="按钮名称" />
           <el-table-column align="center" prop="popId" label="弹框id" />
@@ -43,7 +45,7 @@
         </el-table>
 
         <!--分页组件-->
-        <div v-if="data.total"  class="pagination">
+        <div v-if="data.total" class="pagination">
           <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
             :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
             @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
@@ -93,15 +95,16 @@
 </template>
 
 <script>
-  import { deleteKey } from "@/utils"
+  import { deleteKey, deepClone } from "@/utils"
+  // import Sortable from "sortablejs";
   import MIXIN from "@views/mixin/button"
-  import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons,querySysButtonsListAll } from "@/api/system"
+  import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons, querySysButtonsListAll } from "@/api/system"
   export default {
     mixins: [MIXIN],
     data() {
       return {
         query: {
-         tblSearch: "",
+          tblSearch: "",
           pageNum: 1,
           numPerPage: 10,
 
@@ -139,7 +142,7 @@
     methods: {
       clearSearch() {
         this.query.tblSearch = "";
-        
+
       },
       doDelete(item) {
         let postObj = { id: item.id };
@@ -161,7 +164,7 @@
           }
         })
 
-      
+
 
       },
       doAdd() {
@@ -213,7 +216,7 @@
         }
       },
       async getList(num) {
-       
+
         let postObj = deleteKey(this.query);
         postObj.pageNum--;
 
@@ -245,6 +248,27 @@
     }
     , mounted() {
       this.getList();
+      const tbody = document.querySelector(".el-table__body-wrapper tbody");
+      // Sortable.create(tbody, {
+      //   ghostClass: 'sortable-ghost',
+      //   onEnd: ({ newIndex, oldIndex }) => {
+      //     let newArr = deepClone(this.data.rows);
+      //     const currRow = newArr.splice(oldIndex, 1)[0]
+      //     newArr.splice(newIndex, 0, currRow)
+      //     // 重新排序完的表格数据
+      //     this.data.rows = []
+      //     this.$nextTick(function () {
+      //       this.data.rows = newArr
+      //     })
+
+      //   }
+      // })
+
     },
   }
 </script>
+<style>
+  .sortable-ghost {
+    background: red;
+  }
+</style>

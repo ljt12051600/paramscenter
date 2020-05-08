@@ -1,6 +1,7 @@
 import {
     queryTp3004,
-    queryOptionCodeNoPage
+    queryOptionCodeNoPage,
+    queryVocab
 } from '@/api/basedata';
 
 let SYSTEM = {
@@ -25,6 +26,8 @@ let SYSTEM = {
                     value: "2"
                 },
             ],
+            voCabList:[],
+            voCabObj:{},
 
         }
     },
@@ -60,6 +63,21 @@ let SYSTEM = {
                 info.rows.forEach(item => {
                     this.dicCodeObj[item.optionValue] = item.optionDesc
                 })
+               
+            }
+
+            
+        },
+        async getVoCabList() {
+            let info = await queryVocab();
+          
+            if (info.resCode === '0') {
+                this.voCabList=info.rows || [];
+                info.rows.forEach(item => {
+                    this.voCabObj[item.wordCode] = item.wordDesc
+                })
+             
+               
                
             }
 

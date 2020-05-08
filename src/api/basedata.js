@@ -67,10 +67,42 @@ export const queryDictList = async (data) => {
        
     })
 }
+export const createDict = async (data) => {
+    return await request({
+        url: '/dict/createDict',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const deleteDict = async (data) => {
+    return await request({
+        url: '/dict/deleteDict',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const updateDict = async (data) => {
+    return await request({
+        url: '/dict/updateDict',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 //數據字典類型和數據類型
 export const queryOptionCodeNoPage = async (data) => {
     return await request({
         url: '/optionDetail/queryOptionCodeNoPage',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryUnitDataList = async (data) => {
+    return await request({
+        url: '/unitData/queryUnitDataList',
         method: 'post',
         datas: data,
        

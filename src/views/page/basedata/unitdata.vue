@@ -17,14 +17,14 @@
 
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="英文词根">
-                                <el-input style="width:200px;" v-model.trim="query.wordCode"></el-input>
+                            <el-form-item label="数据字典">
+                                <el-input style="width:200px;" v-model.trim="query.dictCode"></el-input>
+                            </el-form-item>
+                            <el-form-item label="元数据代码">
+                                <el-input style="width:200px;" v-model.trim="query.unitDataCode"></el-input>
                             </el-form-item>
                             <el-form-item label="中文名称">
-                                <el-input style="width:200px;" v-model.trim="query.wordDesc"></el-input>
-                            </el-form-item>
-                            <el-form-item label="英文全称">
-                                <el-input style="width:200px;" v-model.trim="query.englishDesc"></el-input>
+                                <el-input style="width:200px;" v-model.trim="query.unitDataDesc"></el-input>
 
                             </el-form-item>
                         </el-form>
@@ -35,41 +35,46 @@
                     </el-card>
                     <!-- <crudOperation show="" :permission="permission" /> -->
                 </div>
-                <el-card style="margin-top:10px">
-                    <div class="header-button">
-                        <el-button @click="doAdd" type="primary">添加</el-button>
-                    </div>
-                    <!--表单渲染-->
+                <div class="header-button">
+                    <el-button @click="doAdd" type="primary">添加</el-button>
+                </div>
+                <!--表单渲染-->
 
-                    <!--表格渲染-->
-                    <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
-                        <el-table-column align="center" type="index" label="序号" width="50" />
-                        <el-table-column align="center" prop="userSex" label="子系统">
-                            <template slot-scope="scope">{{subSysObj[scope.row.subSysId]}}</template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="wordCode" label="英文词根" />
-                        <el-table-column align="center" prop="wordDesc" label="中文描述" />
-                        <el-table-column align="center" prop="englishDesc" label="英文全称" />
+                <!--表格渲染-->
+                <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
+                      <el-table-column align="center" type="index" label="序号" width="50"/>
+                    <el-table-column align="center" prop="userSex" label="子系统">
+                        <template slot-scope="scope">{{subSysObj[scope.row.subSysId]}}</template>
+                    </el-table-column>
+                     <el-table-column width="120" align="center" prop="userSex" label="数据标准">
+                        <template slot-scope="scope">{{dataStandObj[scope.row.dataStand]}}</template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="unitDataCode" label="元数据代码" />
+                    <el-table-column align="center" prop="unitDataDesc" label="中文名称" />
+                    <el-table-column align="center" prop="englishDesc" label="英文全称" />
+                    <el-table-column align="center" prop="dictCode" label="数据字典" />
+                    <el-table-column align="center" prop="dictCode" label="选项代码" />
+                    <el-table-column align="center" prop="dictCode" label="选项组别" />
+                    <el-table-column align="center" prop="dictCode" label="敏感数据" />
+                    <el-table-column align="center" prop="dictCode" label="状态" />
+                    <el-table-column align="center" prop="remark" label="备注" />
 
-                        <el-table-column width="120" align="center" prop="userSex" label="数据标准">
-                            <template slot-scope="scope">{{dataStandObj[scope.row.dataStand]}}</template>
-                        </el-table-column>
+                   
 
-                        <el-table-column label="操作" width="280" align="center" fixed="right">
-                            <template slot-scope="scope">
-                                <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
-                                <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                    <el-table-column label="操作" width="280" align="center" fixed="right">
+                        <template slot-scope="scope">
+                            <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
+                            <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
 
-                    <!--分页组件-->
-                    <div v-if="data.total" class="pagination">
-                        <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
-                            :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
-                            @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
-                    </div>
-                </el-card>
+                <!--分页组件-->
+                <div v-if="data.total" class="pagination">
+                    <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
+                        :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
+                        @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
+                </div>
             </el-col>
         </el-row>
         <div v-if="showAdd">
@@ -110,7 +115,7 @@
                     </el-form-item>
                     <el-form-item prop="wordCode" label="英文词根">
                         <el-input style="width:200px;" v-model.trim="editObj.wordCode"></el-input>
-
+                      
                     </el-form-item>
                     <el-form-item prop="wordDesc" label="中文描述">
                         <el-input style="width:200px;" v-model.trim="editObj.wordDesc"></el-input>
@@ -141,7 +146,7 @@
     import MIXIN from "@views/mixin/button"
     import SYSTEM from "@views/mixin/system"
     import systemComponent from '@views/components/system.component.vue';
-    import { queryVocabList, createVocab, updateVocab, deleteVocab } from '@/api/basedata';
+    import { queryUnitDataList, createVocab, updateVocab,deleteVocab } from '@/api/basedata';
     export default {
         mixins: [MIXIN, SYSTEM],
         components: { systemComponent },
@@ -204,7 +209,7 @@
                 };
             },
             doDelete(item) {
-                let postObj = { id: item.id, clickMenuId: this.clickMenuId };
+                let postObj = { id: item.id,clickMenuId :this.clickMenuId };
 
                 this.$msgbox({
                     title: '删除',
@@ -227,7 +232,7 @@
 
             doAdd() {
                 this.showAdd = true;
-                this.wordCode = "";
+                this.wordCode="";
                 this.addObj = {
                     sysId: "",
                     subSysId: "",
@@ -239,12 +244,12 @@
                     this.$refs['formAdd'].validate(async valid => {
                         if (valid) {
                             this.addObj.clickMenuId = this.clickMenuId;
-                            if (!/^[a-zA-Z][a-zA-Z0-9]{1,100}$/.test(this.addObj.wordCode)) {
+                            if(!/^[a-zA-Z][a-zA-Z0-9]{1,100}$/.test(this.addObj.wordCode)){
                                 return this.$message.error("格式错误");
-
+                              
 
                             }
-                            this.addObj.wordCode = this.addObj.wordCode.toLowerCase()
+                              this.addObj.wordCode=this.addObj.wordCode.toLowerCase()
                             let info = await createVocab(this.addObj);
                             if (info.resCode === '0') {
                                 this.$message.success('添加成功');
@@ -280,11 +285,11 @@
                     this.$refs['formEdit'].validate(async valid => {
                         if (valid) {
                             this.editObj.clickMenuId = this.clickMenuId;
-                            if (!/^[a-zA-Z][a-zA-Z0-9]{1,100}$/.test(this.editObj.wordCode)) {
+                            if(!/^[a-zA-Z][a-zA-Z0-9]{1,100}$/.test(this.editObj.wordCode)){
                                 return this.$message.error("格式错误")
 
                             }
-                            this.editObj.wordCode = this.editObj.wordCode.toLowerCase()
+                             this.editObj.wordCode=this.editObj.wordCode.toLowerCase()
                             let info = await updateVocab(this.editObj);
                             if (info.resCode === '0') {
                                 this.$message.success('修改成功');
@@ -302,7 +307,7 @@
                 postObj.pageNum--;
                 postObj.clickMenuId = this.clickMenuId;
 
-                let info = await queryVocabList(postObj);
+                let info = await queryUnitDataList(postObj);
                 if (info.resCode === '0') {
                     this.data = {
                         total: info.total,

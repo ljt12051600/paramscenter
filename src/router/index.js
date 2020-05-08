@@ -58,7 +58,12 @@ export default new Router({
                 {
                     path: '/dic',
                     component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/dic.vue"),
-                    meta: { title: '词根' }
+                    meta: { title: '数据字典' }
+                },
+                {
+                    path: '/unitdata',
+                    component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/unitdata.vue"),
+                    meta: { title: '元数据' }
                 },
 
               

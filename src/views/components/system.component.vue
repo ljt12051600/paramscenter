@@ -6,7 +6,7 @@
                     :value="item.sysId"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item :required="required" prop="subSysId" label="系统">
+        <el-form-item :required="required" prop="subSysId" label="子系统">
             <el-select @change="changeSubSysId" style="width:200px;" v-model="query.subSysId" clearable
                 placeholder="请选择">
                 <el-option :key="index+'xx'" v-for="(item,index) in subSysList"

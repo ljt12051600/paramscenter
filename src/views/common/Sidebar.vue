@@ -1,6 +1,7 @@
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
+      
+        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#304156"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <!-- {{items}} -->
             <template :keys="index+'aa'"  v-for="(item,index) in items">
@@ -10,10 +11,11 @@
                             <i class="el-icon-lx-home"></i>
                             <span slot="title">{{ item.name }}</span>
                         </template>
-                        <template :keys="index11+'BB'" v-for="(subItem,index11) in item.children">
-                            <el-submenu v-if="subItem.children&&subItem.children.length" :index="subItem.id"
-                                :key="subItem.id">
-                                <template slot="title">{{subItem.name}}</template>
+                        <template   :keys="index11+'BB'" v-for="(subItem,index11) in item.children">
+                            <el-submenu   v-if="subItem.children&&subItem.children.length" :index="subItem.id"
+                                :key="subItem.id" >
+                              
+                                <template s slot="title"><div>....{{subItem.name}}</div>   </template>
                                 <el-menu-item :keys="i+'cc'" v-for="(threeItem,i) in subItem.children" :key="threeItem.menuUrl"
                                     :index="threeItem.menuUrl">{{ threeItem.name }}</el-menu-item>
                             </el-submenu>
@@ -87,4 +89,5 @@
     .sidebar>ul {
         height: 100%;
     }
+   
 </style>
