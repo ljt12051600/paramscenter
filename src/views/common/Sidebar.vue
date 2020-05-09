@@ -5,7 +5,7 @@
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <!-- {{items}} -->
             <template :keys="index+'aa'"  v-for="(item,index) in items">
-                <template v-if="item.children">
+                <template v-if="item.children&&item.children.length">
                     <el-submenu :index="item.id" :key="item.id">
                         <template slot="title">
                             <i class="el-icon-lx-home"></i>
@@ -15,7 +15,7 @@
                             <el-submenu   v-if="subItem.children&&subItem.children.length" :index="subItem.id"
                                 :key="subItem.id" >
                               
-                                <template s slot="title"><div>....{{subItem.name}}</div>   </template>
+                                <template slot="title"><div style="margin-left:10px">{{subItem.name}}</div>   </template>
                                 <el-menu-item :keys="i+'cc'" v-for="(threeItem,i) in subItem.children" :key="threeItem.menuUrl"
                                     :index="threeItem.menuUrl">{{ threeItem.name }}</el-menu-item>
                             </el-submenu>
@@ -89,5 +89,21 @@
     .sidebar>ul {
         height: 100%;
     }
+    
+/* .el-submenu .el-submenu__title{
+      background-color: #3370ff !important;
+      color: #fff;
+      span {
+        color: #fff !important;
+      }
+} */
+.el-submenu .el-submenu {
+    background-color: red !important;
+}
    
+   .el-submenu .el-menu-item{
+        background-color: #1F2D3D !important;
+      
+
+   }
 </style>

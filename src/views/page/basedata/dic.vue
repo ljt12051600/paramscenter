@@ -86,7 +86,7 @@
             </el-col>
         </el-row>
         <div v-if="showAdd">
-            <el-dialog title="添加词根" :visible="showAdd" width="800px" :show-close="false">
+            <el-dialog title="添加数据字典" :visible="showAdd" width="800px" :show-close="false">
                 <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="140px">
                     <system-component :required="true" :query="addObj" />
                     <el-form-item prop="dictCodeType" label="数据字典类型">
@@ -102,6 +102,14 @@
                                 :value="item.optionDesc">
                             </el-option>
                         </el-select>
+                    </el-form-item>
+                     <el-form-item label="长度">
+                        <el-input-number  :controls="false" type="number" style="width:200px;" v-model.trim="addObj.length"/>
+
+                    </el-form-item>
+                    <el-form-item label="小数">
+                        <el-input-number  :controls="false" style="width:200px;" v-model.trim="addObj.point"/>
+
                     </el-form-item>
                     <el-form-item label="词根拼接">
                         <el-select filterable style="width:200px;" v-model="wordCode" clearable placeholder="请选择">
@@ -121,13 +129,9 @@
                         <el-input  style="width:400px;" v-model.trim="addObj.dictDesc"></el-input>
 
                     </el-form-item>
-                    <el-form-item label="长度">
-                        <el-input-number  :controls="false" type="number" style="width:200px;" v-model.trim="addObj.length"/>
-
-                    </el-form-item>
-                    <el-form-item label="小数">
-                        <el-input-number  :controls="false" style="width:200px;" v-model.trim="addObj.point"/>
-
+                   
+                    <el-form-item label="备注">
+                        <el-input  style="width:400px;" v-model.trim="addObj.remark"></el-input>
                     </el-form-item>
 
                 </el-form>
@@ -155,6 +159,14 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                     <el-form-item label="长度">
+                      <el-input-number  :controls="false" style="width:200px;" v-model.trim="editObj.length"/>
+
+                    </el-form-item>
+                    <el-form-item label="小数">
+                        <el-input-number :controls="false" style="width:200px;" v-model.trim="editObj.point"/>
+
+                    </el-form-item>
                     <el-form-item label="词根拼接">
                         <el-select filterable style="width:200px;" v-model="wordCode" clearable placeholder="请选择">
                             <el-option :key="index+'c5'" v-for="(item,index) in voCabList"
@@ -173,13 +185,22 @@
                         <el-input style="width:400px;" v-model.trim="editObj.dictDesc"></el-input>
 
                     </el-form-item>
-                    <el-form-item label="长度">
-                      <el-input-number  :controls="false" style="width:200px;" v-model.trim="editObj.length"/>
-
+                   
+                    
+                     <el-form-item label="备注">
+                        <el-input  style="width:400px;" v-model.trim="editObj.remark"></el-input>
                     </el-form-item>
-                    <el-form-item label="小数">
-                        <el-input-number :controls="false" style="width:200px;" v-model.trim="editObj.point"/>
-
+                     <el-form-item label="创建人">
+                        <el-input disabled style="width:200px;" v-model.trim="editObj.createUser"></el-input>
+                    </el-form-item>
+                    <el-form-item label="创建时间">
+                        <el-input disabled style="width:200px;" v-model.trim="editObj.createTime"></el-input>
+                    </el-form-item>
+                     <el-form-item label="修改人">
+                        <el-input disabled style="width:200px;" v-model.trim="editObj.lastUpdateUser"></el-input>
+                    </el-form-item>
+                    <el-form-item label="修改时间">
+                        <el-input disabled style="width:200px;" v-model.trim="editObj.lastUpdateTime"></el-input>
                     </el-form-item>
 
                 </el-form>
@@ -333,6 +354,8 @@
                     id:item.id,
                     createTime: item.createTime,
                     createUser: item.createUser,
+                    lastUpdateTime: item.lastUpdateTime,
+                    lastUpdateUser: item.lastUpdateUser,
                     dictCode: item.dictCode,
                     dictDesc: item.dictDesc,
                     length: item.length,
@@ -343,6 +366,9 @@
                     sysId: item.sysId,
                     wordCode: item.wordCode,
                     wordDesc: item.wordDesc,
+                    wordDesc: item.createUser,
+                    wordDesc: item.createTime,
+                    remark: item.remark,
                 };
             },
             doCloseEdit(bol) {

@@ -43,6 +43,11 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "system" */ '@page/system/rolerelation.vue'),
                     meta: { title: '系统权限' }
                 },
+                {
+                    path: '/test',
+                    component: () => import(/* webpackChunkName: "system" */ '@page/system/test.vue'),
+                    meta: { title: '系统权限' }
+                },
               
            
                 {

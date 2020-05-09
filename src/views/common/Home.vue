@@ -21,7 +21,7 @@
 
     import { mapState, mapMutations } from "vuex";
     import { getSessionId, deleteKey } from "@/utils"
-    import { queryMenuListByUserFuncIdForTree } from "@/api/system"
+    import { queryMenuListByUserFuncIdForTree, queryFuncList, createTp0004 } from "@/api/system"
 
     import vHead from './Header.vue';
     import vSidebar from './Sidebar.vue';
@@ -33,6 +33,7 @@
             return {
                 tagsList: [],
                 collapse: false,
+                list: [],
                 ...mapState,
             };
         },
@@ -55,26 +56,72 @@
                 this.tagsList = arr;
             });
             this.init();
-           
+
         },
         methods: {
+            async createTp0004() {
+                if (this.list.length === 0) return window.location.reload();
+                let info = await createTp0004({ menuId: this.list[0] })
+                if (info.resCode === '0') {
+                    this.list.shift();
+                    this.createTp0004();
+
+                }
+
+
+
+            },
             async init() {
                 let data = {};
-                if( !getSessionId("username")){
-                     return this.$router.push('/login');
+                if (!getSessionId("username")) {
+                    return this.$router.push('/login');
                 }
                 let info = await queryMenuListByUserFuncIdForTree();
                 if (info.resCode === '0') {
-                   
+                    let info1 = await queryFuncList()
+                    if (info.resCode === '0') {
+                        if (info1.rows.length == info.rows.length) {
+
+                        }
+                        else {
+                            let list = [];
+                            let row1 = info1.rows;
+                            let row = info.rows;
+                            row1.forEach(item => {
+                                let num = 0
+                                row.forEach(item1 => {
+                                    if (item.menuId == item1.menuId) {
+                                        num = 1;
+                                    }
+
+                                })
+                                if (num === 0) {
+                                    list.push(item.menuId)
+                                }
+                            })
+                            this.list = list;
+                            return this.createTp0004();
+
+
+
+                        }
+                    }
+
+
+
+
+
+
+
                     data = {
                         name: getSessionId("username"),
                         items: info.rows || []
                     }
-                   
-                    if(data.items.length===0){
+
+                    if (data.items.length === 0) {
                         // this.$message.error("请添加权限后再进入系统")
                         // this.$router.push('/login');
-                      
+
                     }
                     data.items.unshift({
                         icon: 'el-icon-lx-home',
@@ -87,10 +134,10 @@
 
 
                 }
-               
+
                 let menuArr = [];
                 ; (function getMenuArr(Arr) {
-                   
+
                     if (Arr.length) {
                         Arr.forEach(item => {
                             if (item.children && item.children.length > 0) {
@@ -101,14 +148,14 @@
                         })
                     }
                 })(data.items);
-                
+
 
                 this.updateMainInfo(data);
-               
+
                 router.beforeEach((to, from, next) => {
-                    
+
                     if (to.path == "/403" || to.path == "/404" || to.path == "/login") {
-                        next(); 
+                        next();
                     }
                     else if (!menuArr.includes(to.path.substr(1))) {
                         next("/403")

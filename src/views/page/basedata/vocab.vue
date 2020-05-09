@@ -91,6 +91,9 @@
                     <el-form-item label="英文全称">
                         <el-input style="width:200px;" v-model.trim="addObj.englishDesc"></el-input>
                     </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input style="width:200px;" v-model.trim="addObj.remark"></el-input>
+                    </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="doCloseAdd(false)">取 消</el-button>
@@ -117,6 +120,9 @@
                     </el-form-item>
                     <el-form-item label="英文全称">
                         <el-input style="width:200px;" v-model.trim="editObj.englishDesc"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input style="width:200px;" v-model.trim="editObj.remark"></el-input>
                     </el-form-item>
                     <el-form-item label="创建人">
                         <el-input disabled style="width:200px;" v-model.trim="editObj.createUser"></el-input>
@@ -265,6 +271,7 @@
                     dataStand: item.dataStand,
                     englishDesc: item.englishDesc,
                     id: item.id,
+                    remark:item.remark,
 
 
 

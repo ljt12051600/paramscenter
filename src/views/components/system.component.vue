@@ -1,8 +1,8 @@
 <template>
     <div style="display:inline-block">
-        <el-form-item prop="sysId" :required="required" label="系统">
-            <el-select @change="changeSysId" style="width:200px;" v-model="query.sysId" clearable placeholder="请选择">
-                <el-option v-for="(item,index) in sysList" :key="index+'yy'" :label="item.sysId+'-'+item.sysName"
+        <el-form-item  prop="sysId" :required="required" label="系统">
+            <el-select :disabled="disabled.includes('1')" @change="changeSysId" style="width:200px;" v-model="query.sysId" clearable placeholder="请选择">
+                <el-option  v-for="(item,index) in sysList" :key="index+'yy'" :label="item.sysId+'-'+item.sysName"
                     :value="item.sysId"></el-option>
             </el-select>
         </el-form-item>
@@ -30,6 +30,11 @@
             query: {
                 type: Object
             },
+            disabled:{
+                type:String,
+                default:"",
+
+            },
             required: {
                 type: Boolean,
                 default: false,
@@ -50,6 +55,9 @@
 
         },
         methods: {
+            changeSystem1(){
+                alert(1);
+            },
             async getSysList() {
                 let info = await queryTp3003();
                 if (info.resCode === '0') {
@@ -95,10 +103,12 @@
                     this.query.subSysIdDesc = "";
 
                     this.subSysList = [];
+                  
 
 
                 }
                 else {
+                      this.$emit("changesysid",this.sysId)
                     if (!this.required) {
                         this.query.sysIdSearch = this.query.sysId;
                     }

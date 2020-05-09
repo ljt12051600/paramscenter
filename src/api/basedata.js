@@ -18,6 +18,14 @@ export const queryTp3003 = async (data) => {
        
     })
 }
+export const createTp0004 = async (data) => {//分配菜单
+    return await request({
+        url: '/menu/createTp0004',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 export const queryVocabList = async (data) => {
     return await request({
         url: '/vocab/queryVocabList',
@@ -103,6 +111,38 @@ export const queryOptionCodeNoPage = async (data) => {
 export const queryUnitDataList = async (data) => {
     return await request({
         url: '/unitData/queryUnitDataList',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const createUnitData = async (data) => {
+    return await request({
+        url: '/unitData/createUnitData',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const deleteUnitData = async (data) => {
+    return await request({
+        url: '/unitData/deleteUnitData',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryDistinctOption = async (data) => {
+    return await request({
+        url: '/optionDetail/queryDistinctOption',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+export const queryListPaging2 = async (data) => {
+    return await request({
+        url: '/dict/queryListPaging2',
         method: 'post',
         datas: data,
        

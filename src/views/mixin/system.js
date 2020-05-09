@@ -1,7 +1,8 @@
 import {
     queryTp3004,
     queryOptionCodeNoPage,
-    queryVocab
+    queryVocab,
+    queryDistinctOption,
 } from '@/api/basedata';
 
 let SYSTEM = {
@@ -28,12 +29,17 @@ let SYSTEM = {
             ],
             voCabList:[],
             voCabObj:{},
+            senseFlagList:[],
+            senseFlagObj:{},
+            disinList:[],
+            disinObj:[],
 
         }
     },
 
     mounted() {
         this.getSubSysList();
+        this.getSenseFlag();
     },
     methods: {
 
@@ -68,6 +74,21 @@ let SYSTEM = {
 
             
         },
+        async getSenseFlag() {
+            let info = await queryOptionCodeNoPage({optionCode: "sensFlag"});
+          
+            if (info.resCode === '0') {
+                this.senseFlagList=info.rows || [];
+                info.rows.forEach(item => {
+                    this.senseFlagObj[item.optionValue] = item.optionDesc
+                })
+                console.log(this.senseFlagList);
+                console.log(this.senseFlagObj)
+               
+            }
+
+            
+        },
         async getVoCabList() {
             let info = await queryVocab();
           
@@ -82,7 +103,22 @@ let SYSTEM = {
             }
 
             
-        }
+        },
+        async queryDistinctOption() {
+            let info = await queryDistinctOption();
+          
+            if (info.resCode === '0') {
+                this.disinList=info.rows || [];
+                info.rows.forEach(item => {
+                    this.disinObj[item.optionCode] = item.optionName;
+                })
+             
+               
+               
+            }
+
+            
+        },
 
     },
 
