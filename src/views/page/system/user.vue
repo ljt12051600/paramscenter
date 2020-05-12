@@ -1,49 +1,42 @@
 <template>
-    <div class="app-container">
-        <el-row :gutter="20">
+    <div>
 
-            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                <!--工具栏-->
-                <div class="head-container">
-                    <el-card>
-                        <el-form ref="form" :inline="true" label-width="80px">
-                            <el-form-item label="用户id">
-                                <el-input style="width:200px;" v-model.trim="query.userIdSearch"></el-input>
-                            </el-form-item>
-                            <el-form-item label="用户名">
-                                <el-input style="width:200px;" v-model.trim="query.userNameSearch"></el-input>
-                            </el-form-item>
-                            <el-form-item label="邮箱">
-                                <el-input style="width:200px;" v-model.trim="query.userMailSearch"></el-input>
-                            </el-form-item>
-                            <el-form-item label="电话">
-                                <el-input style="width:200px;" v-model.trim="query.userPhoneSearch"></el-input>
-                            </el-form-item>
-                            <el-form-item label="身份证号">
-                                <el-input style="width:200px;" v-model.trim="query.userIdnoSearch"></el-input>
-                            </el-form-item>
-                            <el-form-item label="性别">
-                                <el-select style="width:200px;" v-model="query.userSexSearch" clearable
-                                    placeholder="请选择">
-                                    <el-option label="男" value="1"></el-option>
-                                    <el-option label="女" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-form>
-                        <div class="header-search">
-                            <el-button @click="queryList" type="primary">查询</el-button>
-                            <el-button @click="clearSearch" type="warning">清除</el-button>
+        <system-table>
 
-                        </div>
-                    </el-card>
-                    <!-- <crudOperation show="" :permission="permission" /> -->
-                </div>
-                <div class="header-button">
-                    <el-button @click="doAdd" type="primary">添加</el-button>
-                </div>
-                <!--表单渲染-->
+            <div slot="top">
+                <el-form ref="form" :inline="true" label-width="80px">
+                    <el-form-item label="用户id">
+                        <el-input style="width:200px;" v-model.trim="query.userIdSearch"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户名">
+                        <el-input style="width:200px;" v-model.trim="query.userNameSearch"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱">
+                        <el-input style="width:200px;" v-model.trim="query.userMailSearch"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电话">
+                        <el-input style="width:200px;" v-model.trim="query.userPhoneSearch"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号">
+                        <el-input style="width:200px;" v-model.trim="query.userIdnoSearch"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                        <el-select style="width:200px;" v-model="query.userSexSearch" clearable placeholder="请选择">
+                            <el-option label="男" value="1"></el-option>
+                            <el-option label="女" value="0"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="header-search">
 
-                <!--表格渲染-->
+                <el-button @click="queryList" type="primary">查询</el-button>
+                <el-button @click="clearSearch" type="warning">清除</el-button>
+            </div>
+            <div slot="action">
+                <el-button @click="doAdd" type="primary">添加</el-button>
+            </div>
+            <div slot="body">
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
                     <el-table-column align="center" prop="userId" label="用户ID" />
@@ -74,14 +67,13 @@
                 </el-table>
 
                 <!--分页组件-->
-                 <div v-if="data.total"  class="pagination">
+                <div v-if="data.total" class="pagination">
                     <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
                         :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
                         @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
                 </div>
-
-            </el-col>
-        </el-row>
+            </div>
+        </system-table>
         <div v-if="showAdd">
             <el-dialog title="添加用户" :visible="showAdd" width="800px" :show-close="false">
                 <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="80px">
@@ -160,7 +152,12 @@
                 </div>
             </el-dialog>
         </div>
+
+
+
+
     </div>
+
 </template>
 
 <script>
@@ -259,7 +256,7 @@
                     }
                 })
 
-              
+
 
             },
             doResetPassword(item) {
@@ -284,7 +281,7 @@
                     }
                 })
 
-              
+
 
             },
             async doShowRole(item) {
@@ -312,7 +309,7 @@
                     let rows = this.checkedRole.map(item => {
                         return { userId: this.selectPeople.userId, roleId: item }
                     })
-                   
+
 
 
                     let obj = {
@@ -393,7 +390,7 @@
                 }
             },
             async getList(num) {
-           
+
                 let postObj = deleteKey(this.query);
                 postObj.pageNum--;
 

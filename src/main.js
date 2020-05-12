@@ -12,6 +12,9 @@ import './assets/css/main.css';
 import './views/common/directives';
 import 'babel-polyfill';
 import store from './store'
+import systemTable from '@views/components/table.component.vue';
+Vue.component('systemTable',systemTable)
+
 
 
 Vue.config.productionTip = false;

@@ -1,9 +1,6 @@
 <template>
     <div class="app-container">
         <el-row :gutter="20">
-            {{PERMISSON}}
-            
-           
             <el-col :span="8">
                 <el-card class="min-height">
                     <div slot="header" class="clearfix">

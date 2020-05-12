@@ -1,28 +1,25 @@
 <template>
-    <div class="app-container">
-        <el-row :gutter="20">
+    <div>
+        <system-table>
 
-            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                <!--工具栏-->
-                <div class="head-container">
-                    <el-card>
-                        <el-form ref="form" :inline="true" label-width="80px">
+            <div slot="top">
+                <el-form ref="form" :inline="true" label-width="80px">
 
-                            <el-form-item label="搜索条件">
-                                <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
-                            </el-form-item>
-                           
-                        </el-form>
-                        <div class="header-search">
-                            <el-button @click="queryList" type="primary">查询</el-button>
-                            <el-button @click="clearSearch" type="warning">清除</el-button>
-                        </div>
-                    </el-card>
-                    <!-- <crudOperation show="" :permission="permission" /> -->
-                </div>
-                <div class="header-button">
-                    <el-button @click="doAdd" type="primary">添加</el-button>
-                </div>
+                    <el-form-item label="搜索条件">
+                        <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
+                    </el-form-item>
+
+                </el-form>
+            </div>
+            <div slot="search">
+                <el-button @click="queryList" type="primary">查询</el-button>
+                <el-button @click="clearSearch" type="warning">清除</el-button>
+            </div>
+
+            <div slot="action">
+                <el-button @click="doAdd" type="primary">添加</el-button>
+            </div>
+            <div slot="body">
                 <!--表单渲染-->
 
                 <!--表格渲染-->
@@ -43,13 +40,15 @@
                 </el-table>
 
                 <!--分页组件-->
-                <div v-if="data.total"  class="pagination">
+                <div v-if="data.total" class="pagination">
                     <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
                         :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
                         @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
                 </div>
-            </el-col>
-        </el-row>
+            </div>
+
+
+        </system-table>
         <div v-if="showAdd">
             <el-dialog title="添加角色" :visible="showAdd" width="800px" :show-close="false">
                 <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="80px">
@@ -137,7 +136,7 @@
     import { deleteKey } from '@/utils';
     import roleUser from './role_user';
 
-    import { queryRoleList, deleteRole, createRole, updateRole, queryRoleMenuAll, queryMenuForTree, querySysButtonsListAll, queryMenu,saveRoleMenu} from '@/api/system';
+    import { queryRoleList, deleteRole, createRole, updateRole, queryRoleMenuAll, queryMenuForTree, querySysButtonsListAll, queryMenu, saveRoleMenu } from '@/api/system';
     export default {
         components: { roleUser },
         data() {
@@ -194,7 +193,7 @@
             }, aa(val) {
 
                 var num = 0;
-               
+
                 this.minusList.forEach((item, index) => {
                     if (item.menuId === this.selectItem.menuId) {
                         this.minusList[index].buttonList = val;
@@ -207,7 +206,7 @@
                     this.minusList.push(this.selectItem);
 
                 }
-              
+
             },
 
         },
@@ -353,7 +352,7 @@
 
                             }
                             else {
-                                return { roleId: this.roleId, menuId: item.menuId};
+                                return { roleId: this.roleId, menuId: item.menuId };
 
                             }
 
@@ -368,7 +367,7 @@
                     });
                     if (info.resCode === '0') {
                         this.$message.success('添加成功');
-                        this.showTree=false;
+                        this.showTree = false;
 
                     }
 

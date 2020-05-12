@@ -1,34 +1,22 @@
 <template>
-  <div class="app-container">
-    <el-row :gutter="20">
+  <div>
+    <system-table>
+      <div slot="top">
+        <el-form ref="form" :inline="true" label-width="80px">
+          <el-form-item label="搜索条件">
+            <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
+          </el-form-item>
 
-
-      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-        <!--工具栏-->
-        <div class="head-container">
-          <el-card>
-
-            <el-form ref="form" :inline="true" label-width="80px">
-              <el-form-item label="搜索条件">
-                <el-input style="width:200px;" v-model.trim="query.tblSearch"></el-input>
-              </el-form-item>
-
-            </el-form>
-            <div class="header-search">
-              <el-button @click="queryList" type="primary">查询</el-button>
-              <el-button @click="clearSearch" type="warning">清除</el-button>
-
-            </div>
-          </el-card>
-          <!-- <crudOperation show="" :permission="permission" /> -->
-        </div>
-        <div class="header-button">
-          <el-button @click="doAdd" type="primary">添加</el-button>
-        </div>
-        <!--表单渲染-->
-
-        <!--表格渲染-->
-      
+        </el-form>
+      </div>
+      <div slot="search">
+        <el-button @click="queryList" type="primary">查询</el-button>
+        <el-button @click="clearSearch" type="warning">清除</el-button>
+      </div>
+      <div slot="action">
+        <el-button @click="doAdd" type="primary">添加</el-button>
+      </div>
+      <div slot="body">
         <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
 
           <el-table-column align="center" type="index" label="序号" width="50" />
@@ -51,8 +39,9 @@
             @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
         </div>
 
-      </el-col>
-    </el-row>
+      </div>
+    </system-table>
+
     <div v-if="showAdd">
       <el-dialog title="添加系统按钮" :visible="showAdd" width="600px" :show-close="false">
         <el-form ref="formAdd" :model="addObj" :rules="rules" size="small" label-width="80px">
@@ -91,11 +80,13 @@
         </div>
       </el-dialog>
     </div>
+
   </div>
 </template>
 
 <script>
   import { deleteKey, deepClone } from "@/utils"
+  
   // import Sortable from "sortablejs";
   import MIXIN from "@views/mixin/button"
   import { querySysButtons, deleteSysButtons, createSysButtons, updateSysButtons, querySysButtonsListAll } from "@/api/system"
