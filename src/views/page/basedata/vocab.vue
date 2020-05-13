@@ -1,77 +1,78 @@
 <template>
-    <div class="app-container">
-        <el-row :gutter="20">
-            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                <!--工具栏-->
-                <div class="head-container">
-                    <el-card>
-                        <el-form ref="form" :inline="true" label-width="80px">
-                            <system-component :required="false" :query="query" />
+    <div>
+        <system-table>
+            <div slot="top">
+                <el-form ref="form" :inline="true" label-width="80px">
+                    <system-component :required="false" :query="query" />
 
-                            <el-form-item label="数据标准">
+                    <el-form-item label="数据标准">
 
 
-                                <el-select style="width:200px;" v-model="query.dataStand" clearable placeholder="请选择">
-                                    <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
-                                        :label="item.value+'-'+item.name" :value="item.value"></el-option>
+                        <el-select style="width:200px;" v-model="query.dataStand" clearable placeholder="请选择">
+                            <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
+                                :label="item.value+'-'+item.name" :value="item.value"></el-option>
 
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="英文词根">
-                                <el-input style="width:200px;" v-model.trim="query.wordCode"></el-input>
-                            </el-form-item>
-                            <el-form-item label="中文名称">
-                                <el-input style="width:200px;" v-model.trim="query.wordDesc"></el-input>
-                            </el-form-item>
-                            <el-form-item label="英文全称">
-                                <el-input style="width:200px;" v-model.trim="query.englishDesc"></el-input>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="英文词根">
+                        <el-input style="width:200px;" v-model.trim="query.wordCode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中文名称">
+                        <el-input style="width:200px;" v-model.trim="query.wordDesc"></el-input>
+                    </el-form-item>
+                    <el-form-item label="英文全称">
+                        <el-input style="width:200px;" v-model.trim="query.englishDesc"></el-input>
 
-                            </el-form-item>
-                        </el-form>
-                        <div class="header-search">
-                            <el-button @click="queryList" type="primary">查询</el-button>
-                            <el-button @click="clearSearch" type="warning">清除</el-button>
-                        </div>
-                    </el-card>
-                    <!-- <crudOperation show="" :permission="permission" /> -->
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="search">
+                <div class="header-search">
+                    <el-button @click="queryList" type="primary">查询</el-button>
+                    <el-button @click="clearSearch" type="warning">清除</el-button>
                 </div>
-                <el-card style="margin-top:10px">
-                    <div class="header-button">
-                        <el-button @click="doAdd" type="primary">添加</el-button>
-                    </div>
-                    <!--表单渲染-->
 
-                    <!--表格渲染-->
-                    <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
-                        <el-table-column align="center" type="index" label="序号" width="50" />
-                        <el-table-column align="center" prop="userSex" label="子系统">
-                            <template slot-scope="scope">{{subSysObj[scope.row.subSysId]}}</template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="wordCode" label="英文词根" />
-                        <el-table-column align="center" prop="wordDesc" label="中文描述" />
-                        <el-table-column align="center" prop="englishDesc" label="英文全称" />
 
-                        <el-table-column width="120" align="center" prop="userSex" label="数据标准">
-                            <template slot-scope="scope">{{dataStandObj[scope.row.dataStand]}}</template>
-                        </el-table-column>
+            </div>
+            <div slot="action">
 
-                        <el-table-column label="操作" width="280" align="center" fixed="right">
-                            <template slot-scope="scope">
-                                <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
-                                <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                <el-button @click="doAdd" type="primary">添加</el-button>
 
-                    <!--分页组件-->
-                    <div v-if="data.total" class="pagination">
-                        <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
-                            :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
-                            @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
-                    </div>
-                </el-card>
-            </el-col>
-        </el-row>
+            </div>
+
+            <!--表单渲染-->
+            <div slot="body">
+                <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
+                    <el-table-column align="center" type="index" label="序号" width="50" />
+                    <el-table-column align="center" prop="userSex" label="子系统">
+                        <template slot-scope="scope">{{subSysObj[scope.row.subSysId]}}</template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="wordCode" label="英文词根" />
+                    <el-table-column align="center" prop="wordDesc" label="中文描述" />
+                    <el-table-column align="center" prop="englishDesc" label="英文全称" />
+
+                    <el-table-column width="120" align="center" prop="userSex" label="数据标准">
+                        <template slot-scope="scope">{{dataStandObj[scope.row.dataStand]}}</template>
+                    </el-table-column>
+
+                    <el-table-column label="操作" width="280" align="center" fixed="right">
+                        <template slot-scope="scope">
+                            <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
+                            <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+
+                <!--分页组件-->
+                <div v-if="data.total" class="pagination">
+                    <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
+                        :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
+                        @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
+                </div>
+            </div>
+        </system-table>
+
         <div v-if="showAdd">
             <el-dialog title="添加词根" :visible="showAdd" width="800px" :show-close="false">
                 <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="80px">
@@ -271,7 +272,7 @@
                     dataStand: item.dataStand,
                     englishDesc: item.englishDesc,
                     id: item.id,
-                    remark:item.remark,
+                    remark: item.remark,
 
 
 

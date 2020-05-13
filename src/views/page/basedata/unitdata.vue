@@ -1,47 +1,47 @@
 <template>
-    <div class="app-container">
-        <el-row :gutter="20">
-            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                <!--工具栏-->
-                <div class="head-container">
-                    <el-card>
-                        <el-form ref="form" :inline="true" label-width="140px">
-                            <system-component :required="false" :query="query" />
+    <div>
+        <system-table>
 
-                            <el-form-item label="数据标准">
+            <!--工具栏-->
+            <div slot="top">
+                <el-form ref="form" :inline="true" label-width="140px">
+                    <system-component :required="false" :query="query" />
+
+                    <el-form-item label="数据标准">
 
 
-                                <el-select style="width:200px;" v-model="query.dataStand" clearable placeholder="请选择">
-                                    <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
-                                        :label="item.value+'-'+item.name" :value="item.value"></el-option>
+                        <el-select style="width:200px;" v-model="query.dataStand" clearable placeholder="请选择">
+                            <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
+                                :label="item.value+'-'+item.name" :value="item.value"></el-option>
 
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="数据字典">
-                                <el-input style="width:200px;" v-model.trim="query.dictCode"></el-input>
-                            </el-form-item>
-                            <el-form-item label="元数据代码">
-                                <el-input style="width:200px;" v-model.trim="query.unitDataCode"></el-input>
-                            </el-form-item>
-                            <el-form-item label="中文名称">
-                                <el-input style="width:200px;" v-model.trim="query.unitDataDesc"></el-input>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="数据字典">
+                        <el-input style="width:200px;" v-model.trim="query.dictCode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="元数据代码">
+                        <el-input style="width:200px;" v-model.trim="query.unitDataCode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中文名称">
+                        <el-input style="width:200px;" v-model.trim="query.unitDataDesc"></el-input>
 
-                            </el-form-item>
-                        </el-form>
-                        <div class="header-search">
-                            <el-button @click="queryList" type="primary">查询</el-button>
-                            <el-button @click="clearSearch" type="warning">清除</el-button>
-                        </div>
-                    </el-card>
-                    <!-- <crudOperation show="" :permission="permission" /> -->
-                </div>
-                <div class="header-button">
-                    <el-button @click="doAdd" type="primary">添加</el-button>
-                </div>
-                <!--表单渲染-->
+                    </el-form-item>
+                </el-form>
 
-                <!--表格渲染-->
 
+                <!-- <crudOperation show="" :permission="permission" /> -->
+            </div>
+            <div slot="search">
+                <el-button @click="queryList" type="primary">查询</el-button>
+                <el-button @click="clearSearch" type="warning">清除</el-button>
+            </div>
+            <div slot="action">
+                <el-button @click="doAdd" type="primary">添加</el-button>
+            </div>
+            <!--表单渲染-->
+
+            <!--表格渲染-->
+            <div slot="body">
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
                     <el-table-column align="center" prop="userSex" label="子系统">
@@ -84,8 +84,8 @@
                         :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
                         @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
                 </div>
-            </el-col>
-        </el-row>
+            </div>
+        </system-table>
         <div v-if="showAdd">
             <el-dialog title="添加元数据" :visible="showAdd" width="800px" :show-close="false">
                 <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="120px">
@@ -129,7 +129,8 @@
                         <el-select placeholder="请查询后输入" filterable remote :remote-method="remoteMethod"
                             style="width:400px;" v-model.trim="addObj.dictCode">
                             <el-option :key="index+'cc'" v-for="(item,index) in dictList"
-                            :label="item.dictCode+'-'+item.dictDesc +'--------类型:'+item.type+',长度'+item.length" :value="item.dictCode"></el-option>
+                                :label="item.dictCode+'-'+item.dictDesc +'--------类型:'+item.type+',长度'+item.length"
+                                :value="item.dictCode"></el-option>
 
                         </el-select>
                     </el-form-item>
@@ -195,7 +196,8 @@
                         <el-select placeholder="请查询后输入" filterable remote :remote-method="remoteMethod"
                             style="width:400px;" v-model.trim="editObj.dictCode">
                             <el-option :key="index+'cc'" v-for="(item,index) in dictList"
-                                :label="item.dictCode+'-'+item.dictDesc +'----类型:'+item.type+',长度'+item.length" :value="item.dictCode"></el-option>
+                                :label="item.dictCode+'-'+item.dictDesc +'----类型:'+item.type+',长度'+item.length"
+                                :value="item.dictCode"></el-option>
 
                         </el-select>
                     </el-form-item>
@@ -323,12 +325,12 @@
                     }
                 });
             },
-            changesysid(){
+            changesysid() {
                 this.addObj.dictCode = "";
                 this.addObj.unitDataCode = "";
                 this.addObj.unitDataDesc = "";
                 this.addObj.optionCode = "";
-            
+
 
             },
 

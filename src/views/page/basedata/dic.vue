@@ -1,56 +1,48 @@
 <template>
-    <div class="app-container">
-        <el-row :gutter="20">
-            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                <!--工具栏-->
-                <div class="head-container">
-                    <el-card>
-                        <el-form ref="form" :inline="true" label-width="120px">
-                            <system-component :required="false" :query="query" />
+    <div>
+        <system-table>
+            <div slot="top">
+                <el-form ref="form" :inline="true" label-width="120px">
+                    <system-component :required="false" :query="query" />
 
-                            <el-form-item label="字典代码">
-                                <el-input style="width:200px;" v-model.trim="query.dictCode"></el-input>
-                            </el-form-item>
-                            <el-form-item label="中文名称">
-                                <el-input style="width:200px;" v-model.trim="query.dictDesc"></el-input>
-                            </el-form-item>
-                            <el-form-item label="数据字典类型">
-                                <el-select style="width:200px;" v-model="query.dictCodeType" clearable
-                                    placeholder="请选择">
-                                    <el-option :key="index+'c3'" v-for="(item,index) in dicCodeList"
-                                        :label="item.optionValue+'-'+item.optionDesc" :value="item.optionValue">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="数据类型">
-                                <el-select style="width:200px;" v-model="query.type" clearable placeholder="请选择">
-                                    <el-option :key="index+'c4'" v-for="(item,index) in typeList"
-                                        :label="+item.optionDesc" :value="item.optionDesc">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="长度">
-                                <el-input style="width:200px;" v-model.trim="query.length"></el-input>
+                    <el-form-item label="字典代码">
+                        <el-input style="width:200px;" v-model.trim="query.dictCode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中文名称">
+                        <el-input style="width:200px;" v-model.trim="query.dictDesc"></el-input>
+                    </el-form-item>
+                    <el-form-item label="数据字典类型">
+                        <el-select style="width:200px;" v-model="query.dictCodeType" clearable placeholder="请选择">
+                            <el-option :key="index+'c3'" v-for="(item,index) in dicCodeList"
+                                :label="item.optionValue+'-'+item.optionDesc" :value="item.optionValue">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="数据类型">
+                        <el-select style="width:200px;" v-model="query.type" clearable placeholder="请选择">
+                            <el-option :key="index+'c4'" v-for="(item,index) in typeList" :label="+item.optionDesc"
+                                :value="item.optionDesc">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="长度">
+                        <el-input style="width:200px;" v-model.trim="query.length"></el-input>
 
-                            </el-form-item>
-                            <el-form-item label="小数">
-                                <el-input style="width:200px;" v-model.trim="query.point"></el-input>
+                    </el-form-item>
+                    <el-form-item label="小数">
+                        <el-input style="width:200px;" v-model.trim="query.point"></el-input>
 
-                            </el-form-item>
-                        </el-form>
-                        <div class="header-search">
-                            <el-button @click="queryList" type="primary">查询</el-button>
-                            <el-button @click="clearSearch" type="warning">清除</el-button>
-                        </div>
-                    </el-card>
-                    <!-- <crudOperation show="" :permission="permission" /> -->
-                </div>
-                <div class="header-button">
-                    <el-button @click="doAdd" type="primary">添加</el-button>
-                </div>
-                <!--表单渲染-->
-
-                <!--表格渲染-->
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="search">
+                <el-button @click="queryList" type="primary">查询</el-button>
+                <el-button @click="clearSearch" type="warning">清除</el-button>
+            </div>
+            <div slot="action">
+                <el-button @click="doAdd" type="primary">添加</el-button>
+            </div>
+            <div slot="body">
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
 
@@ -83,8 +75,10 @@
                         :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
                         @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
                 </div>
-            </el-col>
-        </el-row>
+            </div>
+
+
+        </system-table>
         <div v-if="showAdd">
             <el-dialog title="添加数据字典" :visible="showAdd" width="800px" :show-close="false">
                 <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="140px">
@@ -103,12 +97,13 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                     <el-form-item label="长度">
-                        <el-input-number  :controls="false" type="number" style="width:200px;" v-model.trim="addObj.length"/>
+                    <el-form-item label="长度">
+                        <el-input-number :controls="false" type="number" style="width:200px;"
+                            v-model.trim="addObj.length" />
 
                     </el-form-item>
                     <el-form-item label="小数">
-                        <el-input-number  :controls="false" style="width:200px;" v-model.trim="addObj.point"/>
+                        <el-input-number :controls="false" style="width:200px;" v-model.trim="addObj.point" />
 
                     </el-form-item>
                     <el-form-item label="词根拼接">
@@ -126,12 +121,12 @@
 
                     </el-form-item>
                     <el-form-item label="字典名称">
-                        <el-input  style="width:400px;" v-model.trim="addObj.dictDesc"></el-input>
+                        <el-input style="width:400px;" v-model.trim="addObj.dictDesc"></el-input>
 
                     </el-form-item>
-                   
+
                     <el-form-item label="备注">
-                        <el-input  style="width:400px;" v-model.trim="addObj.remark"></el-input>
+                        <el-input style="width:400px;" v-model.trim="addObj.remark"></el-input>
                     </el-form-item>
 
                 </el-form>
@@ -159,12 +154,12 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                     <el-form-item label="长度">
-                      <el-input-number  :controls="false" style="width:200px;" v-model.trim="editObj.length"/>
+                    <el-form-item label="长度">
+                        <el-input-number :controls="false" style="width:200px;" v-model.trim="editObj.length" />
 
                     </el-form-item>
                     <el-form-item label="小数">
-                        <el-input-number :controls="false" style="width:200px;" v-model.trim="editObj.point"/>
+                        <el-input-number :controls="false" style="width:200px;" v-model.trim="editObj.point" />
 
                     </el-form-item>
                     <el-form-item label="词根拼接">
@@ -175,28 +170,28 @@
                         </el-select>
                         <el-button @click="addCombin('editObj')">组合</el-button>
                     </el-form-item>
-                    <el-form-item  prop="dictCode" label="字典代码">
+                    <el-form-item prop="dictCode" label="字典代码">
                         <el-input style="width:400px;" disabled v-model.trim="editObj.dictCode"></el-input>
                         <el-button @click="deleteCombin('editObj')" type="primary" icon="el-icon-back"></el-button>
                         <el-button @click="clearCombin('editObj') " type="primary" icon="el-icon-delete"></el-button>
 
                     </el-form-item>
-                    <el-form-item  prop="dictDesc" label="字典名称">
+                    <el-form-item prop="dictDesc" label="字典名称">
                         <el-input style="width:400px;" v-model.trim="editObj.dictDesc"></el-input>
 
                     </el-form-item>
-                   
-                    
-                     <el-form-item label="备注">
-                        <el-input  style="width:400px;" v-model.trim="editObj.remark"></el-input>
+
+
+                    <el-form-item label="备注">
+                        <el-input style="width:400px;" v-model.trim="editObj.remark"></el-input>
                     </el-form-item>
-                     <el-form-item label="创建人">
+                    <el-form-item label="创建人">
                         <el-input disabled style="width:200px;" v-model.trim="editObj.createUser"></el-input>
                     </el-form-item>
                     <el-form-item label="创建时间">
                         <el-input disabled style="width:200px;" v-model.trim="editObj.createTime"></el-input>
                     </el-form-item>
-                     <el-form-item label="修改人">
+                    <el-form-item label="修改人">
                         <el-input disabled style="width:200px;" v-model.trim="editObj.lastUpdateUser"></el-input>
                     </el-form-item>
                     <el-form-item label="修改时间">
@@ -244,7 +239,7 @@
                     dataStand: "",
                 },
                 showEdit: false,
-               
+
                 editObj: {
                     createTime: "",
                     createUser: "",
@@ -351,7 +346,7 @@
                 this.wordCode = "";
                 this.showEdit = true;
                 this.editObj = {
-                    id:item.id,
+                    id: item.id,
                     createTime: item.createTime,
                     createUser: item.createUser,
                     lastUpdateTime: item.lastUpdateTime,
@@ -361,7 +356,7 @@
                     length: item.length,
                     point: item.point,
                     type: item.type,
-                    dictCodeType: item.dictCodeType+"",
+                    dictCodeType: item.dictCodeType + "",
                     subSysId: item.subSysId,
                     sysId: item.sysId,
                     wordCode: item.wordCode,
@@ -404,7 +399,7 @@
 
             },
             deleteCombin(arr) {
-               
+
                 if (this[arr].dictCode.length == 0) return;
 
                 let list = getSplitArr(this[arr].dictCode).split(",");
@@ -433,7 +428,7 @@
             },
             clearCombin(item) {
                 this.addObj.dictCode = "";
-                this.editObj.dictCode="";
+                this.editObj.dictCode = "";
                 this.addObj.dictDesc = ""
                 this.editObj.dictDesc = ""
             },
