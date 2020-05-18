@@ -37,14 +37,16 @@ let MIXIN = {
     methods: {
         getMenuNode() {
             getItem(this.items, this.$route.path.substr(1));
+            console.log(itemsss)
            
             this.clickMenuId = itemsss.menuId;
             if (itemsss.buttonPerms && itemsss.buttonPerms.length > 0) {
                 let list=itemsss.buttonPerms.split(",");
                 list.forEach(item=>{
-                    this.PERMISSON[item]=true;
+                    this.$set(this.PERMISSON,item,true)
                 })
             }
+            console.log(this.PERMISSON)
 
         },
 
@@ -55,6 +57,7 @@ let MIXIN = {
     },
     watch: {
         items(val) {
+            console.log(val);
             if (val && val.length > 0) {
 
                 this.getMenuNode();

@@ -1,5 +1,7 @@
 <template>
+    
     <div class="app-container">
+        {{PERMISSON}}
         <el-row :gutter="20">
             <el-col :span="8">
                 <el-card class="min-height">
