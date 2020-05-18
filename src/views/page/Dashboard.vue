@@ -69,7 +69,7 @@
         data() {
             return {
 
-
+                timer1:null,
 
                 opinion: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎'],
                 opinionData: [
@@ -89,7 +89,7 @@
         methods: {
             init() {
                 this.drawChart3(100)
-                setInterval( ()=> {
+                this.timer1=setInterval( ()=> {
                     let value = (Math.random() * 100).toFixed(2) - 0;
                     this.drawChart3(value);
                 }, 5000)
@@ -186,6 +186,9 @@
             this.drawChart2();
             this.init();
 
+        },
+        beforeRouteLeave (to, from, next) {
+            console.log(1)
         }
     };
 </script>
