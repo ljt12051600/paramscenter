@@ -188,7 +188,8 @@
 
         },
         beforeRouteLeave (to, from, next) {
-            console.log(1)
+            console.log(1);
+            next();
         }
     };
 </script>
