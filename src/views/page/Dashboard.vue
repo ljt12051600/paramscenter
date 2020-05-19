@@ -188,6 +188,7 @@
 
         },
         beforeRouteLeave (to, from, next) {
+            clearTimeout(this.timer1)
             console.log(1);
             next();
         }
