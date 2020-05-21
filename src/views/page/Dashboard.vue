@@ -88,11 +88,8 @@
 
         methods: {
             init() {
-                this.drawChart3(100)
-                this.timer1=setInterval( ()=> {
-                    let value = (Math.random() * 100).toFixed(2) - 0;
-                    this.drawChart3(value);
-                }, 5000)
+               
+              
                
 
             },
@@ -184,14 +181,10 @@
         , mounted() {
             this.drawChart();
             this.drawChart2();
-            this.init();
+            this.drawChart3(50);
 
         },
-        beforeRouteLeave (to, from, next) {
-            clearTimeout(this.timer1)
-            console.log(1);
-            next();
-        }
+       
     };
 </script>
 

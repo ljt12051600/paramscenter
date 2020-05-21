@@ -57,15 +57,24 @@ export let request = async ({
     let res
     let baseUrl;
     let data=deleteKey(datas);
-    data.env="env";
-    data.pjCode="klb3.0",
-    data.userId=data.userId||getSessionId();
+    if(method=="GET"){
+        params.env="env";
+        params.pjCode="klb3.0",
+        params.userId=data.userId||getSessionId();
+        
+    }
+    else{
+        data.env="env";
+        data.pjCode="klb3.0",
+        data.userId=data.userId||getSessionId();
+
+    }
 
     
     // return;
 
     try { 
-        baseUrl=process.env.NODE_ENV === 'development' ?  "/tcnp-web": process.env.VUE_APP_BASE_API+"tcnp-web"
+        baseUrl=process.env.NODE_ENV === 'development' ?  "/tcnp-web": process.env.VUE_APP_BASE_API+"/tcnp-web"
 
         res = await axios({
             url: `${baseUrl}${url}`,
