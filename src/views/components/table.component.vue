@@ -17,7 +17,6 @@
             
                     <el-card v-if="!nobody" style="margin-top:10px">
                         <div class="header-button">
-                            {{nobody}}
                             <slot name="action"></slot>
                         </div>
 
