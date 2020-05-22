@@ -36,8 +36,8 @@ export default {
     data: function() {
         return {
             param: {
-                userId: 'sunbq',
-                userPwd: '111111',
+                userId: '',
+                userPwd: '',
             },
             rules: {
                 userId: [{ required: true, message: '请输入用户名', trigger: 'blur' }],

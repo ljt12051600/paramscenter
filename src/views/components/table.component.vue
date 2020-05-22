@@ -15,8 +15,9 @@
                 </div>
             
             
-                    <el-card style="margin-top:10px">
+                    <el-card v-if="!nobody" style="margin-top:10px">
                         <div class="header-button">
+                            {{nobody}}
                             <slot name="action"></slot>
                         </div>
 
@@ -32,6 +33,22 @@
     </div>
 
 </template>
+<script>
+  
+    export default {
+        name: "roleUser",
+        props: {
+            nobody: {
+                type: Boolean,
+                default:false,
+            }
+
+        },
+    
+    
+        
+    }
+</script>
 <style>
 .header-button{
     margin-top:0
