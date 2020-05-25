@@ -134,6 +134,12 @@
 
 
                 }
+                else {
+                    window.location.href = "./#/login";
+                    setTimeout(()=>{ window.location.reload();},10000)
+                   
+                    return
+                }
 
                 let menuArr = [];
                 ; (function getMenuArr(Arr) {

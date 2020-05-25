@@ -74,7 +74,7 @@ export default {
                    
                    
                 } else {
-                    this.$message.error('请输入账号和密码');
+                    // this.$message.error('请输入账号和密码');
                   
                      clearSession();
                     return false;
