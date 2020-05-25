@@ -136,7 +136,7 @@
                 }
                 else {
                     window.location.href = "./#/login";
-                    setTimeout(()=>{ window.location.reload();},10000)
+                    setTimeout(()=>{ window.location.reload();},2000)
                    
                     return
                 }
