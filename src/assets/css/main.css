@@ -197,3 +197,4 @@ a {
     color:white;
 
 }
+.noshowtabs .el-tabs__header.is-top{display: none}
