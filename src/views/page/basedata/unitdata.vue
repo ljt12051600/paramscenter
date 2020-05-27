@@ -236,7 +236,7 @@
     import MIXIN from "@views/mixin/button"
     import SYSTEM from "@views/mixin/system"
     import systemComponent from '@views/components/system.component.vue';
-    import { queryUnitDataList, createUnitData, updateVocab, deleteUnitData, queryListPaging2 } from '@/api/basedata';
+    import { queryUnitDataList, createUnitData, updateUnitData, deleteUnitData, queryListPaging2 } from '@/api/basedata';
     export default {
         mixins: [MIXIN, SYSTEM],
         components: { systemComponent },
@@ -370,6 +370,7 @@
                 this.showEdit = true;
                 console.log(item);
                 this.editObj = {
+                    id:item.id,
 
                     dataStand: item.dataStand + "",
                     englishDesc: item.englishDesc,
@@ -399,7 +400,7 @@
 
                             }
                             this.editObj.unitDataCode = this.editObj.unitDataCode.toLowerCase()
-                            let info = await updateVocab(this.editObj);
+                            let info = await updateUnitData(this.editObj);
                             if (info.resCode === '0') {
                                 this.$message.success('修改成功');
                                 this.getList();

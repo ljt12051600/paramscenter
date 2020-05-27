@@ -132,6 +132,14 @@ export const deleteUnitData = async (data) => {
        
     })
 }
+export const updateUnitData = async (data) => {
+    return await request({
+        url: '/unitData/updateUnitData',
+        method: 'post',
+        datas: data,
+       
+    })
+}
 export const queryDistinctOption = async (data) => {
     return await request({
         url: '/optionDetail/queryDistinctOption',
