@@ -229,7 +229,7 @@
                     subSysId: "",
                     pageNum: 1,
                     numPerPage: 10,
-                    clickMenuId: this.clickMenuId,
+                   
                 },
                 wordCode: "",
                 showAdd: false,
@@ -289,7 +289,7 @@
                 };
             },
             doDelete(item) {
-                let postObj = { id: item.id, clickMenuId: this.clickMenuId };
+                let postObj = { id: item.id };
                 this.$msgbox({
                     title: '删除',
                     message: '确认删除此该数据字典吗？',
@@ -329,7 +329,7 @@
                         if (valid) {
                             console.log(this.addObj);
                             // return;
-                            this.addObj.clickMenuId = this.clickMenuId
+                           
                             let info = await createDict(this.addObj);
                             if (info.resCode === '0') {
                                 this.$message.success('添加成功');
@@ -370,7 +370,7 @@
                 if (bol) {
                     this.$refs['formEdit'].validate(async valid => {
                         if (valid) {
-                            this.editObj.clickMenuId = this.clickMenuId;
+                           
                             let info = await updateDict(this.editObj);
                             if (info.resCode === '0') {
                                 this.$message.success('修改成功');
@@ -436,7 +436,7 @@
             async getList(num) {
                 let postObj = deleteKey(this.query);
                 postObj.pageNum--;
-                postObj.clickMenuId = this.clickMenuId;
+              
 
                 let info = await queryDictList(postObj);
                 if (info.resCode === '0') {

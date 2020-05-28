@@ -185,11 +185,15 @@
 
                     </el-form-item>
                     <el-form-item label="选项代码">
+                       
 
                         <el-select filterable style="width:400px;" v-model="editObj.optionCode" clearable
                             placeholder="请选择">
-                            <el-option :key="index+'cc'" v-for="(item,index) in disinList"
+                              <el-option v-if="!item.optionGroup" :key="index+'xxxxxx'" v-for="(item,index) in disinList"
                                 :label="item.optionCode+'-'+item.optionName" :value="item.optionCode"></el-option>
+                            <el-option v-if="item.optionGroup" :key="index+'cc'" v-for="(item,index) in disinList"
+                                :label="item.optionCode+'-'+item.optionName+'-组别'+item.optionGroup" :value="item.optionCode+'&&&&'+item.optionGroup"></el-option>
+                                 
                         </el-select>
                     </el-form-item>
                     <el-form-item prop="dictCode" label="数据字典">
@@ -220,7 +224,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="doCloseEdit(false)">取 消</el-button>
-                    <el-button type="primary" @click="doCloseEdit(true)">确认添加</el-button>
+                    <el-button type="primary" @click="doCloseEdit(true)">确认修改</el-button>
                 </div>
             </el-dialog>
 
@@ -249,7 +253,7 @@
                     subSysId: "",
                     pageNum: 1,
                     numPerPage: 10,
-                    clickMenuId: this.clickMenuId,
+                   
                 },
                 unitDataCode: "",
                 statusObj: {
@@ -305,7 +309,7 @@
                 };
             },
             doDelete(item) {
-                let postObj = { id: item.id, clickMenuId: this.clickMenuId, dataStand: item.dataStand };
+                let postObj = { id: item.id, dataStand: item.dataStand };
 
                 this.$msgbox({
                     title: '删除',
@@ -352,7 +356,7 @@
                     this.$refs['formAdd'].validate(async valid => {
                         // return console.log(this.addObj)
                         if (valid) {
-                            this.addObj.clickMenuId = this.clickMenuId;
+                           
 
                             let info = await createUnitData(this.addObj);
                             if (info.resCode === '0') {
@@ -388,16 +392,27 @@
 
 
                 };
+                if(item.optionGroup){
+                    
+                    this.editObj.optionCode=this.editObj.optionCode+"&&&&"+item.optionGroup;
+                }
                 this.remoteMethod(item.dictCode)
             },
             doCloseEdit(bol) {
                 if (bol) {
                     this.$refs['formEdit'].validate(async valid => {
                         if (valid) {
-                            this.editObj.clickMenuId = this.clickMenuId;
+                           
                             if (!/^[a-zA-Z][a-zA-Z0-9]{1,100}$/.test(this.editObj.unitDataCode)) {
                                 return this.$message.error("格式错误")
 
+                            }
+                            if(this.editObj.optionCode.includes("&&&&")){//因爲後端傳的數據不規範，只能這麽處理了
+                                this.editObj.optionGroup=this.editObj.optionCode.split("&&&&")[1];
+                                this.editObj.optionCode=this.editObj.optionCode.split("&&&&")[0];
+                            }
+                            else{
+                                this.editObj.optionGroup=""
                             }
                             this.editObj.unitDataCode = this.editObj.unitDataCode.toLowerCase()
                             let info = await updateUnitData(this.editObj);
@@ -477,7 +492,7 @@
             async getList(num) {
                 let postObj = deleteKey(this.query);
                 postObj.pageNum--;
-                postObj.clickMenuId = this.clickMenuId;
+             
 
                 let info = await queryUnitDataList(postObj);
                 if (info.resCode === '0') {
