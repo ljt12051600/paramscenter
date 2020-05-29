@@ -1,5 +1,6 @@
-
-import { request } from '@/utils/request'
+import {
+    request
+} from '@/utils/request'
 
 // 系统按钮
 export const queryTp3004 = async (data) => {
@@ -7,7 +8,7 @@ export const queryTp3004 = async (data) => {
         url: '/tp3004/queryTp3004',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const queryTp3003 = async (data) => {
@@ -15,15 +16,15 @@ export const queryTp3003 = async (data) => {
         url: '/tp3003/queryTp3003',
         method: 'post',
         datas: data,
-       
+
     })
 }
-export const createTp0004 = async (data) => {//分配菜单
+export const createTp0004 = async (data) => { //分配菜单
     return await request({
         url: '/menu/createTp0004',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const queryVocabList = async (data) => {
@@ -31,7 +32,7 @@ export const queryVocabList = async (data) => {
         url: '/vocab/queryVocabList',
         method: 'post',
         datas: data,
-       
+
     })
 }
 
@@ -40,7 +41,7 @@ export const queryVocab = async (data) => {
         url: '/vocab/queryVocab',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const createVocab = async (data) => {
@@ -48,7 +49,7 @@ export const createVocab = async (data) => {
         url: '/vocab/createVocab',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const updateVocab = async (data) => {
@@ -56,7 +57,7 @@ export const updateVocab = async (data) => {
         url: '/vocab/updateVocab',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const deleteVocab = async (data) => {
@@ -64,7 +65,7 @@ export const deleteVocab = async (data) => {
         url: '/vocab/deleteVocab',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const queryDictList = async (data) => {
@@ -72,7 +73,7 @@ export const queryDictList = async (data) => {
         url: '/dict/queryDictList',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const createDict = async (data) => {
@@ -80,7 +81,7 @@ export const createDict = async (data) => {
         url: '/dict/createDict',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const deleteDict = async (data) => {
@@ -88,7 +89,7 @@ export const deleteDict = async (data) => {
         url: '/dict/deleteDict',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const updateDict = async (data) => {
@@ -96,7 +97,7 @@ export const updateDict = async (data) => {
         url: '/dict/updateDict',
         method: 'post',
         datas: data,
-       
+
     })
 }
 //數據字典類型和數據類型
@@ -105,7 +106,7 @@ export const queryOptionCodeNoPage = async (data) => {
         url: '/optionDetail/queryOptionCodeNoPage',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const queryUnitDataList = async (data) => {
@@ -113,7 +114,7 @@ export const queryUnitDataList = async (data) => {
         url: '/unitData/queryUnitDataList',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const createUnitData = async (data) => {
@@ -121,7 +122,7 @@ export const createUnitData = async (data) => {
         url: '/unitData/createUnitData',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const deleteUnitData = async (data) => {
@@ -129,7 +130,7 @@ export const deleteUnitData = async (data) => {
         url: '/unitData/deleteUnitData',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const updateUnitData = async (data) => {
@@ -137,7 +138,7 @@ export const updateUnitData = async (data) => {
         url: '/unitData/updateUnitData',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const queryDistinctOption = async (data) => {
@@ -145,7 +146,7 @@ export const queryDistinctOption = async (data) => {
         url: '/optionDetail/queryDistinctOption',
         method: 'post',
         datas: data,
-       
+
     })
 }
 export const queryListPaging2 = async (data) => {
@@ -153,6 +154,38 @@ export const queryListPaging2 = async (data) => {
         url: '/dict/queryListPaging2',
         method: 'post',
         datas: data,
-       
+
+    })
+}
+export const queryListDatagovnce = async (data) => {
+    return await request({
+        url: '/tp1012/queryTp1012List',
+        method: 'post',
+        datas: data,
+
+    })
+}
+export const createTp1012 = async (data) => {
+    return await request({
+        url: '/tp1012/createTp1012',
+        method: 'post',
+        datas: data,
+
+    })
+}
+export const updateTp1012 = async (data) => {
+    return await request({
+        url: '/tp1012/updateTp1012',
+        method: 'post',
+        datas: data,
+
+    })
+}
+export const deleteTp1012 = async (data) => {
+    return await request({
+        url: '/tp1012/deleteTp1012',
+        method: 'post',
+        datas: data,
+
     })
 }

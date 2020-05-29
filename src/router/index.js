@@ -70,6 +70,12 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/unitdata.vue"),
                     meta: { title: '元数据' }
                 },
+                {
+                    path: '/datagovnce',
+                    component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/datagovnce.vue"),
+                    meta: { title: '响应信息' }
+                },
+                
 
               
                 {
