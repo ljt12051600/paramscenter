@@ -58,13 +58,13 @@ export let request = async ({
     let baseUrl;
     let data=deleteKey(datas);
     if(method=="GET"){
-        params.env="env";
+        params.env="dev";
         params.pjCode="klb3.0",
         params.userId=data.userId||getSessionId();
         
     }
     else{
-        data.env="env";
+        data.env="dev";
         data.pjCode="klb3.0",
         data.userId=data.userId||getSessionId();
 
