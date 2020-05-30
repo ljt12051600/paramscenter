@@ -3,6 +3,7 @@ import {
     queryOptionCodeNoPage,
     queryVocab,
     queryDistinctOption,
+    queryTp3003
 } from '@/api/basedata';
 
 let SYSTEM = {
@@ -33,6 +34,8 @@ let SYSTEM = {
             senseFlagObj:{},
             disinList:[],
             disinObj:[],
+            sysList:[],
+            sysObj:{},
 
         }
     },
@@ -40,6 +43,7 @@ let SYSTEM = {
     mounted() {
         this.getSubSysList();
         this.getSenseFlag();
+        this.getSysList();
     },
     methods: {
 
@@ -50,6 +54,19 @@ let SYSTEM = {
                 info.rows.forEach(item => {
                     this.subSysObj[item.subSysId] = item.subSysName
                 })
+            }
+        },
+        async getSysList() {
+            let info = await queryTp3003();
+            if (info.resCode === '0') {
+                this.sysList = info.rows || [];
+                console.log(info.rows,"xxxxxxxxxxxxxxxxxxxx");
+                info.rows.forEach(item => {
+                    this.sysObj[item.sysId] = item.sysName;
+                });
+                console.log(this.sysObj)
+               
+
             }
         },
         async getDicList() {

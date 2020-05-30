@@ -44,7 +44,7 @@ export let request = async ({
     method = 'GET',
     datas = {},
     params = {},
-    timeout = 2000,
+    timeout = 5000,
     withCredentials = false,
     headers = {
         'Content-Type': 'application/json'
