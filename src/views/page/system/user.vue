@@ -260,7 +260,7 @@
 
             },
             doResetPassword(item) {
-                let postObj = { id: item.id };
+                let postObj = { id: item.id,userId:item.userId };
                 this.$msgbox({
                     title: "重置密码",
                     message: "确认重置该用户的密码？",
