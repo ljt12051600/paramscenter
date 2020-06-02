@@ -1,6 +1,6 @@
 合并代碼样子
 git fetch  upstream (对应源);
-git merge origin/master
+git merge upstream/master
 
 
 # 2020.6.2 
