@@ -95,22 +95,6 @@ a {
 
 /*BaseForm*/
 
-.form-box {
-    width: 600px;
-}
-
-.form-box .line {
-    text-align: center;
-}
-
-.el-time-panel__content::after,
-.el-time-panel__content::before {
-    margin-top: -7px;
-}
-
-.el-time-spinner__wrapper .el-scrollbar__wrap:not(.el-scrollbar__wrap--hidden-default) {
-    padding-bottom: 0;
-}
 
 /*Upload*/
 
@@ -159,23 +143,10 @@ a {
 
 /*VueEditor*/
 
-.ql-container {
-    min-height: 400px;
-}
-
-.ql-snow .ql-tooltip {
-    transform: translateX(117.5px) translateY(10px) !important;
-}
-
-.editor-btn {
-    margin-top: 20px;
-}
 
 /*markdown*/
 
-.v-note-wrapper .v-note-panel {
-    min-height: 500px;
-}
+
 
 .header-button {
     margin: 20px 0;

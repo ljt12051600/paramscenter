@@ -1,11 +1,40 @@
+
+
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import ElementUI from 'element-ui';
 
 
-import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
-// import './assets/css/theme-green/index.css'; // 浅绿色主题
+import 'element-ui/lib/theme-chalk/index.css';
+
+import './assets/css/main.css';
+import './assets/css/color-dark.css';
+let a,b;
+if(localStorage.getItem("color")==1){
+   a="./assets/css/theme-green/index.css";
+   b="./assets/css/theme-green/color-green.css";
+}
+try{
+    import (`${a}`) ; 
+    import (`${b}`)
+}
+catch(e){
+
+}
+
+
+
+
+// 默认主题
+
+
+
+//  
+
+// }
+
+
 import './assets/css/icon.css';
 import './assets/css/font.css';
 import './assets/css/main.css';

@@ -97,13 +97,6 @@
         color: #fff !important;
       }
 } */
-.el-submenu .el-submenu {
-    background-color: red !important;
-}
-   
-   .el-submenu .el-menu-item{
-        background-color: #1F2D3D !important;
-      
 
-   }
+ 
 </style>

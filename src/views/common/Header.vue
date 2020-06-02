@@ -37,6 +37,7 @@
                     <el-dropdown-menu slot="dropdown">
 
                         <el-dropdown-item divided command="changePassword">修改密码</el-dropdown-item>
+                        <el-dropdown-item divided command="changeColor">修改主题</el-dropdown-item>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -128,6 +129,18 @@
                  
                    window.location.href="./#/login"
                     window.location.reload();
+                }
+                 else if (command == 'changeColor') {
+                 
+                  if(localStorage.getItem("color")=="1"){
+                      localStorage.clear();
+                  }
+                  else{
+                      localStorage.setItem("color","1")
+
+                  }
+                  window.location.reload();
+                  
                 }
                 else if (command == 'changePassword') {
                     this.showPassWord = true;
