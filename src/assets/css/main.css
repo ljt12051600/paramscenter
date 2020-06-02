@@ -176,25 +176,40 @@ a {
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
 }
-.header-button{
+
+.header-button {
     margin: 20px 0;
 }
-.head-container{
-    margin-top:10px;
+
+.head-container {
+    margin-top: 10px;
 }
-.head-container .header-search{
+
+.head-container .header-search {
     text-align: right;
     padding-right: 60px;
 }
-.el-transfer-panel{
+
+.el-transfer-panel {
     height: 400px;
 }
-.app-container .el-transfer-panel__list.is-filterable{
+
+.app-container .el-transfer-panel__list.is-filterable {
     height: 300px;
 }
-.app-container .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
-    background:#47C7EA;
-    color:white;
+
+.app-container .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+    background: #47C7EA;
+    color: white;
 
 }
-.noshowtabs .el-tabs__header.is-top{display: none}
+
+.noshowtabs .el-tabs__header.is-top {
+    display: none
+}
+
+.content .el-input-number.is-without-controls .el-input__inner {
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+}
