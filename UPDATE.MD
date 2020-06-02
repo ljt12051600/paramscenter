@@ -1,3 +1,8 @@
+合并代碼样子
+git fetch  upstream (对应源);
+git merge origin/master
+
+
 # 2020.6.2 
 1.重置密码bug 
 2.定义了一个klbTop  回到顶部功能  方法，直接到每个vue文件下this.toTop()调用就可以;
