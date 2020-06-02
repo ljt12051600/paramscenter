@@ -13,7 +13,10 @@ import './views/common/directives';
 import 'babel-polyfill';
 import store from './store'
 import systemTable from '@views/components/table.component.vue';
-Vue.component('systemTable',systemTable)
+Vue.component('systemTable',systemTable);
+Vue.prototype.klbTop=function(){
+    document.querySelector(".content").scrollTop=0
+}
 
 
 
