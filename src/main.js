@@ -8,13 +8,18 @@ import ElementUI from 'element-ui';
 
 import 'element-ui/lib/theme-chalk/index.css';
 
-import './assets/css/main.css';
-import './assets/css/color-dark.css';
+
 let a,b;
 if(localStorage.getItem("color")==1){
    a="./assets/css/theme-green/index.css";
    b="./assets/css/theme-green/color-green.css";
 }
+else{
+    a="./assets/css/main.css"
+    b="./assets/css/color-dark.css"
+}
+import './assets/css/icon.css';
+import './assets/css/font.css';
 try{
     import (`${a}`) ; 
     import (`${b}`)

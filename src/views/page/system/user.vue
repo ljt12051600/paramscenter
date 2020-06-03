@@ -28,8 +28,7 @@
                     </el-form-item>
                 </el-form>
             </div>
-            <div slot="header-search">
-
+            <div slot="search">
                 <el-button @click="queryList" type="primary">查询</el-button>
                 <el-button @click="clearSearch" type="warning">清除</el-button>
             </div>
