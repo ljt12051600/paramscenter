@@ -40,7 +40,7 @@
                             <div v-if="actionType=='edit'">
                                 <el-button @click="saveEdit" size="big" class="button_style" type="primary">
                                     确认修改</el-button>
-                                <el-button @click="cancel" size="big" class="button_style" 取消</el-button> </div> <div
+                                <el-button @click="cancel" size="big" class="button_style"> 取消</el-button> </div> <div
                                     v-if="actionType=='add'">
                                     <el-button @click="saveAdd" size="big" class="button_style" type="primary">
                                         确认添加</el-button>
