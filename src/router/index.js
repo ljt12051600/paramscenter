@@ -8,20 +8,7 @@ Vue.use(Router);
 let children = [
     ...SYSTEMROUTER,
     ...BASEDATAROUTER,
-    {
-        path: '/404',
-        component: () => import( /* webpackChunkName: "404" */ '@page/404.vue'),
-        meta: {
-            title: '404'
-        }
-    },
-    {
-        path: '/403',
-        component: () => import( /* webpackChunkName: "403" */ '@page/403.vue'),
-        meta: {
-            title: '403'
-        }
-    },
+    
 
 ]
 
