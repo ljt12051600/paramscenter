@@ -2,10 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import BASEDATAROUTER from "./base/basedata";
 import SYSTEMROUTER from "./base/system";
-SYSTEMROUTER
-console.log(BASEDATAROUTER);
-
-
 Vue.use(Router);
 
 
