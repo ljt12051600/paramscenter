@@ -3,7 +3,7 @@
     <div class="app-container">
         <el-row :gutter="20">
             <el-col :span="8">
-                <el-card class="min-height">
+                 <el-card :style="contentHeight(120)">
                     <div slot="header" class="clearfix">
                         <span>菜单结构</span>
                         <el-button @click="doAdd(true)" size="big"  v-if="PERMISSON.add"
@@ -20,8 +20,8 @@
             </el-col>
 
 
-            <el-col :span="16">
-                <el-card class="min-height">
+            <el-col   :span="16">
+                <el-card :style="contentHeight(120)">
                     <div slot="header" class="clearfix">
                         <span>菜单内容</span>
                         <div style="width: 100%">

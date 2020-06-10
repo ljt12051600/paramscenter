@@ -51,6 +51,11 @@ Vue.component('systemTable',systemTable);
 Vue.prototype.klbTop=function(){
     document.querySelector(".content").scrollTop=0
 }
+Vue.prototype.contentHeight=(num=120)=>{
+    return {height:window.innerHeight-num+"px",overflow:'auto'};
+
+}
+
 
 
 
