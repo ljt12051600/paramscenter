@@ -52,7 +52,7 @@ Vue.prototype.klbTop=function(){
     document.querySelector(".content").scrollTop=0
 }
 Vue.prototype.contentHeight=(num=120)=>{
-    return {height:window.innerHeight-num+"px",overflow:'auto'};
+    return {height:window.innerHeight-num+"px",overflow:'auto',"overflow-x":"hidden"};
 
 }
 
