@@ -20,5 +20,11 @@ const BASEDATAROUTER=[
         component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/datagovnce.vue"),
         meta: { title: '响应信息' }
     },
+    {
+        path: '/option',
+        component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/option/list.vue"),
+        meta: { title: '选项代码' }
+    },
+
 ]
 export default BASEDATAROUTER

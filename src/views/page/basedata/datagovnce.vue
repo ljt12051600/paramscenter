@@ -18,9 +18,6 @@
                     <el-form-item label="响应信息：">
                         <el-input style="width:200px;" v-model.trim="query.respInfo" clearable></el-input>
                     </el-form-item>
-
-
-
                 </el-form>
             </div>
             <div slot="search">
@@ -33,11 +30,9 @@
             <div slot="body">
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
-
                     <el-table-column align="center" label="系统">
                         <template slot-scope="scope">
                             {{sysObj[scope.row.sysId]}}
-
                         </template>
                     </el-table-column>
                     <el-table-column align="center" label="子系统">
@@ -51,9 +46,6 @@
                             {{levelDic[scope.row.respLevel]}}
                         </template>
                     </el-table-column>
-
-
-
                     <el-table-column label="操作" width="280" align="center" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>

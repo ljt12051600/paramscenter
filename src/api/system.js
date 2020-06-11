@@ -283,29 +283,6 @@ export const createTp0003 = async (data) => {
        
     })
 }
-    
-
-    //    var tree = [{
-    //        id:"parent",
-    //        parentId:"",
-    //        name:"一级节点",
-    //        childs:[{
-    //            id:"child1",
-    //            parentId:"parent",
-    //            name:"一级节点",
-    //            childs:[]
-    //        },{
-    //            id:"child2",
-    //            parentId:"parent",
-    //            name:"一级节点",
-    //            childs:[]
-    //        }]
-    //    }]
-
-    //    var arr = pub.treeTransArray(tree,'childs'); 
-    //    console.log(arr);
-    //    var _tree = pub.arrayTransTree(arr,'parentId');/
-    //    console.log(_tree);
 
 
 

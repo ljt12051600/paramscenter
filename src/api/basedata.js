@@ -189,4 +189,12 @@ export const deleteTp1012 = async (data) => {
 
     })
 }
-//测试分支1
+//获取选项代码列表
+export const queryOptionDetailList=async (data)=>{
+    return await request({
+        url: '/optionDetail/queryOptionDetailList/',
+        method: 'post',
+        datas: data,
+    })
+}
+    
