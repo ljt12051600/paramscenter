@@ -2,12 +2,14 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import BASEDATAROUTER from "./base/basedata";
 import SYSTEMROUTER from "./base/system";
+import FRAMEMANAGEROUTER from './base/frameManage';
 Vue.use(Router);
 
 
 let children = [
     ...SYSTEMROUTER,
     ...BASEDATAROUTER,
+    ...FRAMEMANAGEROUTER,
 
 
 ]
