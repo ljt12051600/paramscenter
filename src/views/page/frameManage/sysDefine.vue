@@ -140,39 +140,6 @@
                 </div>
             </el-dialog>
         </div>
-
-        <div v-if="showTree">
-            <el-dialog title="分配菜单和按钮权限" :visible="showTree" width="800px" :show-close="false">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-input placeholder="输入关键字进行过滤" v-model="filterText">
-                        </el-input>
-                        <el-tree ref="tree" @node-click="nodeClick" node-key="menuId" show-checkbox accordion
-                            :filter-node-method="filterNode" highlight-current :data="treeData" />
-                    </el-col>
-                    <el-col v-if="selectItem.menuType=='L'" :span="12">
-                        <!-- <div v-for="item in buttonAll">{{item}}</div> -->
-                        <el-card>
-                            <div slot="header">
-                                按钮配置
-                            </div>
-                            <el-checkbox-group v-model="aa">
-                                <el-checkbox style="width:100px;height:30px" :label="item.buttonId" :key="item.buttonId"
-                                    v-for="(item,index) in buttonAll">{{item.buttonName}}
-                                </el-checkbox>
-                            </el-checkbox-group>
-                        </el-card>
-                    </el-col>
-                </el-row>
-                </el-tree>
-
-                <div slot="footer" class="dialog-footer">
-
-                    <el-button @click="closeTree(false)">取消</el-button>
-                    <el-button type="primary" @click="closeTree(true)">确认</el-button>
-                </div>
-            </el-dialog>
-        </div>
     </div>
 </template>
 
@@ -224,6 +191,7 @@
                 },
                 showEdit: false,
                 editObj: {
+                    id: "",
                     businessDomain: "",
                     displaySeqno: "",
                     imptntLevel: "",
@@ -311,21 +279,27 @@
                     displaySeqno: item.displaySeqno,
                     safeLevel: item.safeLevel,
                     businessDomain: item.businessDomain,
-                    displaySeqno: item.displaySeqno,
+                    sysDesc: item.sysDesc,
                     imptntLevel: item.imptntLevel,
 
                 };
             },
             doCloseEdit(bol) {
                 if (bol) {
+                    console.log("this.editObj.imptntLevel: "+this.editObj.imptntLevel);
+                    console.log("editObj: " + this.editObj)
                     this.$refs['formEdit'].validate(async valid => {
                         if (valid) {
                             let info = await updateTp3003(this.editObj);
-                            if (info.resCode === '0') {
-                                this.$message.success('修改成功');
+                            console.log("info.resCode: "+info.resCode)
+                            // if (info.resCode !== '0') {
+                            //     this.$message.success('修改成功');
+                            //     this.getList();
+                            //     this.showEdit = false;
+                            // }
+                            this.$message.success('修改成功');
                                 this.getList();
                                 this.showEdit = false;
-                            }
                         }
                     });
                 } else {
