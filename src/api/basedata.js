@@ -197,4 +197,11 @@ export const queryOptionDetailList=async (data)=>{
         datas: data,
     })
 }
+export const queryUnitDataListForSysId=async (data)=>{
+    return await request({
+        url: '/unitData/queryUnitDataListForSysId',
+        method: 'post',
+        datas: data,
+    })
+}
     

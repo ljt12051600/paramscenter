@@ -98,7 +98,7 @@
             </div>
         </system-table>
         <div v-if="showDialog">
-            <edit-component @doClose="closeAdd" :type="type" :showDialog="showDialog" :actionObj="actionObj"></edit-component>
+            <edit-component @doClose="closeAdd" :type="type" :showDialog="showDialog" :actionObj="actionObj"/>
         </div>
     </div>
 </template>
@@ -129,7 +129,10 @@ export default {
                 optionDesc: ''
             },
             showDialog: false,
-            actionObj:{},
+            actionObj:{
+                 sysId:"",
+                subSysId:"",
+            },
             type: 'add',
             data: {
                 total: 20,
@@ -174,6 +177,8 @@ export default {
             this.actionObj={
                 sysId:"",
                 subSysId:"",
+                unitDataCode:"",
+                unitDataDesc:""
             }
         },
         closeAdd(bol) {
