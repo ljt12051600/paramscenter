@@ -20,7 +20,7 @@ export const createTp3003 = async (data) => {
 // 系统定义-修改
 export const updateTp3003 = async (data) => {
     return await request({
-        url: '/tp3003/queryTp3003',
+        url: '/tp3003/updateTp3003',
         method: 'post',
         datas: data,
        
@@ -29,7 +29,7 @@ export const updateTp3003 = async (data) => {
 // 系统定义-删除
 export const deleteTp3003 = async (data) => {
     return await request({
-        url: '/tp3003/queryTp3003',
+        url: '/tp3003/deleteTp3003',
         method: 'post',
         datas: data,
        

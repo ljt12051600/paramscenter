@@ -31,7 +31,7 @@
                 <!--表格渲染-->
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
-                    <el-table-column align="center" prop="id" label="主键" v-if="show"/>
+                    <el-table-column align="center" prop="id" label="主键" v-if="showId" />
                     <el-table-column align="center" prop="sysId" label="系统标识" />
                     <el-table-column align="center" prop="sysName" label="系统名称" />
                     <el-table-column align="center" prop="displaySeqno" label="系统顺序号" />
@@ -39,7 +39,6 @@
                     <el-table-column align="center" prop="sysDesc" label="系统范围概述" />
                     <el-table-column align="center" prop="imptntLevel" label="系统重要等级" />
                     <el-table-column align="center" prop="safeLevel" label="安全保护等级" />
-
                     <el-table-column label="操作" align="center" fixed="right" width="160px">
                         <template slot-scope="scope">
                             <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
@@ -59,16 +58,16 @@
 
         </system-table>
         <div v-if="showAdd">
-            <el-dialog title="添加系统" :visible="showAdd" width="800px" :show-close="false">
-                <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="80px">
-                    <el-form-item label="系统标识" prop="roleId">
+            <el-dialog title="添加操作" :visible="showAdd" width="800px" :show-close="false">
+                <el-form ref="formAdd" :model="addObj" :rules="rules" :inline="true" label-width="130px">
+                    <el-form-item label="系统标识" prop="sysId">
                         <el-input style="width:200px;" v-model.trim="addObj.sysId"></el-input>
                     </el-form-item>
-                    <el-form-item label="系统名称" prop="roleName">
+                    <el-form-item label="系统名称" prop="sysName">
                         <el-input style="width:200px;" v-model.trim="addObj.sysName"></el-input>
                     </el-form-item>
-                    <el-form-item label="系统顺序号">
-                        <el-input style="width:200px;" v-model.trim="addObj.diaplaySeqno"></el-input>
+                    <el-form-item label="系统顺序号" prop="displaySeqno">
+                        <el-input style="width:200px;" v-model.number="addObj.displaySeqno"></el-input>
                     </el-form-item>
                     <el-form-item label="归属业务领域">
                         <el-input style="width:200px;" v-model.trim="addObj.businessDomain"></el-input>
@@ -77,10 +76,20 @@
                         <el-input style="width:200px;" v-model.trim="addObj.sysDesc"></el-input>
                     </el-form-item>
                     <el-form-item label="系统重要等级">
-                        <el-input style="width:200px;" v-model.trim="addObj.imptntLevel"></el-input>
+                        <el-select v-model="addObj.imptntLevel" filterable clearable placeholder="请选择"
+                            style="width:200px;">
+                            <el-option v-for="item in imptntLevelObj" :key="item.optionValue" :label="item.optionValue"
+                                :value="item.optionValue">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="安全保护等级">
-                        <el-input style="width:200px;" v-model.trim="addObj.safeLevel"></el-input>
+                        <el-select v-model="addObj.safeLevel" filterable clearable placeholder="请选择"
+                            style="width:200px;">
+                            <el-option v-for="item in safeLevelObj" :key="item.optionValue"
+                                :label="item.optionValue + '-' + item.optionDesc" :value="item.optionValue">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
 
@@ -91,16 +100,38 @@
             </el-dialog>
         </div>
         <div v-if="showEdit">
-            <el-dialog title="编辑角色" :visible="showEdit" width="800px" :show-close="false">
-                <el-form ref="formEdit" :model="editObj" :rules="rules" :inline="true" label-width="80px">
-                    <el-form-item label="角色id" prop="roleId">
-                        <el-input style="width:200px;" v-model.trim="editObj.roleId"></el-input>
+            <el-dialog title="修改操作" :visible="showEdit" width="800px" :show-close="false">
+                <el-form ref="formEdit" :model="editObj" :rules="rules" :inline="true" label-width="130px">
+                    <el-form-item label="系统标识" prop="sysId">
+                        <el-input style="width:200px;" v-model.trim="editObj.sysId"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色名" prop="roleName">
-                        <el-input style="width:200px;" v-model.trim="editObj.roleName"></el-input>
+                    <el-form-item label="系统名称" prop="sysName">
+                        <el-input style="width:200px;" v-model.trim="editObj.sysName"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色描述">
-                        <el-input style="width:200px;" v-model.trim="editObj.roleDesc"></el-input>
+                    <el-form-item label="系统顺序号" prop="displaySeqno">
+                        <el-input style="width:200px;" v-model.number="editObj.displaySeqno"></el-input>
+                    </el-form-item>
+                    <el-form-item label="归属业务领域">
+                        <el-input style="width:200px;" v-model.trim="editObj.businessDomain"></el-input>
+                    </el-form-item>
+                    <el-form-item label="系统范围概述">
+                        <el-input style="width:200px;" v-model.trim="editObj.sysDesc"></el-input>
+                    </el-form-item>
+                    <el-form-item label="系统重要等级">
+                        <el-select v-model="editObj.imptntLevel" filterable clearable placeholder="请选择"
+                            style="width:200px;">
+                            <el-option v-for="item in imptntLevelObj" :key="item.optionValue" :label="item.optionValue"
+                                :value="item.optionValue">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="安全保护等级">
+                        <el-select v-model="editObj.safeLevel" filterable clearable placeholder="请选择"
+                            style="width:200px;">
+                            <el-option v-for="item in safeLevelObj" :key="item.optionValue"
+                                :label="item.optionValue + '-' + item.optionDesc" :value="item.optionValue">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -109,7 +140,7 @@
                 </div>
             </el-dialog>
         </div>
-        
+
         <div v-if="showTree">
             <el-dialog title="分配菜单和按钮权限" :visible="showTree" width="800px" :show-close="false">
                 <el-row :gutter="20">
@@ -147,10 +178,13 @@
 
 <script>
     import { deleteKey } from '@/utils';
-    import { queryTp3003List, createTp3003, updateTp3003, deleteTp3003,queryOptionCodeNoPage } from '@/api/frameManage';
+    import { queryTp3003List, createTp3003, updateTp3003, deleteTp3003, queryOptionCodeNoPage } from '@/api/frameManage';
     export default {
         data() {
             return {
+                showId: false,
+                imptntLevelObj: [],
+                safeLevelObj: [],
                 query: {
                     sysId: '',
                     sysName: '',
@@ -158,22 +192,31 @@
                     pageNum: 1,
                     numPerPage: 10
                 },
-                queryImpLevel:{
+                queryImpLevel: {
                     optionCode: "imptntLevel",
                 },
-                querySafeLevel:{
+                querySafeLevel: {
                     optionCode: "safeLevel",
                 },
-                sexDic: {
-                    '1': '男',
-                    '0': '女'
+                rules: {
+                    sysId: [
+                        { required: true, message: '请输入系统标识', trigger: 'blur' }
+                    ],
+                    sysName: [
+                        { required: true, message: '请输入系统名称', trigger: 'blur' }
+                    ],
+                    displaySeqno: [
+                        { required: true, message: '请输入系统顺序号', trigger: 'blur' },
+                        { type: 'number', message: '请输入数字', trigger: 'blur' }
+                    ],
+
                 },
 
                 showAdd: false,
                 addObj: {
                     businessDomain: "",
                     displaySeqno: "",
-                    imptntLevel: "",                    
+                    imptntLevel: "",
                     safeLevel: "",
                     sysDesc: "",
                     sysId: "",
@@ -183,7 +226,7 @@
                 editObj: {
                     businessDomain: "",
                     displaySeqno: "",
-                    imptntLevel: "",                    
+                    imptntLevel: "",
                     safeLevel: "",
                     sysDesc: "",
                     sysId: "",
@@ -200,20 +243,9 @@
 
                     rows: []
                 },
-                // roleId: "",//选中的id
-                // rules: {
-                //     roleId: [{ required: true, message: '请输入角色ID', trigger: 'blur' }],
-                //     roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
-                // },
-                // treeData: [],
-                // aa: [],
-                // selectItem: {},
-                // minusList: [],
-                // filterText: "",
-                // changeList: [],
             };
         },
-       
+
         methods: {
             filterNode(value, data) {
                 if (!value) return true;
@@ -229,11 +261,10 @@
                 };
             },
             doDelete(item) {
-                let postObj = { id: item.id };
+                let postObj = { id: item.id,sysId: item.sysId };
                 this.$msgbox({
                     title: '删除',
                     message: '确认删除此系统吗？',
-
                     beforeClose: async (action, instance, done) => {
                         if (action == 'confirm') {
                             let info = await deleteTp3003(postObj);
@@ -257,6 +288,7 @@
                 if (bol) {
                     this.$refs['formAdd'].validate(async valid => {
                         if (valid) {
+                            this.addObj.displaySeqno = this.addObj.displaySeqno.toString();
                             let info = await createTp3003(this.addObj);
                             if (info.resCode === '0') {
                                 this.$message.success('添加成功');
@@ -276,7 +308,7 @@
                     id: item.id,
                     sysId: item.sysId,
                     sysName: item.sysName,
-                    displaySeqno: item.displaySeqno,                
+                    displaySeqno: item.displaySeqno,
                     safeLevel: item.safeLevel,
                     businessDomain: item.businessDomain,
                     displaySeqno: item.displaySeqno,
@@ -300,48 +332,6 @@
                     this.showEdit = false;
                 }
             },
-            // async doShowPeople(item) {
-            //     this.showPeople = true;
-            //     this.selectRole = item;
-
-            // },
-            // async doShareRole(item) {//先处理父节点删除
-            //     this.selectItem = {};
-            //     this.roleId = item.roleId;
-            //     this.minusList = [];
-            //     this.aa = [];
-            //     let info = await queryRoleMenuAll({ roleId: item.roleId });
-            //     let listSelected = [];
-            //     if (info.resCode === '0') {
-            //         this.showTree = true;
-            //         listSelected = info.rows || [];
-            //     };
-            //     let info1 = await queryMenu();
-            //     let listOne = [];
-            //     if (info1.resCode === '0') {
-            //         listOne = info1.rows || [];
-            //         for (let i = 0; i < listSelected.length; i++) {
-
-            //             for (let j = 0; j < listOne.length; j++) {
-
-            //                 if (listSelected[i].menuId === listOne[j].pId) {
-            //                     listSelected.splice(i, 1);
-            //                     i--;
-            //                     break;
-            //                 }
-            //             }
-            //         }
-            //         this.minusList = listSelected;
-            //         let arr = listSelected.map(ite => {
-            //             return ite.menuId
-            //         });
-            //         this.$refs.tree.setCheckedKeys(arr);
-            //     }
-            //     else {
-            //         return ""
-            //     };
-
-            // },
             async closeTree(bol) {
                 if (bol) {
                     let allList = this.$refs.tree.getCheckedNodes(false, true);
@@ -472,22 +462,27 @@
                 this.query.numPerPage = num;
                 this.getList(num);
             },
-            async init() {
-                let info = await queryMenuForTree();
-                if (info.resCode === '0') {
-                    this.treeData = info.rows || [];
-
+            async impLevelList() {
+                let postObj = deleteKey(this.queryImpLevel);
+                let info = await queryOptionCodeNoPage(postObj);
+                if (info.resCode === "0") {
+                    this.imptntLevelObj = info.rows
                 }
-                let info1 = await querySysButtonsListAll();
-                if (info1.resCode === '0') {
-                    this.buttonAllList = info1.rows || [];
-                };
 
-            }
+            },
+            async safeLevelList() {
+                let postObj = deleteKey(this.querySafeLevel);
+                let info = await queryOptionCodeNoPage(postObj);
+                if (info.resCode === "0") {
+                    this.safeLevelObj = info.rows
+                }
+            },
         },
         mounted() {
-            this.init()
             this.getList();
+            this.impLevelList();
+            this.safeLevelList();
+
         }
     };
 </script>
