@@ -77,6 +77,8 @@
         </system-table>
  
         <div v-if="showAction">
+            <edit-component @doClose="closeAdd" :type="type" :showAction="showAction" :actionObj="actionObj"/>
+        
             <el-dialog :title="title" :visible="showAction" width="800px" :show-close="false">
                 <el-form ref="formAction" :model="actionObj" :rules="rules" :inline="true" label-width="130px">
                     <el-form-item label="系统标识" prop="sysId">
@@ -122,11 +124,13 @@
 
 <script>
     import { deleteKey } from '@/utils';
+    import editComponent from "./edit.vue"
     import SYSTEM from '@views/mixin/system'
     import{ queryTp3003} from '@/api/basedata'
     import {queryTp3004List, createTp3004, updateTp3004, deleteTp3004, queryOptionCodeNoPage } from '@/api/frameManage';
     export default {
         mixins: [SYSTEM],
+        components: { systemComponent ,editComponent},
         data() { 
             return {
                 sys: [],

@@ -2,7 +2,7 @@
 const FRAMEMANAGEROUTER=[
     {
         path: '/sysDefine',
-        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/sysDefine.vue"),
+        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/sysDefine/list.vue"),
         meta: { title: '系统定义2.0' }
     },
     {
