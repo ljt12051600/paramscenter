@@ -110,6 +110,7 @@
                                 let info = await createTp3003(this.dialogObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
+                                    this.$emit("doClose",true)
                                 }
                                 //this.
                             }
@@ -117,13 +118,15 @@
                                 let info = await updateTp3003(this.dialogObj);
                                 console.log("info.resCode: "+info.resCode)
                                 this.$message.success('修改成功');
+                                this.$emit("doClose",true)
                             }
                             
-                            this.getList();
+                           
                           
                         }
                     });
                 } else {
+                     this.$emit("doClose",false)
                   
                 }
             },
@@ -147,7 +150,6 @@
         },
         mounted() {
             if(this.type == "add"){
-                console.log("新增！")
                 this.title = "新增操作";
             }
             if(this.type == "edit"){
