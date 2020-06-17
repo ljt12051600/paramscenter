@@ -1,62 +1,69 @@
 <template>
     <div>
         <el-dialog style="max-height：400px" :visible="showDialog">
-            <el-form ref="form" :inline="true" label-width="140px">
-                <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
+            <el-tabs>
 
-                <el-form-item required label="选项代码">
-                    <el-input :disabled="type!='add'" style="width:160px;" v-model.trim="dialogObj.optionCode">
-                    </el-input>
-                    <el-button type="primary" @click="queryUnitDataDialog" v-show="type=='add'">选择</el-button>
-                </el-form-item>
-                <el-form-item required label="选项名称">
-                    <el-input style="width:220px;" v-model.trim="dialogObj.optionName"></el-input>
-                </el-form-item>
-                <el-form-item required label="数据标准">
-                    <el-select style="width:220px;" v-model="dialogObj.dataStand" clearable placeholder="请选择">
-                        <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
-                            :label="item.value+'-'+item.name" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="备注">
-                    <el-input style="width:220px;" v-model.trim="dialogObj.optionGroup"></el-input>
-                </el-form-item>
-            </el-form>
-            <el-card>
-                <div class="base">
-                <el-button type="primary" @click="addBaseList">新增</el-button>
-                <el-table border ref="table" align="center" :data="baseList" style="width: 100%;">
+                <el-tab-pane label="基础信息">
 
-                    <el-table-column align="center" prop="optionValue" label="选项值">
-                        <template slot-scope="scope">
-                            <el-input v-model="scope.row.optionValue"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="optionDesc" label="选项描述">
-                        <template slot-scope="scope">
-                            <el-input v-model="scope.row.optionDesc"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="anotherName" label="别名">
-                        <template slot-scope="scope">
-                            <el-input v-model="scope.row.anotherName"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="anotherName" label="别名">
-                      
-                    </el-table-column>
+                    <el-form ref="form" :inline="true" label-width="140px">
+                        <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
 
+                        <el-form-item required label="选项代码">
+                            <el-input :disabled="type!='add'" style="width:160px;" v-model.trim="dialogObj.optionCode">
+                            </el-input>
+                            <el-button type="primary" @click="queryUnitDataDialog" v-show="type=='add'">选择</el-button>
+                        </el-form-item>
+                        <el-form-item required label="选项名称">
+                            <el-input style="width:220px;" v-model.trim="dialogObj.optionName"></el-input>
+                        </el-form-item>
+                        <el-form-item required label="数据标准">
+                            <el-select style="width:220px;" v-model="dialogObj.dataStand" clearable placeholder="请选择">
+                                <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
+                                    :label="item.value+'-'+item.name" :value="item.value"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="备注">
+                            <el-input style="width:220px;" v-model.trim="dialogObj.optionGroup"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <el-card>
+                        <div class="one">
+                            <el-button type="primary" @click="addBaseList">新增</el-button>
+                            <el-table readonly border ref="table" align="center" :data="baseList" style="width: 100%;">
 
-                </el-table>
-            </div>
+                                <el-table-column align="center" prop="optionValue" label="选项值">
+                                    <template slot-scope="scope">
+                                        <el-input v-model="scope.row.optionValue"></el-input>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" prop="optionDesc" label="选项描述">
+                                    <template slot-scope="scope">
+                                        <el-input v-model="scope.row.optionDesc"></el-input>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" prop="anotherName" label="别名">
+                                    <template slot-scope="scope">
+                                        <el-input v-model="scope.row.anotherName"></el-input>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
 
-            </el-card>
+                        </div>
+                        <div v-if="type=='add'||type=='edit'"" style=" color:red;font:12px">
+                            tips:1.拖动表格行可以进行排序,2.修改已经在组别的选项值，组别对应的选项值会默认删除</div>
 
+                    </el-card>
+                </el-tab-pane>
+                <el-tab-pane label="选项组别">
+                    <group-edit :groupList="groupList"/>
+                </el-tab-pane>
+            </el-tabs>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="doClose(false)">取 消</el-button>
                 <el-button type="primary" @click="doClose(true)">确认添加</el-button>
             </div>
         </el-dialog>
+
         <el-drawer :with-header="false" title="我是外面的 Drawer" :visible.sync="drawer" size="50%">
             <div style="margin-top:80px">
                 <el-form ref="form" :inline="true" label-width="140px">
@@ -74,13 +81,8 @@
                     <el-table-column align="center" type="index" label="序号" width="50" />
                     <el-table-column align="center" prop="unitDataCode" label="元数据代码" />
                     <el-table-column align="center" prop="unitDataDesc" label="元数据描述" />
-
-
-
-
                     <el-table-column label="操作" width="280" align="center" fixed="right">
                         <template slot-scope="scope">
-
                             <el-button @click="doChooseUnitDate(scope.row,scope.index)" type="primary">选择</el-button>
                         </template>
                     </el-table-column>
@@ -102,11 +104,12 @@
     import SYSTEM from '@views/mixin/system';
     import { queryUnitDataListForSysId } from '@/api/basedata';
     import Sortable from "sortablejs";
-
+    import groupEdit from "./group.vue"
+    
 
     import systemComponent from '@views/components/system.component.vue';
     export default {
-        components: { systemComponent },
+        components: { systemComponent,groupEdit},
         mixins: [SYSTEM],
         props: {
             showDialog: {
@@ -142,7 +145,8 @@
                 data: {
                     total: 0,
                     rows: []
-                }
+                },
+                groupList:[]
             };
         },
         methods: {
@@ -207,23 +211,40 @@
 
             if (this.type == 'add') {
                 this.dialogObj = deepClone(this.actionObj);
-            };
-            const tbody = document.querySelector(".base .el-table__body-wrapper tbody");
-            Sortable.create(tbody, {
-                ghostClass: 'sortable-ghost',
-                onEnd: ({ newIndex, oldIndex }) => {
-                    alert(1)
-                    let newArr = deepClone(this.baseList);
-                    const currRow = newArr.splice(oldIndex, 1)[0]
-                    newArr.splice(newIndex, 0, currRow)
-                    // 重新排序完的表格数据
-                    this.baseList= []
-                    this.$nextTick(function () {
-                        this.baseList = newArr
-                    })
+            }
+            else {
+                return
+            }
 
-                }
+            this.$nextTick( () =>{
+                const tbody = document.querySelector(".one tbody");
+
+
+
+                Sortable.create(tbody, {
+                    ghostClass: 'sortable-ghost',
+                    onEnd: ({ newIndex, oldIndex }) => {
+                        let newArr = deepClone(this.baseList);
+                        const currRow = newArr.splice(oldIndex, 1)[0]
+                        newArr.splice(newIndex, 0, currRow)
+                        // 重新排序完的表格数据
+                        this.baseList = []
+                        this.$nextTick(function () {
+                            this.baseList = newArr
+                        })
+
+                    }
+                })
+
             })
+
         }
     };
+
+
+
+
+
+
+
 </script>
