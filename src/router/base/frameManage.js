@@ -7,7 +7,7 @@ const FRAMEMANAGEROUTER=[
     },
     {
         path: '/subSysDefine',
-        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/subSysDefine.vue"),
+        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/subSysDefine/list.vue"),
         meta: { title: '子系统定义2.0' }
     },
     {

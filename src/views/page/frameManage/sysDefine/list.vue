@@ -37,8 +37,16 @@
                     <el-table-column align="center" prop="displaySeqno" label="系统顺序号" />
                     <el-table-column align="center" prop="businessDomain" label="归属业务领域" />
                     <el-table-column align="center" prop="sysDesc" label="系统范围概述" />
-                    <el-table-column align="center" prop="imptntLevel" label="系统重要等级" />
-                    <el-table-column align="center" prop="safeLevel" label="安全保护等级" />
+                    <el-table-column align="center" prop="imptntLevel" label="系统重要等级">
+                        <template slot-scope="scope">
+                            {{imptntLevelObj[scope.row.imptntLevel]}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="safeLevel" label="安全保护等级">
+                        <template slot-scope="scope">
+                            {{safeLevelObj[scope.row.safeLevel]}}
+                        </template>
+                    </el-table-column>
                     <el-table-column label="操作" align="center" fixed="right" width="160px">
                         <template slot-scope="scope">
                             <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
@@ -57,8 +65,8 @@
 
 
         </system-table>
-        <div v-if="showDialog">
-            <edit-component @doClose="doCloseEdit" :type="type" :showDialog="showDialog" :actionObj="actionObj" />
+        <div v-if="showAction">
+            <edit-component @doClose="doCloseAction" :type="type" :showAction="showAction" :actionObj="actionObj" />
 
         </div>
     </div>
@@ -67,27 +75,21 @@
 <script>
     import { deleteKey } from '@/utils'
     import editComponent from "./edit.vue"
-    import { queryTp3003List, createTp3003, updateTp3003, deleteTp3003, queryOptionCodeNoPage } from '@/api/frameManage';
+    import FRAMEMANAGE from '@views/mixin/frameManage'
+    import { queryTp3003List, createTp3003, updateTp3003, deleteTp3003 } from '@/api/frameManage';
     export default {
         components: { editComponent },
+        mixins: [FRAMEMANAGE],
         data() {
             return {
                 type: "add",
                 showId: false,
-                imptntLevelObj: [],
-                safeLevelObj: [],
                 query: {
                     sysId: '',
                     sysName: '',
                     displaySeqno: '',
                     pageNum: 1,
                     numPerPage: 10
-                },
-                queryImpLevel: {
-                    optionCode: "imptntLevel",
-                },
-                querySafeLevel: {
-                    optionCode: "safeLevel",
                 },
                 rules: {
                     sysId: [
@@ -102,7 +104,7 @@
                     ],
 
                 },
-                showDialog: false,
+                showAction: false,
                 actionObj: {
                     id: "",
                     businessDomain: "",
@@ -152,15 +154,15 @@
             },
 
             doAdd() {
-                this.showDialog = true;
+                this.showAction = true;
                 this.actionObj = {};
-                // this.type = "add";
-                // this.title = "新增操作";
+                this.type = "add";
+               // this.title = "新增操作";
             },
             doEdit(item) {
-                this.showDialog = true;
-                // this.type = "edit";
-                // this.title = "修改操作";
+                this.showAction = true;
+                this.type = "edit";
+                //this.title = "修改操作";
                 this.actionObj = {
                     id: item.id,
                     sysId: item.sysId,
@@ -173,12 +175,12 @@
 
                 };
             },
-            doCloseEdit(bol) {
+            doCloseAction(bol) {
                 if (bol) {
                     this.getList();
-                    this.showDialog = false;
+                    this.showAction = false;
                 } else {
-                    this.showDialog = false;
+                    this.showAction = false;
                 }
             },
             async getList(num) {
