@@ -80,3 +80,39 @@ export const deleteTp3004 = async (data) => {
        
     })
 }
+// 子域-查询
+export const queryTp3005List = async (data) => {
+    return await request({
+        url: '/tp3005/queryTp3005List',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+// 子域-添加
+export const createTp3005 = async (data) => {
+    return await request({
+        url: '/tp3005/createTp3005',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+// 子域-修改
+export const updateTp3005 = async (data) => {
+    return await request({
+        url: '/tp3005/updateTp3005',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+// 子域-删除
+export const deleteTp3005 = async (data) => {
+    return await request({
+        url: '/tp3005/deleteTp3005',
+        method: 'post',
+        datas: data,
+       
+    })
+}

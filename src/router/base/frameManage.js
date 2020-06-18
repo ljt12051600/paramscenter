@@ -12,7 +12,7 @@ const FRAMEMANAGEROUTER=[
     },
     {
         path: '/subdomain',
-        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/subdomain.vue"),
+        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/subdomain/list.vue"),
         meta: { title: '子域2.0' }
     },
 
