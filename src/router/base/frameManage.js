@@ -15,6 +15,11 @@ const FRAMEMANAGEROUTER=[
         component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/subdomain/list.vue"),
         meta: { title: '子域2.0' }
     },
+    {
+        path: '/tpsArOsItf',
+        component: () => import(/* webpackChunkName: "frameManage" */ "@page/frameManage/tpsArOsItf/list.vue"),
+        meta: { title: '外联系统接口2.0' }
+    },
 
 ]
 export default FRAMEMANAGEROUTER

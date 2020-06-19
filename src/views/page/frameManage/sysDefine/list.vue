@@ -66,7 +66,8 @@
 
         </system-table>
         <div v-if="showAction">
-            <edit-component @doClose="doCloseAction" :type="type" :showAction="showAction" :actionObj="actionObj" />
+            <edit-component @doClose="doCloseAction" :type="type" :showAction="showAction" :actionObj="actionObj"
+                            :title="title" :check="check" />
 
         </div>
     </div>
@@ -82,6 +83,8 @@
         mixins: [FRAMEMANAGE],
         data() {
             return {
+                title: "",
+                check: "",
                 type: "add",
                 showId: false,
                 query: {
@@ -157,12 +160,14 @@
                 this.showAction = true;
                 this.actionObj = {};
                 this.type = "add";
-               // this.title = "新增操作";
+                this.title = "新增操作";
+                this.check = "确认添加";
             },
             doEdit(item) {
                 this.showAction = true;
                 this.type = "edit";
-                //this.title = "修改操作";
+                this.title = "修改操作";
+                this.check = "确认修改";
                 this.actionObj = {
                     id: item.id,
                     sysId: item.sysId,

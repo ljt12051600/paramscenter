@@ -49,6 +49,12 @@
             showAction: {
                 type: Boolean
             },
+            title: {
+                type: String,
+            },
+            check: {
+                type: String,
+            },
 
             type: {
                 type: String,
@@ -61,8 +67,6 @@
         mixins: [FRAMEMANAGE],
         data() {
             return {
-                check: '',
-                title: '',
                 rules: {
                     sysId: [
                         { required: true, message: '请输入系统标识', trigger: 'blur' }
@@ -87,9 +91,8 @@
                                 let info = await createTp3003(this.actionObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
-                                    this.$emit("doClose",true)
+                                    this.$emit("doClose",true)//触发父组件的@doClose
                                 }
-                                //this.
                             }
                             if(this.type == "edit"){
                                 let info = await updateTp3003(this.actionObj);
@@ -106,14 +109,15 @@
             },
         },
         mounted() {
-            if(this.type == "add"){
-                this.title = "新增操作";
-                this.check = "确认添加";
-            }
-            if(this.type == "edit"){
-                this.title = "修改操作";
-                this.check = "确认修改";
-            }
+            // if(this.type == "add"){
+            //     this.title = "新增操作";
+            //     this.check = "确认添加";
+            // }
+            // if(this.type == "edit"){
+            //     this.title = "修改操作";
+            //     this.check = "确认修改";
+            // }
+            // alert(JSON.stringify(this.$parent))
         }
     };
 </script>
