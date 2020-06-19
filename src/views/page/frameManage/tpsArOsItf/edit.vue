@@ -14,15 +14,15 @@
                 <el-form-item label="目标系统" prop="itfName">
                     <select-component></select-component>
                 </el-form-item>
-                <el-table border ref="table" align="center" :data="actionObj" style="width: 100%;">
+                <el-table border ref="table" align="center" :actionObj="actionObj" style="width: 100%;">
                     <el-table-column align="center" type="displaySeqno" label="序号" width="50" />
                     <el-table-column align="center" prop="targetSubSys" label="目标系统">
                     </el-table-column>
                     <el-table-column align="center" prop="commuType" label="通讯类型">
                         <template slot-scope="scope">
                             <el-select v-model="scope.row.commuType">
-                                <el-option :key="httpCommunication" :label="HTTP" :value="httpCommunication" />
-                                <el-option :key="socketCommunication" :label="Socket" :value="socketCommunication" />
+                                <el-option key="httpCommunication" label="HTTP" value="httpCommunication" />
+                                <el-option key="socketCommunication" label="Socket" value="socketCommunication" />
                             </el-select>
                         </template>
                     </el-table-column>
@@ -71,15 +71,11 @@
         data() {
             return {
                 rules: {
-                    sysId: [
-                        { required: true, message: '请输入系统标识', trigger: 'blur' }
+                    itfCode: [
+                        { required: true, message: '请输入接口编码', trigger: 'blur' }
                     ],
-                    sysName: [
-                        { required: true, message: '请输入系统名称', trigger: 'blur' }
-                    ],
-                    displaySeqno: [
-                        { required: true, message: '请输入系统顺序号', trigger: 'blur' },
-                        { type: 'number', message: '请输入数字', trigger: 'blur' }
+                    itfName: [
+                        { required: true, message: '请输入接口名称', trigger: 'blur' }
                     ],
                 },
             };
@@ -91,14 +87,14 @@
                         if (valid) {
                             //this.actionObj.displaySeqno += "";
                             if (this.type == "add") {
-                                let info = await createTp3003(this.actionObj);
+                                let info = await createTpsArOsItf(this.actionObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
                                     this.$emit("doClose", true)//触发父组件的@doClose
                                 }
                             }
                             if (this.type == "edit") {
-                                let info = await updateTp3003(this.actionObj);
+                                let info = await updateTpsArOsItf(this.actionObj);
                                 console.log("info.resCode: " + info.resCode)
                                 this.$message.success('修改成功');
                                 this.$emit("doClose", true)
