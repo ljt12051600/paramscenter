@@ -1,9 +1,9 @@
 <template>
     <div>
-        <el-dialog style="max-height：400px" :visible="showDialog">
-            <el-tabs>
+        <el-dialog :show-close="false" style="max-height：400px" :visible="showDialog">
+            <el-tabs v-model="editableTabsValue" @tab-click="changeTab">
 
-                <el-tab-pane label="基础信息">
+                <el-tab-pane name="1" label="基础信息">
 
                     <el-form ref="form" :inline="true" label-width="140px">
                         <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
@@ -29,11 +29,15 @@
                     <el-card>
                         <div class="one">
                             <el-button type="primary" @click="addBaseList">新增</el-button>
-                            <el-table readonly border ref="table" align="center" :data="baseList" style="width: 100%;">
+                            <el-table highlight-current-row border ref="table" align="center" :data="baseList"
+                                style="width: 100%;">
+                                <el-table-column align="center" type="index" label="序号" width="50" />
 
                                 <el-table-column align="center" prop="optionValue" label="选项值">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.optionValue"></el-input>
+
+                                        <el-input @blur="checkCopy(scope.row.optionValue,scope.$index)"
+                                            v-model="scope.row.optionValue"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="optionDesc" label="选项描述">
@@ -49,13 +53,16 @@
                             </el-table>
 
                         </div>
-                        <div v-if="type=='add'||type=='edit'"" style=" color:red;font:12px">
+                        <div v-if="type=='add'||type=='edit'" style=" color:red;font:12px">
                             tips:1.拖动表格行可以进行排序,2.修改已经在组别的选项值，组别对应的选项值会默认删除</div>
 
                     </el-card>
                 </el-tab-pane>
-                <el-tab-pane label="选项组别">
-                    <group-edit :groupList="groupList"/>
+                <el-tab-pane name="2" label="选项组别">
+                    <div v-if="editableTabsValue==2">
+                        <group-edit :baseList="baseList" :groupList="groupList" />
+                    </div>
+
                 </el-tab-pane>
             </el-tabs>
             <div slot="footer" class="dialog-footer">
@@ -105,11 +112,11 @@
     import { queryUnitDataListForSysId } from '@/api/basedata';
     import Sortable from "sortablejs";
     import groupEdit from "./group.vue"
-    
+
 
     import systemComponent from '@views/components/system.component.vue';
     export default {
-        components: { systemComponent,groupEdit},
+        components: { systemComponent, groupEdit },
         mixins: [SYSTEM],
         props: {
             showDialog: {
@@ -134,6 +141,8 @@
                     unitDataCode: "",
 
                 },
+                editableTabsValue: "1",
+                title: "",
                 drawer: false,
                 query: {
                     sysId: "",
@@ -146,18 +155,58 @@
                     total: 0,
                     rows: []
                 },
-                groupList:[]
+                groupList: []
             };
         },
         methods: {
             doClose(bol) {
                 this.$emit('doClose', bol);
             },
+            changeTab() {
+
+
+                if (this.editableTabsValue === "1") return
+                if (!this.baseList.length) {
+                    this.$message.error("选项值列表不能为空")
+                    this.$nextTick(() => {
+                        this.editableTabsValue = "1"
+                    })
+                }
+                let index = this.baseList.findIndex(item => {
+                    return item.optionValue == ""
+                })
+
+                if (index > -1) {
+                    this.$message.error(`第${index + 1}选项值为空`)
+                    this.$nextTick(() => {
+                        this.editableTabsValue = "1"
+                    })
+
+                }
+            },
+            checkCopy(val, index) {
+                if (!val) {
+                    return this.$message.error("选项值不能为空")
+                };
+                let num = 0
+                this.baseList.forEach(item => {
+                    if (item.optionValue == val) {
+                        num++;
+                    }
+                });
+                if (num == 2) {
+                    this.baseList[index].optionValue = "";
+                    return this.$message.error("选项值重复请重新输入");
+
+                }
+            },
 
 
             addBaseList() {
                 this.baseList.push({
-                    id: 1,
+                    optionValue: "",
+                    optionDesc: "",
+                    anotherName: "",
                 })
             },
 
@@ -208,6 +257,7 @@
             },//获取元数据代码结束
         },
         mounted() {
+            this.changeTab(0);
 
             if (this.type == 'add') {
                 this.dialogObj = deepClone(this.actionObj);
@@ -216,7 +266,7 @@
                 return
             }
 
-            this.$nextTick( () =>{
+            this.$nextTick(() => {
                 const tbody = document.querySelector(".one tbody");
 
 
