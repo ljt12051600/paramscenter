@@ -2,7 +2,9 @@
     <div>
         <el-dialog :title="title" :visible="showAction" width="800px" :show-close="false">
             <el-form ref="formAction" :model="actionObj" :rules="rules" :inline="true" label-width="130px">
+            
                 <system-component :required="true" :query="actionObj" />
+
                 <el-form-item label="子域顺序号" prop="displaySeqno">
                     <el-input style="width:200px;" v-model.number="actionObj.displaySeqno"></el-input>
                 </el-form-item>
@@ -43,12 +45,12 @@
                 check: '',
                 title: '',
                 rules: {
-                    sysId: [
-                        { required: true, message: '请选择系统标识', trigger: 'change' }
-                    ],
-                    subSysId: [
-                        { required: true, message: '请选择子系统标识', trigger: 'change' }
-                    ],
+                    // sysId: [
+                    //     { required: true, message: '请选择系统标识', trigger: 'change' }
+                    // ],
+                    // subSysId: [
+                    //     { required: true, message: '请选择子系统标识', trigger: 'change' }
+                    // ],
                     displaySeqno: [
                         { required: true, message: '请输入子域顺序号', trigger: 'blur' },
                         { type: 'number', message: '请输入数字', trigger: 'blur' }
@@ -67,6 +69,14 @@
                 if (bol) {
                     this.$refs['formAction'].validate(async valid => {
                         if (valid) {
+                            if(!this.actionObj.sysId){
+                                this.$message.error('请选择系统');
+                                return false;
+                            }
+                            if(!this.actionObj.subSysId){
+                                this.$message.error('请选择子系统');
+                                return false;
+                            }
                             //this.actionObj.displaySeqno += "";
                             if(this.type == "add"){
                                 let info = await createTp3005(this.actionObj);

@@ -116,3 +116,39 @@ export const deleteTp3005 = async (data) => {
        
     })
 }
+// 外联系统接口-查询
+export const queryTpsArOsItfList= async (data) => {
+    return await request({
+        url: '/tpsArOsItf/queryListPaging',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+// 外联系统接口-添加
+export const createTpsArOsItf = async (data) => {
+    return await request({
+        url: '/tpsArOsItf/create',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+// 外联系统接口-修改
+export const updateTpsArOsItf = async (data) => {
+    return await request({
+        url: '/tpsArOsItf/update',
+        method: 'post',
+        datas: data,
+       
+    })
+}
+// 外联系统接口-删除
+export const deleteTpsArOsItf = async (data) => {
+    return await request({
+        url: '/tpsArOsItf/delete',
+        method: 'post',
+        datas: data,
+       
+    })
+}
