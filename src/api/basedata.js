@@ -214,4 +214,22 @@ export const queryUnitDataListForSysId=async (data)=>{
         datas: data,
     })
 }
+//数据表定义
+export const queryTable = async (data) => {
+    return await request({
+        url: '/table/queryTable',
+        method: 'post',
+        datas: data,
+
+    })
+}
+//数据表创建
+export const createTable = async (data) => {
+    return await request({
+        url: '/table/createTable',
+        method: 'post',
+        datas: data,
+
+    })
+}
     

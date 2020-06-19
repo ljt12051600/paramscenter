@@ -25,6 +25,11 @@ const BASEDATAROUTER=[
         component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/option/list.vue"),
         meta: { title: '选项代码' }
     },
+    {
+        path: '/datatable',
+        component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/table/list.vue"),
+        meta: { title: '数据表定义' }
+    },
 
 ]
 export default BASEDATAROUTER

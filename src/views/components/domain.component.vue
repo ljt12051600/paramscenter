@@ -1,5 +1,5 @@
 <template>
-    <div style="display:inline-block">
+    <span>
         <el-form-item :required="required" label="系统">
             <el-select
                 :disabled="disabled.includes('1')"
@@ -51,7 +51,7 @@
                 ></el-option>
             </el-select>
         </el-form-item>
-    </div>
+    </span>
 </template>
 
 <script>

@@ -3,7 +3,8 @@ import {
     queryOptionCodeNoPage,
     queryVocab,
     queryDistinctOption,
-    queryTp3003
+    queryTp3003,
+    queryTp3005
 } from '@/api/basedata';
 
 let SYSTEM = {
@@ -36,6 +37,8 @@ let SYSTEM = {
             disinObj:[],
             sysList:[],
             sysObj:{},
+            domainList: [],
+            domainObj: {}
 
         }
     },
@@ -44,6 +47,7 @@ let SYSTEM = {
         this.getSubSysList();
         this.getSenseFlag();
         this.getSysList();
+        this.getDomainList();
     },
     methods: {
 
@@ -67,6 +71,16 @@ let SYSTEM = {
                 console.log(this.sysObj)
                
 
+            }
+        },
+        async getDomainList() {
+            let info = await queryTp3005();
+            if (info.resCode === '0') {
+                this.domainList = info.rows || [];
+                info.rows.forEach(item => {
+                    this.domainObj[item.subDomainValue] = item.subDomainName
+                });
+                
             }
         },
         async getDicList() {
