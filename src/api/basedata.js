@@ -11,6 +11,16 @@ export const queryTp3004 = async (data) => {
 
     })
 }
+//查询子域名
+export const queryTp3005 = async (data) => {
+    return await request({
+        url: '/tp3005/queryTp3005',
+        method: 'post',
+        datas: data,
+
+    })
+}
+
 export const queryTp3003 = async (data) => {
     return await request({
         url: '/tp3003/queryTp3003',
