@@ -221,7 +221,9 @@
 
             doAdd() {
                 this.showAction = true;
-                this.actionObj = {};
+                this.actionObj = {
+                    subDomain:""
+                };
                 this.type = "add";
                 // this.title = "新增操作";
             },

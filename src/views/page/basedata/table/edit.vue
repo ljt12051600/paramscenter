@@ -24,7 +24,7 @@
                             <el-input style="width:200px;" v-model.trim="actionObj.tableNameDesc"></el-input>
                         </el-form-item>
                         <el-form-item label="版本" prop="ver">
-                            <el-input style="width:200px;" disabled v-model.triim="actionObj.ver"></el-input>
+                            <el-input style="width:200px;" disabled v-model.trim="actionObj.ver"></el-input>
                         </el-form-item>
                         <el-form-item label="清理周期" prop="clnCyc">
                             <el-select style="width:200px;" v-model="actionObj.clnCyc" clearable placeholder="请选择">
@@ -157,6 +157,7 @@
 </template>
 <script>
     import SYSTEM from '@views/mixin/system'
+     import { deleteKey,deepClone } from '@/utils'
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import systemComponent from '@views/components/domain.component.vue';
     import { createTable } from '@/api/basedata.js';
@@ -185,6 +186,10 @@
                 dialogObj: {
                     sysId: '',
                     subSysId: '',
+                },
+                dialogObj:{
+                    sysId:"",
+                    
                 },
                 rules: {
                     // sysId: [
@@ -252,6 +257,13 @@
             if (this.type == "edit") {
                 this.title = "修改操作";
                 this.check = "确认修改";
+            }
+            this.dialogObj=deepClone(this.actionObj)
+        },
+        watch:{
+            "actionObj.subDomain"(val){
+                this.dialogObj.tableName=`${this.actionObj.subSysId}_${this.actionObj.subDomain}`
+
             }
         }
     };

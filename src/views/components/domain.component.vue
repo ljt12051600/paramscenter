@@ -173,10 +173,7 @@ export default {
                 if (!this.required) {
                     this.query.subSysIdSearch = this.query.subSysId;
                 }
-                console.log(this.subSysObj);
-                console.log(this.query.subSysId);
-
-                console.log(this.subSysObj[this.query.subSysId]);
+              
                 this.query.subSysIdDesc = this.query.subSysId + '-' + this.subSysObj[this.query.subSysId].subSysName;
                 this.getDomainList(this.query.subSysId);
             }
@@ -189,6 +186,7 @@ export default {
                 }
             } else {
                 if (!this.required) {
+                   
                     this.query.subDomainSearch = this.query.subDomain;
                 }
                 this.query.subDomainDesc = this.query.subDomain + '-' + this.domainObj[this.query.subDomain].subDomainName;
