@@ -14,47 +14,23 @@
                 <el-form-item label="目标系统" prop="itfName">
                     <select-component></select-component>
                 </el-form-item>
-                
-                <div style="border:1px solid #F00; width:750px; height:200px;float:left;">
-                    <el-table border ref="table" align="center" :data="actionObj" style="width: 100%;">
-                        <el-table-column align="center" type="displaySeqno" label="序号" width="50" />
-                        <el-table-column align="center" prop="targetSubSys" label="目标系统">
-                        </el-table-column>
-                        <el-table-column align="center" prop="commuType" label="通讯类型">
-                            <template slot-scope="scope">
-                                <el-select v-model="scope.row.commuType">
-                                    <el-option :key="httpCommunication" :label="HTTP" :value="httpCommunication" />
-                                    <el-option :key="socketCommunication" :label="Socket"
-                                        :value="socketCommunication" />
-                                </el-select>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="url" label="服务器地址" />
-                        <el-table-column align="center" prop="port" label="端口" />
-                        <el-table-column align="center" prop="itfStandCode" label="接口标准编码" />
-                    </el-table>
-                </div>
+                <el-table border ref="table" align="center" :data="actionObj" style="width: 100%;">
+                    <el-table-column align="center" type="displaySeqno" label="序号" width="50" />
+                    <el-table-column align="center" prop="targetSubSys" label="目标系统">
+                    </el-table-column>
+                    <el-table-column align="center" prop="commuType" label="通讯类型">
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.commuType">
+                                <el-option :key="httpCommunication" :label="HTTP" :value="httpCommunication" />
+                                <el-option :key="socketCommunication" :label="Socket" :value="socketCommunication" />
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="url" label="服务器地址" />
+                    <el-table-column align="center" prop="port" label="端口" />
+                    <el-table-column align="center" prop="itfStandCode" label="接口标准编码" />
+                </el-table>
 
-                <div style="float:right;">
-                    <el-row>
-                        <el-button type="primary" plain>添加</el-button>
-                    </el-row>
-                    <el-row>
-                        <el-button type="primary" plain>移除</el-button>
-                    </el-row>
-                    <el-row>
-                        <el-button type="primary" plain>上移</el-button>
-                    </el-row>
-                    <el-row>
-                        <el-button type="primary" plain>下移</el-button>
-                    </el-row>
-                    <el-row>
-                        <el-button type="primary" plain>最前</el-button>
-                    </el-row>
-                    <el-row>
-                        <el-button type="primary" plain>最后</el-button>
-                    </el-row>
-                </div>
             </el-form>
             <!--操作table的6个按钮-->
 
