@@ -9,7 +9,7 @@
                         <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
 
                         <el-form-item required label="选项代码">
-                            <el-input :disabled="type!='add'" style="width:160px;" v-model.trim="dialogObj.optionCode">
+                            <el-input :disabled="type!='add'" style="width:160px" v-model.trim="dialogObj.optionCode">
                             </el-input>
                             <el-button type="primary" @click="queryUnitDataDialog" v-show="type=='add'">选择</el-button>
                         </el-form-item>
@@ -288,7 +288,16 @@
 
             })
 
-        }
+        },
+        watch: {
+            baseList(
+                val
+            ){
+               if(!groupList.length){
+                   return
+               }
+            }
+        },
     };
 
 
