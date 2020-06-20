@@ -122,7 +122,6 @@ export default {
             let info = await queryTp3005({ subSysId: id });
             if (info.resCode === '0') {
                 this.domainList = info.rows || [];
-                this.subSysObj = {};
                 info.rows.forEach(item => {
                     this.domainObj[item.subDomainValue] = item;
                 });

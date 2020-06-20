@@ -293,7 +293,7 @@
             baseList(
                 val
             ){
-               if(!groupList.length){
+               if(!this.groupList.length){
                    return
                }
             }
