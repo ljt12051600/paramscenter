@@ -6,9 +6,9 @@
         <el-tabs  @tab-click="changeTab" v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
             <el-tab-pane
               
-                v-for=" ( item, index)  in groupListNew"
+                v-for=" ( item, index)  in groupList"
                 :key="index+'cc'"
-                :label="item.optionGroup"
+                :label="item.optionDesc"
                 :name="index+''"
             >
                 <el-form ref="form" :inline="true" label-width="140px">
@@ -28,7 +28,7 @@
                     </el-form-item>
                 </el-form>
                 <el-row :gutter="20">
-                    <el-col :span="11">
+                    <el-col :span="10">
                         <el-table
                          
                             :data="item.leftchildren"
@@ -41,7 +41,7 @@
                         </el-table>
                     </el-col>
                     <el-col :span="2">123123123</el-col>
-                    <el-col :span="11">
+                    <el-col :span="10">
                         <div  :class="'table'+index">
                         <el-table :ref="'table'+index" :data="item.children" style="width: 100%;">
                             <el-table-column align="center" type="index" label="序号" width="50" />
@@ -88,7 +88,16 @@ export default {
         };
     },
     methods: {
-        addTab() {},
+        addTab() {
+            this.groupList.push(
+                 {
+                optionGroup: '',
+                optionDesc: '组别'+(this.groupList.length-1),
+                children: [],
+                leftchildren: this.baseList
+            });
+            this.editableTabsValue=this.groupList.length;
+        },
         removeTab() {},
         changeTab() {
             let index=this.editableTabsValue;
@@ -130,7 +139,6 @@ export default {
                 leftchildren: this.baseList
             }
         ];
-        this.changeTab();
     },
     watch: {}
 };

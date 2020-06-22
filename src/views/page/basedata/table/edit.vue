@@ -3,10 +3,10 @@
         <el-dialog :title="title" :visible="showAction" width="800px" :show-close="false">
             <el-tabs>
                 <el-tab-pane label="基础信息">
-                    <el-form ref="formAction" :model="actionObj" :rules="rules" :inline="true" label-width="120px">
-                        <system-component :required="true" :query="actionObj" />
+                    <el-form ref="formAction" :model="dialogObj" :rules="rules" :inline="true" label-width="120px">
+                        <system-component :required="true" :query="dialogObj" />
                         <el-form-item required label="表类型" prop="tableType">
-                            <el-select style="width:200px;" v-model="actionObj.tableType" clearable placeholder="请选择">
+                            <el-select style="width:200px;" v-model="dialogObj.tableType" clearable placeholder="请选择">
                                 <el-option label="定义类" value="0"></el-option>
                                 <el-option label="账户类" value="1"></el-option>
                                 <el-option label="明细类" value="2"></el-option>
@@ -18,16 +18,16 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item required label="表名" prop="tableName">
-                            <el-input style="width:200px;" v-model.trim="actionObj.tableName"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.tableName"></el-input>
                         </el-form-item>
                         <el-form-item required label="表中文名称" prop="tableNameDesc">
-                            <el-input style="width:200px;" v-model.trim="actionObj.tableNameDesc"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.tableNameDesc"></el-input>
                         </el-form-item>
                         <el-form-item label="版本" prop="ver">
-                            <el-input style="width:200px;" disabled v-model.triim="actionObj.ver"></el-input>
+                            <el-input style="width:200px;" disabled v-model.trim="dialogObj.ver"></el-input>
                         </el-form-item>
                         <el-form-item label="清理周期" prop="clnCyc">
-                            <el-select style="width:200px;" v-model="actionObj.clnCyc" clearable placeholder="请选择">
+                            <el-select style="width:200px;" v-model="dialogObj.clnCyc" clearable placeholder="请选择">
                                 <el-option label="不清理" value="0"></el-option>
                                 <el-option label="每日" value="1"></el-option>
                                 <el-option label="每月" value="2"></el-option>
@@ -37,7 +37,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="数据库类型" prop="dataBaseType">
-                            <el-select v-model="actionObj.dataBaseType" filterable clearable placeholder="请选择"
+                            <el-select v-model="dialogObj.dataBaseType" filterable clearable placeholder="请选择"
                                 style="width:200px;">
                                 <el-option v-for="item in dbList" :key="item.optionValue"
                                     :label="item.optionValue + '-' + item.optionDesc" :value="item.optionValue">
@@ -45,16 +45,16 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="数据描述" prop="dataDesc">
-                            <el-input style="width:200px;" v-model.trim="actionObj.dataDesc"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.dataDesc"></el-input>
                         </el-form-item>
                         <el-form-item label="处理描述" prop="processDesc">
-                            <el-input style="width:200px;" v-model.trim="actionObj.processDesc"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.processDesc"></el-input>
                         </el-form-item>
                         <el-form-item label="关联描述" prop="ascDesc">
-                            <el-input style="width:200px;" v-model.trim="actionObj.ascDesc"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.ascDesc"></el-input>
                         </el-form-item>
                         <el-form-item label="清理描述" prop="clnDesc">
-                            <el-input style="width:200px;" v-model.trim="actionObj.clnDesc"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.clnDesc"></el-input>
                         </el-form-item>
                     </el-form>
                 </el-tab-pane>
@@ -157,6 +157,7 @@
 </template>
 <script>
     import SYSTEM from '@views/mixin/system'
+     import { deleteKey,deepClone } from '@/utils'
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import systemComponent from '@views/components/domain.component.vue';
     import { createTable } from '@/api/basedata.js';
@@ -183,19 +184,49 @@
                 title: '',
                 baseList: [],
                 dialogObj: {
-                    sysId: '',
-                    subSysId: '',
+                    id: "",
+                    dataStatus: "",
+                    subDomain: "",
+                    subSysId: "",
+                    tableName: "",
+                    tableNameDesc: "",
+                    tableType: "",
+                    clnCyc: "",
+                    dataBaseName: "",
+                    dataBaseType: "",
+                    belongDb: "",
+                    syslevel: "",
+                    complexity: "",
+                    weight: "",
+                    isHotspot: "",
+                    dataDesc: "",
+                    processDesc: "",
+                    ascDesc: "",
+                    clnDesc: "",
+                    ver: "",
+                    status: "",
+                    sourceVer: "",
+                    verStatus: "",
+                    checkUser: "",
+                    taskSeqno: "",
+                    remark: "",
+                    createTime: "",
+                    createUser: "",
+                    lastUpdateTime: "",
+                    lastUpdateUser: "",
+                    sysId: "",
                 },
+
                 rules: {
-                    // sysId: [
-                    //     { required: true, message: '请选择系统', trigger: 'change' }
-                    // ],
-                    // subSysId: [
-                    //     { required: true, message: '请输入子系统标识', trigger: 'blur' }
-                    // ],
-                    // subSysName: [
-                    //     { required: true, message: '请输入子系统名称', trigger: 'blur' }
-                    // ],
+                    sysId: [
+                        { required: true, message: '请选择系统', trigger: 'change' }
+                    ],
+                    subSysId: [
+                        { required: true, message: '请输入子系统标识', trigger: 'blur' }
+                    ],
+                    subDomain: [
+                        { required: true, message: '请输入子系统名称', trigger: 'blur' }
+                    ],
                     tableType: [
                         { required: true, message: '请选择表类型', trigger: 'change' }
                     ],
@@ -217,8 +248,8 @@
                         if (valid) {
                             if (this.type == "add") {
                                 //alert("actionObj-add: " + JSON.stringify(this.actionObj))
-                                console.log(this.actionObj, 121212);
-                                let info = await createTable(this.actionObj);
+                                console.log(this.dialogObj, 121212);
+                                let info = await createTable(this.dialogObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
                                     this.$emit("doClose", true)
@@ -226,7 +257,7 @@
                             }
                             if (this.type == "edit") {
                                 //alert("actionObj-add: " + JSON.stringify(this.actionObj))
-                                let info = await updateTp3004(this.actionObj);
+                                let info = await updateTp3004(this.dialogObj);
                                 console.log("info.resCode: " + info.resCode)
                                 this.$message.success('修改成功');
                                 this.$emit("doClose", true)
@@ -253,6 +284,29 @@
                 this.title = "修改操作";
                 this.check = "确认修改";
             }
+          this.dialogObj=deepClone(this.actionObj);
+        },
+        watch:{
+            "dialogObj.subSysId"(val){
+                if(!val){
+                    this.dialogObj.subDomain = "";
+                    this.dialogObj.tableName="";
+                }
+                else{
+                    this.dialogObj.tableName=`${this.dialogObj.subSysId}_`;
+                }
+                
+            },
+            "dialogObj.subDomain"(val){
+                if(!val){
+                    this.dialogObj.tableName="";
+                }
+                else{
+                    this.dialogObj.tableName=`${this.dialogObj.subSysId}_${this.dialogObj.subDomain}_`;
+                }
+                
+            }
+            
         }
     };
 </script>

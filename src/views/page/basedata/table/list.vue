@@ -100,8 +100,8 @@
     import systemComponent from '@views/components/domain.component.vue';
     import { queryTable } from '@/api/basedata.js';
     export default {
-        components: { editComponent,systemComponent },
-        mixins: [FRAMEMANAGE,SYSTEM],
+        components: { editComponent, systemComponent },
+        mixins: [FRAMEMANAGE, SYSTEM],
         data() {
             return {
                 type: "add",
@@ -221,7 +221,39 @@
 
             doAdd() {
                 this.showAction = true;
-                this.actionObj = {};
+                this.actionObj = {
+                    id: "",
+                    dataStatus: "",
+                    subDomain: "",
+                    subSysId: "",
+                    tableName: "",
+                    tableNameDesc: "",
+                    tableType: "",
+                    clnCyc: "",
+                    dataBaseName: "",
+                    dataBaseType: "",
+                    belongDb: "",
+                    syslevel: "",
+                    complexity: "",
+                    weight: "",
+                    isHotspot: "",
+                    dataDesc: "",
+                    processDesc: "",
+                    ascDesc: "",
+                    clnDesc: "",
+                    ver: "",
+                    status: "",
+                    sourceVer: "",
+                    verStatus: "",
+                    checkUser: "",
+                    taskSeqno: "",
+                    remark: "",
+                    createTime: "",
+                    createUser: "",
+                    lastUpdateTime: "",
+                    lastUpdateUser: "",
+                    sysId: "",
+                };
                 this.type = "add";
                 // this.title = "新增操作";
             },
