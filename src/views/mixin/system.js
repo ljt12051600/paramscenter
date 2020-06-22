@@ -182,10 +182,11 @@ let SYSTEM = {
 
         },
         getSysDes(id){//获取子系统名称加子系统id  比如传acs，直接给acs-参数系统
-            return id+"-" +this.subSysObj[id]
+            return id+"-" +this.subSysObj[id].subSysName
 
-
-
+        },
+        getIdAll(id){//给子系统 回写[父亲id，子id]
+            return [this.sysObj[id].sysId,id]
 
         }
 
