@@ -29,22 +29,23 @@ let SYSTEM = {
                     value: "2"
                 },
             ],
-            voCabList:[],
-            voCabObj:{},
-            senseFlagList:[],
-            senseFlagObj:{},
-            disinList:[],
-            disinObj:[],
-            sysList:[],
-            sysObj:{},
+            voCabList: [],
+            voCabObj: {},
+            senseFlagList: [],
+            senseFlagObj: {},
+            disinList: [],
+            disinObj: [],
+            sysList: [],
+            sysObj: {},
             domainList: [],
-            domainObj: {}
+            domainObj: {},
+            sysSubSysList: [],
 
         }
     },
 
     mounted() {
-        this.getSubSysList();
+
         this.getSenseFlag();
         this.getSysList();
         this.getDomainList();
@@ -57,19 +58,18 @@ let SYSTEM = {
                 this.subSysList = info.rows || [];
                 info.rows.forEach(item => {
                     this.subSysObj[item.subSysId] = item.subSysName
-                })
+                });
+                this.getSysSubSysList()
             }
         },
         async getSysList() {
             let info = await queryTp3003();
             if (info.resCode === '0') {
                 this.sysList = info.rows || [];
-                console.log(info.rows,"xxxxxxxxxxxxxxxxxxxx");
                 info.rows.forEach(item => {
                     this.sysObj[item.sysId] = item.sysName;
                 });
-                console.log(this.sysObj)
-               
+                this.getSubSysList();
 
             }
         },
@@ -80,76 +80,114 @@ let SYSTEM = {
                 info.rows.forEach(item => {
                     this.domainObj[item.subDomainValue] = item.subDomainName
                 });
-                
+
             }
         },
         async getDicList() {
-            let info = await queryOptionCodeNoPage({optionCode: "type"});
-          
+            let info = await queryOptionCodeNoPage({
+                optionCode: "type"
+            });
+
             if (info.resCode === '0') {
-                this.typeList=info.rows || [];
+                this.typeList = info.rows || [];
             }
 
-            
+
         },
         async getDicCodeList() {
-            let info = await queryOptionCodeNoPage({optionCode: "dictCodeType"});
-          
+            let info = await queryOptionCodeNoPage({
+                optionCode: "dictCodeType"
+            });
+
             if (info.resCode === '0') {
-                this.dicCodeList=info.rows || [];
+                this.dicCodeList = info.rows || [];
                 info.rows.forEach(item => {
                     this.dicCodeObj[item.optionValue] = item.optionDesc
                 })
-               
+
             }
 
-            
+
         },
         async getSenseFlag() {
-            let info = await queryOptionCodeNoPage({optionCode: "sensFlag"});
-          
+            let info = await queryOptionCodeNoPage({
+                optionCode: "sensFlag"
+            });
+
             if (info.resCode === '0') {
-                this.senseFlagList=info.rows || [];
+                this.senseFlagList = info.rows || [];
                 info.rows.forEach(item => {
                     this.senseFlagObj[item.optionValue] = item.optionDesc
                 })
-                console.log(this.senseFlagList);
-                console.log(this.senseFlagObj)
-               
+
+
             }
 
-            
+
         },
         async getVoCabList() {
             let info = await queryVocab();
-          
+
             if (info.resCode === '0') {
-                this.voCabList=info.rows || [];
+                this.voCabList = info.rows || [];
                 info.rows.forEach(item => {
                     this.voCabObj[item.wordCode] = item.wordDesc
                 })
-             
-               
-               
+
+
+
             }
 
-            
+
         },
         async queryDistinctOption() {
             let info = await queryDistinctOption();
-          
+
             if (info.resCode === '0') {
-                this.disinList=info.rows || [];
+                this.disinList = info.rows || [];
                 info.rows.forEach(item => {
                     this.disinObj[item.optionCode] = item.optionName;
                 })
-             
-               
-               
+
+
+
             }
 
-            
+
         },
+        getSysSubSysList() { //父子系统按树结构排列
+            this.subSysObj= [];
+            let obj = {};
+            this.subSysList.forEach(item => {
+                item.label = item.subSysId + "-" + item.subSysName
+                if (!obj[item.sysId]) {
+                    obj[item.sysId] = {
+                        children: [item],
+                        name: this.sysObj[item.sysId]
+                    }
+                } else {
+                    obj[item.sysId].children.push(item)
+                }
+
+            });
+            for (var i in obj) {
+                let passObj = {
+                    value:i,
+                    label:obj[i].name + "-" + i,
+                    children:obj[i].children
+                };
+                this.subSysObj.push(passObj)
+
+            };
+
+        },
+        getSysDes(id){//获取子系统名称加子系统id  比如传acs，直接给acs-参数系统
+            return id+"-" +this.subSysObj[id]
+
+
+
+
+        }
 
     },
 
