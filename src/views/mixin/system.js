@@ -156,7 +156,7 @@ let SYSTEM = {
 
         },
         getSysSubSysList() { //父子系统按树结构排列
-            this.subSysObj= [];
+            this.sysSubSysList= [];
             let obj = {};
             this.subSysList.forEach(item => {
                 item.label = item.subSysId + "-" + item.subSysName
@@ -176,7 +176,7 @@ let SYSTEM = {
                     label:obj[i].name + "-" + i,
                     children:obj[i].children
                 };
-                this.subSysObj.push(passObj)
+                this.sysSubSysList.push(passObj)
 
             };
 
