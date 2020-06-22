@@ -171,25 +171,12 @@
                     itfCode: item.itfCode,
                     itfName: item.itfName,
                     data: item.extension,
-                    // dispSeqno: item.dispSeqno,
-                    // targetSubSys: item.targetSubSys,
-                    // targetSubSysDesc: item.targetSubSysDesc,
-                    // commuType: item.commuType,
-                    // url: item.url,
-                    // port: item.port,
-                    // itfStandCode: item.itfStandCode,
                 };
-                // alert("data: "+this.actionObj.data)
-                // alert("data: "+ JSON.stringify(this.actionObj.data))
-                // alert("actionObj: "+ JSON.stringify(this.actionObj));
-                // alert(JSON.stringify(this.subSysList))
                 this.subSysList.forEach(item=>{
                     if(item.subSysId == this.actionObj.subSysId){
                         this.actionObj.sysId = item.sysId;
                     }
                 });
-
-//alert("actionObj: "+ JSON.stringify(this.actionObj));
             },
             doCloseAction(bol) {
                 if (bol) {
