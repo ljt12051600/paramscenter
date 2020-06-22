@@ -11,9 +11,9 @@
                 <el-form-item label="接口名称" prop="itfName">
                     <el-input style="width:200px;" v-model.trim="actionObj.itfName"></el-input>
                 </el-form-item>
-                <el-form-item label="目标系统" prop="itfName">
-                    <select-component></select-component>
-                </el-form-item>
+                
+                <el-button @click="" type="primary">添加</el-button>
+                
                 <el-table border ref="table" align="center" :actionObj="actionObj" style="width: 100%;">
                     <el-table-column align="center" type="displaySeqno" label="序号" width="50" />
                     <el-table-column align="center" prop="targetSubSys" label="目标系统">
@@ -29,6 +29,12 @@
                     <el-table-column align="center" prop="url" label="服务器地址" />
                     <el-table-column align="center" prop="port" label="端口" />
                     <el-table-column align="center" prop="itfStandCode" label="接口标准编码" />
+                    <el-table-column align="center" label="操作" fixed="right" width="120px">
+                        <el-template slot-scope="scope">
+                            <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
+                            <el-button @click="dodelete(scope.row,scope.index)" type="danger">删除</el-button>
+                        </el-template>
+                    </el-table-column>
                 </el-table>
 
             </el-form>
