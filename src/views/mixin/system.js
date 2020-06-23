@@ -57,8 +57,7 @@ let SYSTEM = {
             if (info.resCode === '0') {
                 this.subSysList = info.rows || [];
                 info.rows.forEach(item => {
-                    this.subSysObj[item.subSysId] = item.subSysName;
-                  
+                    this.$set(this.subSysObj,item.subSysId,item.subSysName)
                 });
                 this.getSysSubSysList()
             }
