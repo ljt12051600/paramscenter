@@ -16,9 +16,9 @@
                 <div class="tpsEdit">
                     <el-table border highlight-current-row ref="table" align="center" :data="data" style="width: 100%;">
                         <el-table-column align="center" type="index" label="序号" width="50" />
-                        <el-table-column align="center" prop="targetSubSys" label="目标系统">
+                        <el-table-column align="center" prop="targetSubSys" width="200" label="目标系统">
                             <template slot-scope="scope">
-                                <el-cascader :show-all-levels="false" v-model="scope.row.targetSubSys" :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }"></el-cascader>
+                                <el-cascader :show-all-levels="false" v-model="scope.row.sysNewId" :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }"></el-cascader>
                             </template>
                         </el-table-column>
                         <el-table-column align="center" prop="commuType" label="通讯类型">
@@ -29,7 +29,7 @@
                                 </el-select>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="url" label="服务器地址">
+                        <el-table-column align="center" prop="url" width="300" label="服务器地址">
                             <template slot-scope="scope">
                                 <el-input v-model.trim="scope.row.url"></el-input>
                             </template>
@@ -102,7 +102,9 @@
         data() {
             return {
                 data: [],
-                dialogObj: {},
+                dialogObj: {
+                
+                },
                 rules: {
                     itfCode: [
                         { required: true, message: '请输入接口编码', trigger: 'blur' }
@@ -175,8 +177,11 @@
         mounted() {
 
             this.dialogObj = deepClone(this.actionObj);
+            
             if (this.type == 'edit') {
-                this.data = deepClone(JSON.parse(this.dialogObj.data));//把数组字符串转为数组JSON.parse()
+                this.data=this.dialogObj.data;
+                console.log(this.data)
+               
             }
             this.$nextTick(() => {
                 const tbody = document.querySelector(".tpsEdit .el-table__body-wrapper tbody");

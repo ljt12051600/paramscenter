@@ -6,6 +6,7 @@ import {
     queryTp3003,
     queryTp3005
 } from '@/api/basedata';
+import { deepClone } from '@/utils';
 
 let SYSTEM = {
     data() {
@@ -16,6 +17,7 @@ let SYSTEM = {
             dicCodeObj: {},
             typeList: [],
             subSysObj: {},
+            subSysAllObj: {},
             dataStandObj: {
                 "1": "企业级",
                 "2": "应用级"
@@ -37,6 +39,7 @@ let SYSTEM = {
             disinObj: [],
             sysList: [],
             sysObj: {},
+            sysAllObj: {},
             domainList: [],
             domainObj: {},
             sysSubSysList: [],
@@ -53,22 +56,27 @@ let SYSTEM = {
     methods: {
 
         async getSubSysList() {
+            if(this.subSysList.length)return;
             let info = await queryTp3004();
             if (info.resCode === '0') {
                 this.subSysList = info.rows || [];
                 info.rows.forEach(item => {
-                    this.$set(this.subSysObj,item.subSysId,item.subSysName)
+                    this.$set(this.subSysObj, item.subSysId, item.subSysName);
+                    this.$set(this.subSysAllObj, item.subSysId, item);
                 });
+              
                 this.getSysSubSysList()
             }
-           
+
         },
         async getSysList() {
+            if(this.sysList.length)return;
             let info = await queryTp3003();
             if (info.resCode === '0') {
                 this.sysList = info.rows || [];
                 info.rows.forEach(item => {
                     this.sysObj[item.sysId] = item.sysName;
+                    this.$set(this.sysAllObj, item.sysId, item)
                 });
                 this.getSubSysList();
 
@@ -157,11 +165,11 @@ let SYSTEM = {
 
         },
         getSysSubSysList() { //父子系统按树结构排列
-            this.sysSubSysList= [];
+            this.sysSubSysList = [];
             let obj = {};
             this.subSysList.forEach(item => {
                 item.label = item.subSysId + "-" + item.subSysName;
-                item.value=item.subSysId;
+                item.value = item.subSysId;
                 if (!obj[item.sysId]) {
                     obj[item.sysId] = {
                         children: [item],
@@ -174,21 +182,24 @@ let SYSTEM = {
             });
             for (var i in obj) {
                 let passObj = {
-                    value:i,
-                    label:i+ "-" + obj[i].name ,
-                    children:obj[i].children
+                    value: i,
+                    label: i + "-" + obj[i].name,
+                    children: obj[i].children
                 };
                 this.sysSubSysList.push(passObj)
 
             };
 
         },
-        getSysDes(id){//获取子系统名称加子系统id  比如传acs，直接给acs-参数系统
-            return id+"-" +this.subSysObj[id].subSysName
+        getSysDes(id) { //获取子系统名称加子系统id  比如传acs，直接给acs-参数系统
+            return id + "-" + this.subSysObj[id].subSysName
 
         },
-        getIdAll(id){//给子系统 回写[父亲id，子id]
-            return [this.sysObj[id].sysId,id]
+        getIdAll(id) { //给子系统 回写[父亲id，子id]
+            let obj=deepClone(this.subSysAllObj);
+            return [obj[id].sysId, id]
+         
+
 
         }
 

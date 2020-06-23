@@ -152,17 +152,23 @@
                     sysIdDesc: "",
                     subSysId: "",
                     subSysIdDesc: "",
+                    data:[],
                 };
                 this.type = "add";
                 this.title = "新增操作";
                 this.check = "确认添加";
             },
-            doEdit(item) {
-                //console.log(JSON.stringify(this.sysSubSysList));
-                this.showAction = true;
+            doEdit(item) {  
                 this.type = "edit";
                 this.title = "修改操作";
                 this.check = "确认修改";
+                let list=JSON.parse( item.extension);
+                list.forEach(ite=>{
+                    ite.sysNewId=this.getIdAll(ite.targetSubSys)
+                    
+                });
+               
+               
                 this.actionObj = {
                     id: item.id,
                     sysId: item.sysId,
@@ -171,13 +177,14 @@
                     subSysIdDesc: item.subSysIdDesc,
                     itfCode: item.itfCode,
                     itfName: item.itfName,
-                    data: item.extension,
+                    data: list,
                 };
                 this.subSysList.forEach(item=>{
                     if(item.subSysId == this.actionObj.subSysId){
                         this.actionObj.sysId = item.sysId;
                     }
                 });
+                  this.showAction = true;
             },
             doCloseAction(bol) {
                 if (bol) {
