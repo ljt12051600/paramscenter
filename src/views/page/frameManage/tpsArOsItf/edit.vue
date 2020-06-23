@@ -18,7 +18,7 @@
                         <el-table-column align="center" type="index" label="序号" width="50" />
                         <el-table-column align="center" prop="targetSubSys" label="目标系统">
                             <template slot-scope="scope">
-                                <el-cascader :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }" :show-all-levels="false"></el-cascader>
+                                <el-cascader :show-all-levels="false" v-model="scope.row.targetSubSys" :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }"></el-cascader>
                             </template>
                         </el-table-column>
                         <el-table-column align="center" prop="commuType" label="通讯类型">
@@ -144,7 +144,12 @@
                             if (!this.dialogObj.subSysId) {
                                 this.$message.error('请选择子系统');
                                 return false;
-                            }
+                            };
+                            
+                            this.data.forEach(item=>{
+                                item.targetSubSysDesc = this.getSysDes(item.targetSubSys);
+                            })
+                            console.log(111,this.data);
                             this.dialogObj.extension = JSON.stringify(this.data);
                             if (this.type == "add") {
                                 let info = await createTpsArOsItf(this.dialogObj);
