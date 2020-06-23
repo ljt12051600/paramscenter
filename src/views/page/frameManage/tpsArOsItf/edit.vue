@@ -17,7 +17,9 @@
                     <el-table border highlight-current-row ref="table" align="center" :data="data" style="width: 100%;">
                         <el-table-column align="center" type="index" label="序号" width="50" />
                         <el-table-column align="center" prop="targetSubSys" label="目标系统">
-                            <target-component></target-component>
+                            <template slot-scope="scope">
+                                <el-cascader :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }" :show-all-levels="false"></el-cascader>
+                            </template>
                         </el-table-column>
                         <el-table-column align="center" prop="commuType" label="通讯类型">
                             <template slot-scope="scope">
@@ -68,6 +70,7 @@
     </div>
 </template>
 <script>
+    import SYSTEM from '@views/mixin/system'
     import { deleteKey, deepClone } from '@/utils';
     import Sortable from "sortablejs";
     import { createTpsArOsItf, updateTpsArOsItf } from '@/api/frameManage';
@@ -95,7 +98,7 @@
                 type: Object
             },
         },
-        mixins: [FRAMEMANAGE],
+        mixins: [SYSTEM,FRAMEMANAGE],
         data() {
             return {
                 data: [],

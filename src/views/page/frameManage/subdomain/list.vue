@@ -63,10 +63,10 @@
 </template>
 
 <script>
+    import SYSTEM from '@views/mixin/system'
     import systemComponent from '@views/components/system.component.vue';
     import { deleteKey } from '@/utils'
-    import editComponent from "./edit.vue"
-    import SYSTEM from '@views/mixin/system'
+    import editComponent from "./edit.vue"  
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import { queryTp3005List, deleteTp3005 } from '@/api/frameManage';
     export default {
@@ -182,7 +182,9 @@
             },         
         },
         mounted() {
+          
             this.getList();
+            
         }
     };
 </script>

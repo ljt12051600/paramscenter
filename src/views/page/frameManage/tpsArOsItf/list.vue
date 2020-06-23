@@ -158,6 +158,7 @@
                 this.check = "确认添加";
             },
             doEdit(item) {
+                console.log(JSON.stringify(this.sysSubSysList));
                 this.showAction = true;
                 this.type = "edit";
                 this.title = "修改操作";
