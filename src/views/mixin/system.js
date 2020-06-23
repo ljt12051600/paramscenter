@@ -57,10 +57,12 @@ let SYSTEM = {
             if (info.resCode === '0') {
                 this.subSysList = info.rows || [];
                 info.rows.forEach(item => {
-                    this.subSysObj[item.subSysId] = item.subSysName
+                    this.subSysObj[item.subSysId] = item.subSysName;
+                  
                 });
                 this.getSysSubSysList()
             }
+           
         },
         async getSysList() {
             let info = await queryTp3003();
@@ -159,7 +161,8 @@ let SYSTEM = {
             this.sysSubSysList= [];
             let obj = {};
             this.subSysList.forEach(item => {
-                item.label = item.subSysId + "-" + item.subSysName
+                item.label = item.subSysId + "-" + item.subSysName;
+                item.value=item.subSysId;
                 if (!obj[item.sysId]) {
                     obj[item.sysId] = {
                         children: [item],
@@ -173,7 +176,7 @@ let SYSTEM = {
             for (var i in obj) {
                 let passObj = {
                     value:i,
-                    label:obj[i].name + "-" + i,
+                    label:i+ "-" + obj[i].name ,
                     children:obj[i].children
                 };
                 this.sysSubSysList.push(passObj)
