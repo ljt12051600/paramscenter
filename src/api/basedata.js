@@ -232,4 +232,22 @@ export const createTable = async (data) => {
 
     })
 }
+//数据表删除
+export const deleteTable = async (data) => {
+    return await request({
+        url: '/table/deleteTable',
+        method: 'post',
+        datas: data,
+
+    })
+}
+//数据表修改
+export const updateTable = async (data) => {
+    return await request({
+        url: '/table/updateTable',
+        method: 'post',
+        datas: data,
+
+    })
+}
     
