@@ -57,7 +57,8 @@
         <!--添加+修改组件-->
         <div v-if="showAction">
             <edit-component @doClose="doCloseAction" :type="type" :showAction="showAction" :actionObj="actionObj"
-                            :title="title" :check="check" />
+                            :title="title" :check="check">
+            </edit-component>
         </div>
     </div>
 </template>
@@ -74,6 +75,7 @@
         mixins: [FRAMEMANAGE,SYSTEM],
         data() {
             return {
+                //subSysObj: {},
                 title: "",
                 check: "",
                 type: "add",
@@ -95,6 +97,7 @@
                     subSysIdDesc: "",
                     itfCode: "",
                     itfName: "",
+                    extension: "",
                     dispSeqno: "",
                     targetSubSys: "",
                     targetSubSysDesc: "",
@@ -144,30 +147,44 @@
 
             doAdd() {
                 this.showAction = true;
-                this.actionObj = {};
+                this.actionObj = {
+                    sysId: "",
+                    sysIdDesc: "",
+                    subSysId: "",
+                    subSysIdDesc: "",
+                    data:[],
+                };
                 this.type = "add";
                 this.title = "新增操作";
                 this.check = "确认添加";
             },
-            doEdit(item) {
-                this.showAction = true;
+            doEdit(item) {  
                 this.type = "edit";
                 this.title = "修改操作";
                 this.check = "确认修改";
+                let list=JSON.parse( item.extension);
+                list.forEach(ite=>{
+                    ite.sysNewId=this.getIdAll(ite.targetSubSys)
+                    
+                });
+               
+               
                 this.actionObj = {
                     id: item.id,
                     sysId: item.sysId,
                     sysIdDesc: item.sysIdDesc,
+                    subSysId: item.subSysId,
+                    subSysIdDesc: item.subSysIdDesc,
                     itfCode: item.itfCode,
                     itfName: item.itfName,
-                    dispSeqno: item.dispSeqno,
-                    targetSubSys: item.targetSubSys,
-                    targetSubSysDesc: item.targetSubSysDesc,
-                    commuType: item.commuType,
-                    url: item.url,
-                    port: item.port,
-                    itfStandCode: item.itfStandCode,
+                    data: list,
                 };
+                this.subSysList.forEach(item=>{
+                    if(item.subSysId == this.actionObj.subSysId){
+                        this.actionObj.sysId = item.sysId;
+                    }
+                });
+                  this.showAction = true;
             },
             doCloseAction(bol) {
                 if (bol) {

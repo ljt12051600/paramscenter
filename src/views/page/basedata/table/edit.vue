@@ -1,12 +1,13 @@
 <template>
     <div>
         <el-dialog :title="title" :visible="showAction" width="800px" :show-close="false">
-            <el-tabs>
-                <el-tab-pane label="基础信息">
+            <el-tabs @tab-click="changeTab" v-model="editableTabsValue">
+                <el-tab-pane label="基础信息" name="1">
                     <el-form ref="formAction" :model="dialogObj" :rules="rules" :inline="true" label-width="120px">
                         <system-component :required="true" :query="dialogObj" />
                         <el-form-item required label="表类型" prop="tableType">
-                            <el-select style="width:200px;" v-model="dialogObj.tableType" clearable placeholder="请选择">
+                            <el-select style="width:200px;" :disabled="isOk" v-model="dialogObj.tableType" clearable
+                                placeholder="请选择">
                                 <el-option label="定义类" value="0"></el-option>
                                 <el-option label="账户类" value="1"></el-option>
                                 <el-option label="明细类" value="2"></el-option>
@@ -18,7 +19,8 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item required label="表名" prop="tableName">
-                            <el-input style="width:200px;" v-model.trim="dialogObj.tableName"></el-input>
+                            <el-input style="width:200px;" :disabled="isOk" v-model.trim="dialogObj.tableName">
+                            </el-input>
                         </el-form-item>
                         <el-form-item required label="表中文名称" prop="tableNameDesc">
                             <el-input style="width:200px;" v-model.trim="dialogObj.tableNameDesc"></el-input>
@@ -58,12 +60,15 @@
                         </el-form-item>
                     </el-form>
                 </el-tab-pane>
-                <el-tab-pane label="表字段">
+                <el-tab-pane label="表字段" name="2">
                     <div class="one">
-                        <el-button type="primary" @click="addBaseList">新增</el-button>
-                        <el-table readonly border ref="table" align="center" :data="baseList" style="width: 100%;">
+                        <el-button type="primary" @click="doShowTableField()">新增</el-button>
 
-                            <el-table-column align="center" prop="fieldName" label="字段名">
+                        <el-table highlight-current-row border ref="table" align="center" :data="baseList"
+                            style="width: 100%;">
+                            <el-table-column align="center" type="index" label="序号" width="50" />
+
+                            <el-table-column align="center" prop="fieldName" label="字段">
                                 <template slot-scope="scope">
                                     <el-input v-model="scope.row.fieldName"></el-input>
                                 </template>
@@ -109,10 +114,10 @@
                                 </template>
                             </el-table-column>
                         </el-table>
-
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="表索引">
+
+                <el-tab-pane label="表索引" name="3">
                     <div class="one">
                         <el-button type="primary" @click="">编辑</el-button>
                         <el-table readonly border ref="table" align="center" :data="baseList" style="width: 100%;">
@@ -152,23 +157,28 @@
                 <el-button type="primary" @click="doCloseAction(true)">{{check}}</el-button>
             </div>
         </el-dialog>
+        <div v-if="showTableField">
+            <tablefield-component  @doClose="doCloseTableField"  :type="type" :dialogObj="dialogObj"
+                 :showTableField="showTableField"   />
+
+        </div>
     </div>
 
 </template>
 <script>
     import SYSTEM from '@views/mixin/system'
-     import { deleteKey,deepClone } from '@/utils'
+    import { deleteKey, deepClone } from '@/utils'
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import systemComponent from '@views/components/domain.component.vue';
-    import { createTable } from '@/api/basedata.js';
+    import tablefieldComponent from "./tablefield.vue"
+    import { createTable, updateTable } from '@/api/basedata.js';
     export default {
-        components: { systemComponent },
+        components: { tablefieldComponent, systemComponent },
         mixins: [SYSTEM, FRAMEMANAGE],
         props: {
             showAction: {
                 type: Boolean
             },
-
             type: {
                 type: String,
                 default: 'add'
@@ -182,8 +192,19 @@
             return {
                 check: '',
                 title: '',
+                isOk: false,
                 baseList: [],
+                editableTabsValue: "1",
+                showTableField: false,
+                query: {
+                    sysId: "",
+                    subSysId: "",
+                    pageNum: 1,
+                    numPerPage: 10,
+                },
                 dialogObj: {
+                    unitDataDesc: "",
+                    unitDataCode: "",
                     id: "",
                     dataStatus: "",
                     subDomain: "",
@@ -215,17 +236,41 @@
                     lastUpdateTime: "",
                     lastUpdateUser: "",
                     sysId: "",
-                },
 
+                    clickMenuId: "",
+                    clnCycDesc: "",
+                    clnCycPop: "",
+                    dataBaseTypeDesc: "",
+                    dataBaseTypePop: "",
+                    deptCode: "",
+                    modifyBrc: "",
+                    subDomainDesc: "",
+                    subDomainPop: "",
+                    subSysId: "",
+                    subSysIdDesc: "",
+                    subSysIdPop: "",
+                    sysIdDesc: "",
+                    sysIdPop: "",
+                    tableColumnInfoList: [],
+                    tableIndexList: [],
+                    tableTypeDesc: "",
+                    tableTypePop: "",
+                    updateUser: "",
+                    userId: "",
+                },
+                data: {
+                    total: 0,
+                    rows: []
+                },
                 rules: {
                     sysId: [
                         { required: true, message: '请选择系统', trigger: 'change' }
                     ],
                     subSysId: [
-                        { required: true, message: '请输入子系统标识', trigger: 'blur' }
+                        { required: true, message: '请输入子系统', trigger: 'blur' }
                     ],
                     subDomain: [
-                        { required: true, message: '请输入子系统名称', trigger: 'blur' }
+                        { required: true, message: '请选择子域', trigger: 'blur' }
                     ],
                     tableType: [
                         { required: true, message: '请选择表类型', trigger: 'change' }
@@ -248,7 +293,7 @@
                         if (valid) {
                             if (this.type == "add") {
                                 //alert("actionObj-add: " + JSON.stringify(this.actionObj))
-                                console.log(this.dialogObj, 121212);
+
                                 let info = await createTable(this.dialogObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
@@ -257,10 +302,15 @@
                             }
                             if (this.type == "edit") {
                                 //alert("actionObj-add: " + JSON.stringify(this.actionObj))
-                                let info = await updateTp3004(this.dialogObj);
-                                console.log("info.resCode: " + info.resCode)
-                                this.$message.success('修改成功');
-                                this.$emit("doClose", true)
+                                //问题 为空还行，有数据 就有问题了，新增直接从dialogObj获得了【】，修改没有获取到
+                                this.dialogObj.tableColumnInfoList = [];
+                                this.dialogObj.tableIndexList = [];
+
+                                let info = await updateTable(this.dialogObj);
+                                if (info.resCode == "0") {
+                                    this.$message.success('修改成功');
+                                    this.$emit("doClose", true)
+                                }
                             }
                         }
                     });
@@ -269,13 +319,35 @@
 
                 }
             },
-            addBaseList() {
-                this.baseList.push({
-                    id: 1,
-                })
+            changeTab() {
+                if (this.editableTabsValue === "1") return
+                if (!this.dialogObj.sysId || !this.dialogObj.subSysId || !this.dialogObj.subDomain || !this.dialogObj.tableType
+                || !this.dialogObj.tableName || !this.dialogObj.tableNameDesc) {
+                    this.$message.error("请输入必选项内容");
+                    this.$nextTick(() => {
+                        this.editableTabsValue = "1"
+                    })
+                }
             },
+            doCloseTableField(bol) {
+                if (bol) {
+                    this.getList();
+                    this.showTableField = false;
+                } else {
+                    this.showTableField = false;
+                }
+            },
+            queryList() {
+                this.query.pageNum = 1;
+                this.getList(1);
+            },
+            doShowTableField() {
+                this.showTableField = true;
+            },
+
         },
         mounted() {
+
             if (this.type == "add") {
                 this.title = "新增操作";
                 this.check = "确认添加";
@@ -283,30 +355,27 @@
             if (this.type == "edit") {
                 this.title = "修改操作";
                 this.check = "确认修改";
+
+                this.dialogObj = deepClone(this.actionObj);
+                this.isOk = true;
             }
-          this.dialogObj=deepClone(this.actionObj);
+
         },
-        watch:{
-            "dialogObj.subSysId"(val){
-                if(!val){
-                    this.dialogObj.subDomain = "";
-                    this.dialogObj.tableName="";
+        watch: {
+
+            "dialogObj.subDomain"(val) {
+                if (this.type == "add") {
+                    if (!val) {
+                        this.dialogObj.tableName = "";
+                    }
+                    else {
+                        this.dialogObj.tableName = `${this.dialogObj.subSysId}_${this.dialogObj.subDomain}_`;
+                    }
                 }
-                else{
-                    this.dialogObj.tableName=`${this.dialogObj.subSysId}_`;
-                }
-                
-            },
-            "dialogObj.subDomain"(val){
-                if(!val){
-                    this.dialogObj.tableName="";
-                }
-                else{
-                    this.dialogObj.tableName=`${this.dialogObj.subSysId}_${this.dialogObj.subDomain}_`;
-                }
-                
+
+
             }
-            
+
         }
     };
 </script>

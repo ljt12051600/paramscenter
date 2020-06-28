@@ -1,7 +1,7 @@
 合并代碼样子
 git fetch  upstream (对应源);
 git merge upstream/master
-
+test
 
 # 2020.6.2 
 1.重置密码bug 

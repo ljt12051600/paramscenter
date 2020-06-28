@@ -2,24 +2,42 @@
     <div>
         <el-dialog :show-close="false" style="max-height：400px" :visible="showDialog">
             <el-tabs v-model="editableTabsValue" @tab-click="changeTab">
-
                 <el-tab-pane name="1" label="基础信息">
-
                     <el-form ref="form" :inline="true" label-width="140px">
-                        <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
+                        <system-component
+                            :disabled="type=='add'?'':'12'"
+                            :required="true"
+                            :query="dialogObj"
+                        />
 
                         <el-form-item required label="选项代码">
-                            <el-input :disabled="type!='add'" style="width:160px" v-model.trim="dialogObj.optionCode">
-                            </el-input>
-                            <el-button type="primary" @click="queryUnitDataDialog" v-show="type=='add'">选择</el-button>
+                            <el-input
+                                :disabled="type!='add'"
+                                style="width:160px"
+                                v-model.trim="dialogObj.optionCode"
+                            ></el-input>
+                            <el-button
+                                type="primary"
+                                @click="queryUnitDataDialog"
+                                v-show="type=='add'"
+                            >选择</el-button>
                         </el-form-item>
                         <el-form-item required label="选项名称">
                             <el-input style="width:220px;" v-model.trim="dialogObj.optionName"></el-input>
                         </el-form-item>
                         <el-form-item required label="数据标准">
-                            <el-select style="width:220px;" v-model="dialogObj.dataStand" clearable placeholder="请选择">
-                                <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
-                                    :label="item.value+'-'+item.name" :value="item.value"></el-option>
+                            <el-select
+                                style="width:220px;"
+                                v-model="dialogObj.dataStand"
+                                clearable
+                                placeholder="请选择"
+                            >
+                                <el-option
+                                    :key="index+'cc'"
+                                    v-for="(item,index) in dataStandList"
+                                    :label="item.value+'-'+item.name"
+                                    :value="item.value"
+                                ></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="备注">
@@ -29,15 +47,22 @@
                     <el-card>
                         <div class="one">
                             <el-button type="primary" @click="addBaseList">新增</el-button>
-                            <el-table highlight-current-row border ref="table" align="center" :data="baseList"
-                                style="width: 100%;">
+                            <el-table
+                                highlight-current-row
+                                border
+                                ref="table"
+                                align="center"
+                                :data="baseList"
+                                style="width: 100%;"
+                            >
                                 <el-table-column align="center" type="index" label="序号" width="50" />
 
                                 <el-table-column align="center" prop="optionValue" label="选项值">
                                     <template slot-scope="scope">
-
-                                        <el-input @blur="checkCopy(scope.row.optionValue,scope.$index)"
-                                            v-model="scope.row.optionValue"></el-input>
+                                        <el-input
+                                            @blur="checkCopy(scope.row.optionValue,scope.$index)"
+                                            v-model="scope.row.optionValue"
+                                        ></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="optionDesc" label="选项描述">
@@ -50,19 +75,31 @@
                                         <el-input v-model="scope.row.anotherName"></el-input>
                                     </template>
                                 </el-table-column>
+                                <el-table-column
+                                    label="操作"
+                                    width="100"
+                                    align="center"
+                                    fixed="right"
+                                >
+                                    <template slot-scope="scope">
+                                        <el-button
+                                            @click="doDeleteOption(scope.$index)"
+                                            type="primary"
+                                        >删除</el-button>
+                                    </template>
+                                </el-table-column>
                             </el-table>
-
                         </div>
-                        <div v-if="type=='add'||type=='edit'" style=" color:red;font:12px">
-                            tips:1.拖动表格行可以进行排序,2.修改已经在组别的选项值，组别对应的选项值会默认删除</div>
-
+                        <div
+                            v-if="type=='add'||type=='edit'"
+                            style=" color:red;font:12px"
+                        >tips:1.拖动表格行可以进行排序,2.修改已经在组别的选项值，组别对应的选项值会默认删除</div>
                     </el-card>
                 </el-tab-pane>
                 <el-tab-pane name="2" label="选项组别">
                     <div v-if="editableTabsValue==2">
                         <group-edit :baseList="baseList" :groupList="groupList" />
                     </div>
-
                 </el-tab-pane>
             </el-tabs>
             <div slot="footer" class="dialog-footer">
@@ -80,7 +117,7 @@
                     <el-form-item label="选项描述">
                         <el-input style="width:200px;" v-model.trim="query.unitDataDesc"></el-input>
                     </el-form-item>
-                    <el-form-item label="">
+                    <el-form-item label>
                         <el-button type="primary" @click="queryList">查询</el-button>
                     </el-form-item>
                 </el-form>
@@ -90,220 +127,205 @@
                     <el-table-column align="center" prop="unitDataDesc" label="元数据描述" />
                     <el-table-column label="操作" width="280" align="center" fixed="right">
                         <template slot-scope="scope">
-                            <el-button @click="doChooseUnitDate(scope.row,scope.index)" type="primary">选择</el-button>
+                            <el-button @click="doChooseUnitDate(scope.row)" type="primary">选择</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div v-if="data.total" class="pagination">
-                    <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
-                        :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
-                        @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
+                    <el-pagination
+                        background
+                        layout="total,pager,jumper,sizes"
+                        :current-page="query.pageNum"
+                        :page-sizes="[10,25,50]"
+                        :page-size="query.numPerPage"
+                        :total="data.total"
+                        @current-change="handlePageChange"
+                        @size-change="handleSizeChange"
+                    ></el-pagination>
                 </div>
-
-
             </div>
         </el-drawer>
     </div>
 </template>
 
 <script>
-    import { deleteKey, deepClone } from '@/utils';
-    import SYSTEM from '@views/mixin/system';
-    import { queryUnitDataListForSysId } from '@/api/basedata';
-    import Sortable from "sortablejs";
-    import groupEdit from "./group.vue"
+import { deleteKey, deepClone } from '@/utils';
+import SYSTEM from '@views/mixin/system';
+import { queryUnitDataListForSysId } from '@/api/basedata';
+import Sortable from 'sortablejs';
+import groupEdit from './group.vue';
 
-
-    import systemComponent from '@views/components/system.component.vue';
-    export default {
-        components: { systemComponent, groupEdit },
-        mixins: [SYSTEM],
-        props: {
-            showDialog: {
-                type: Boolean
-            },
-
-            type: {
-                type: String,
-                default: 'add'
-            },
-            actionObj: {
-                type: Object
-            },
-
+import systemComponent from '@views/components/system.component.vue';
+export default {
+    components: { systemComponent, groupEdit },
+    mixins: [SYSTEM],
+    props: {
+        showDialog: {
+            type: Boolean
         },
-        data() {
-            return {
-                dialogObj: {
-                    sysId: '',
-                    subSysId: '',
-                    unitDataDesc: "",
-                    unitDataCode: "",
 
-                },
-                editableTabsValue: "1",
-                title: "",
-                drawer: false,
-                query: {
-                    sysId: "",
-                    subSysId: "",
-                    pageNum: 1,
-                    numPerPage: 10,
-                },
-                baseList: [],
-                data: {
-                    total: 0,
-                    rows: []
-                },
-                groupList: []
-            };
+        type: {
+            type: String,
+            default: 'add'
         },
-        methods: {
-            doClose(bol) {
-                this.$emit('doClose', bol);
+        actionObj: {
+            type: Object
+        }
+    },
+    data() {
+        return {
+            dialogObj: {
+                sysId: '',
+                subSysId: '',
+                unitDataDesc: '',
+                unitDataCode: ''
             },
-            changeTab() {
-
-
-                if (this.editableTabsValue === "1") return
-                if (!this.baseList.length) {
-                    this.$message.error("选项值列表不能为空")
-                    this.$nextTick(() => {
-                        this.editableTabsValue = "1"
-                    })
-                }
-                let index = this.baseList.findIndex(item => {
-                    return item.optionValue == ""
-                })
-
-                if (index > -1) {
-                    this.$message.error(`第${index + 1}选项值为空`)
-                    this.$nextTick(() => {
-                        this.editableTabsValue = "1"
-                    })
-
-                }
+            editableTabsValue: '1',
+            title: '',
+            drawer: false,
+            query: {
+                sysId: '',
+                subSysId: '',
+                pageNum: 1,
+                numPerPage: 10
             },
-            checkCopy(val, index) {
-                if (!val) {
-                    return this.$message.error("选项值不能为空")
-                };
-                let num = 0
-                this.baseList.forEach(item => {
-                    if (item.optionValue == val) {
-                        num++;
-                    }
+            baseList: [],
+            data: {
+                total: 0,
+                rows: []
+            },
+            groupList: []
+        };
+    },
+    methods: {
+        doClose(bol) {
+            this.$emit('doClose', bol);
+        },
+        changeTab() {
+            if (this.editableTabsValue === '1') return;
+            if (!this.baseList.length) {
+                this.$message.error('选项值列表不能为空');
+                this.$nextTick(() => {
+                    this.editableTabsValue = '1';
                 });
-                if (num == 2) {
-                    this.baseList[index].optionValue = "";
-                    return this.$message.error("选项值重复请重新输入");
-
-                }
-            },
-
-
-            addBaseList() {
-                this.baseList.push({
-                    optionValue: "",
-                    optionDesc: "",
-                    anotherName: "",
-                })
-            },
-
-            queryUnitDataDialog() {
-                if (!this.dialogObj.subSysId) {
-                    return this.$message.error("请选择子系统")
-                }
-                this.queryList();
-                this.drawer = true;
-
-
-            },//获取元数据代码
-            doChooseUnitDate(item) {
-                this.dialogObj.optionCode = item.unitDataCode;
-                this.dialogObj.optionName = item.unitDataDesc;
-                this.drawer = false;
-
-            },
-            async getList(num) {
-                let postObj = deleteKey(this.query);
-                postObj.sysId = this.dialogObj.sysId;
-                postObj.subSysId = this.dialogObj.subSysId;
-                postObj.pageNum--;
-
-
-                let info = await queryUnitDataListForSysId(postObj);
-                if (info.resCode === '0') {
-                    this.data = {
-                        total: info.total,
-                        rows: info.rows || []
-                    };
-                }
-
-
-            },
-            queryList() {
-                this.query.pageNum = 1;
-                this.getList(1);
-            },
-            handlePageChange(num) {
-                this.query.pageNum = num;
-                this.getList(num);
-            },
-            handleSizeChange(num) {
-                this.query.pageNum = 1;
-                this.query.numPerPage = num;
-                this.getList(num);
-            },//获取元数据代码结束
-        },
-        mounted() {
-            this.changeTab(0);
-
-            if (this.type == 'add') {
-                this.dialogObj = deepClone(this.actionObj);
             }
-            else {
-                return
-            }
+            let index = this.baseList.findIndex(item => {
+                return item.optionValue == '';
+            });
 
-            this.$nextTick(() => {
-                const tbody = document.querySelector(".one tbody");
-
-
-
-                Sortable.create(tbody, {
-                    ghostClass: 'sortable-ghost',
-                    onEnd: ({ newIndex, oldIndex }) => {
-                        let newArr = deepClone(this.baseList);
-                        const currRow = newArr.splice(oldIndex, 1)[0]
-                        newArr.splice(newIndex, 0, currRow)
-                        // 重新排序完的表格数据
-                        this.baseList = []
-                        this.$nextTick(function () {
-                            this.baseList = newArr
-                        })
-
-                    }
-                })
-
-            })
-
-        },
-        watch: {
-            baseList(
-                val
-            ){
-               if(!this.groupList.length){
-                   return
-               }
+            if (index > -1) {
+                this.$message.error(`第${index + 1}选项值为空`);
+                this.$nextTick(() => {
+                    this.editableTabsValue = '1';
+                });
             }
         },
-    };
+        checkCopy(val, index) {
+            if (!val) {
+                return this.$message.error('选项值不能为空');
+            }
+            let num = 0;
+            this.baseList.forEach(item => {
+                if (item.optionValue == val) {
+                    num++;
+                }
+            });
+            if (num == 2) {
+                this.baseList[index].optionValue = '';
+                return this.$message.error('选项值重复请重新输入');
+            }
+            this.getLeftRightChildren();
+        },
+        doDeleteOption(ind){
+            this.baseList.splice(ind,1)
+        },
+        getLeftRightChildren(){
 
 
+        },
+        
 
+        addBaseList() {
+            this.baseList.push({
+                optionValue: '',
+                optionDesc: '',
+                anotherName: ''
+            });
+        },
 
+        queryUnitDataDialog() {
+            if (!this.dialogObj.subSysId) {
+                return this.$message.error('请选择子系统');
+            }
+            this.queryList();
+            this.drawer = true;
+        }, //获取元数据代码
+        doChooseUnitDate(item) {
+            this.dialogObj.optionCode = item.unitDataCode;
+            this.dialogObj.optionName = item.unitDataDesc;
+            this.drawer = false;
+        },
+        async getList(num) {
+            let postObj = deleteKey(this.query);
+            postObj.sysId = this.dialogObj.sysId;
+            postObj.subSysId = this.dialogObj.subSysId;
+            postObj.pageNum--;
 
+            let info = await queryUnitDataListForSysId(postObj);
+            if (info.resCode === '0') {
+                this.data = {
+                    total: info.total,
+                    rows: info.rows || []
+                };
+            }
+        },
+        queryList() {
+            this.query.pageNum = 1;
+            this.getList(1);
+        },
+        handlePageChange(num) {
+            this.query.pageNum = num;
+            this.getList(num);
+        },
+        handleSizeChange(num) {
+            this.query.pageNum = 1;
+            this.query.numPerPage = num;
+            this.getList(num);
+        } //获取元数据代码结束
+    },
+    mounted() {
+        this.changeTab(0);
 
+        if (this.type == 'add') {
+            this.dialogObj = deepClone(this.actionObj);
+        } else {
+            return;
+        }
 
+        this.$nextTick(() => {
+            const tbody = document.querySelector('.one tbody');
+
+            Sortable.create(tbody, {
+                ghostClass: 'sortable-ghost',
+                onEnd: ({ newIndex, oldIndex }) => {
+                    let newArr = deepClone(this.baseList);
+                    const currRow = newArr.splice(oldIndex, 1)[0];
+                    newArr.splice(newIndex, 0, currRow);
+                    // 重新排序完的表格数据
+                    this.baseList = [];
+                    this.$nextTick(function() {
+                        this.baseList = newArr;
+                    });
+                }
+            });
+        });
+    },
+    watch: {
+        baseList(val) {
+            if (!this.groupList.length) {
+                return;
+            }
+        }
+    }
+};
 </script>

@@ -46,6 +46,11 @@
                 <!--表格渲染-->
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
+                    <el-table-column align="center" prop="dataStatus" label="状态">
+                        <template slot-scope="scope">
+                            {{tableTypeDescObj[scope.row.dataStatus]}}
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" prop="subSysId" label="子系统">
                         <template slot-scope="scope">
                             {{subSysObj[scope.row.subSysId]}}
@@ -54,11 +59,6 @@
                     <el-table-column align="center" prop="subDomain" label="子域">
                         <template slot-scope="scope">
                             {{domainObj[scope.row.subDomain]}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="dataStatus" label="状态">
-                        <template slot-scope="scope">
-                            {{tableTypeDescObj[scope.row.dataStatus]}}
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="tableName" label="表名" />
@@ -95,12 +95,13 @@
 <script>
     import { deleteKey } from '@/utils'
     import editComponent from "./edit.vue"
+    import tablefieldComponent from "./tablefield.vue"
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import SYSTEM from '@views/mixin/system.js'
     import systemComponent from '@views/components/domain.component.vue';
-    import { queryTable } from '@/api/basedata.js';
+    import { queryTable,deleteTable } from '@/api/basedata.js';
     export default {
-        components: { editComponent, systemComponent },
+        components: { editComponent,systemComponent },
         mixins: [FRAMEMANAGE, SYSTEM],
         data() {
             return {
@@ -199,14 +200,15 @@
                     numPerPage: 10
                 };
             },
+            
             doDelete(item) {
-                let postObj = { id: item.id, sysId: item.sysId };
+                let postObj = { id: item.id, tableName: item.tableName };
                 this.$msgbox({
                     title: '删除',
                     message: '确认删除此系统吗？',
                     beforeClose: async (action, instance, done) => {
                         if (action == 'confirm') {
-                            let info = await deleteTp3003(postObj);
+                            let info = await deleteTable(postObj);
                             if (info.resCode === '0') {
                                 this.$message.success('删除成功');
                                 this.getList();
