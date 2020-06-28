@@ -234,9 +234,14 @@ export default {
                 this.baseList[index].optionValue = '';
                 return this.$message.error('选项值重复请重新输入');
             }
+            this.getLeftRightChildren();
         },
         doDeleteOption(ind){
             this.baseList.splice(ind,1)
+        },
+        getLeftRightChildren(){
+
+
         },
         
 
