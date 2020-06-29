@@ -38,7 +38,7 @@
                         </el-table-column>
                         <el-table-column align="center" prop="port" label="端口">
                             <template slot-scope="scope">
-                                <el-input v-model.trim="scope.row.port"/>
+                                <el-input v-model.trim="scope.row.port" />
                             </template>
                         </el-table-column>
                         <el-table-column align="center" prop="itfStandCode" label="接口标准编码">
@@ -77,10 +77,9 @@
     import Sortable from "sortablejs";
     import { createTpsArOsItf, updateTpsArOsItf } from '@/api/frameManage';
     import systemComponent from '@views/components/system.component.vue';
-    import targetComponent from './targetSubSys.vue';
     import FRAMEMANAGE from '@views/mixin/frameManage';
     export default {
-        components: { targetComponent, systemComponent },
+        components: { systemComponent },
         props: {
             showAction: {
                 type: Boolean
@@ -116,7 +115,7 @@
                     ],
                 },
                 dataObj: {
-                    dispSeqno:"",
+                    dispSeqno: "",
                     targetSubSys: "",
                     targetSubSysDesc: "",
                     commuType: "httpCommunication",
@@ -156,8 +155,7 @@
                                 item.targetSubSys = item.sysNewId[1];
                                 item.targetSubSysDesc = this.getSysDes(item.sysNewId[1]);
                                 delete item.sysNewId
-                            })
-
+                            })  
                             console.log(111, this.data);
                             this.dialogObj.extension = JSON.stringify(this.data);
                             if (this.type == "add") {
