@@ -38,7 +38,7 @@
                         </el-table-column>
                         <el-table-column align="center" prop="port" label="端口">
                             <template slot-scope="scope">
-                                <el-input v-model.trim="scope.row.port" />
+                                <el-input v-model.number="scope.row.port" />
                             </template>
                         </el-table-column>
                         <el-table-column align="center" prop="itfStandCode" label="接口标准编码">
@@ -139,6 +139,7 @@
 
             },
             doCloseAction(bol) {
+                let flg = true;
                 if (bol) {
                     this.$refs['formAction'].validate(async valid => {
                         if (valid) {
@@ -150,13 +151,23 @@
                                 this.$message.error('请选择子系统');
                                 return false;
                             };
-                            console.log(222, this.data)
+                            this.data.forEach(item => {
+                                if(typeof item.port != "number"){
+                                    flg = false;
+                                    this.$message.error('端口号请输入数字');
+                                    return
+                                }
+                            });
+                            if(!flg){
+                                return false;
+                            }
                             this.data.forEach(item => {
                                 item.targetSubSys = item.sysNewId[1];
                                 item.targetSubSysDesc = this.getSysDes(item.sysNewId[1]);
-                                delete item.sysNewId
+                                delete item.sysNewId;
                             })  
-                            console.log(111, this.data);
+                            
+                            
                             this.dialogObj.extension = JSON.stringify(this.data);
                             if (this.type == "add") {
                                 let info = await createTpsArOsItf(this.dialogObj);
