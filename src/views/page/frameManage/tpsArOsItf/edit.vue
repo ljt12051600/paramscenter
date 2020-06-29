@@ -19,8 +19,10 @@
                         <el-table-column align="center" prop="targetSubSys" width="200" label="目标系统">
                             <template slot-scope="scope">
                                 <el-cascader :show-all-levels="false" v-model="scope.row.sysNewId" :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }"></el-cascader>
+                                {{scope.row.sysNewId}}
                             </template>
                         </el-table-column>
+                        
                         <el-table-column align="center" prop="commuType" label="通讯类型">
                             <template slot-scope="scope">
                                 <el-select v-model="scope.row.commuType">
@@ -47,7 +49,7 @@
                         <el-table-column align="center" label="操作" fixed="right" width="100px">
                             <template slot-scope="scope">
                                 <!-- <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button> -->
-                                <el-button @click="dodelete(scope.row,scope.index)" type="danger">删除</el-button>
+                                <el-button @click="doDelete(scope.$index)" type="danger">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -114,8 +116,8 @@
                     ],
                 },
                 dataObj: {
-                    targetSubSys: "lgs",
-                    targetSubSysDesc: "lgs-日志中心",
+                    targetSubSys: "",
+                    targetSubSysDesc: "",
                     commuType: "httpCommunication",
                     url: "",
                     port: "",
@@ -131,8 +133,8 @@
                         item.dispSeqno = index + 1;
                     }))
             },
-            dodelete(item) {
-                this.data.pop(deepClone(item));
+            doDelete(index) {
+                this.data.splice(index, 1);
 
             },
             doCloseAction(bol) {
