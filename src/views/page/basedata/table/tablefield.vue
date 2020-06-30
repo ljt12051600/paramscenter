@@ -5,38 +5,38 @@
                 <el-input style="width:200px;" required disabled v-model.trim="dialogObj.tableName"></el-input>
             </el-form-item>
             <el-form-item label="字段名">
-                <el-input style="width:200px;" disabled v-model.trim="dialogObj.fieldName"></el-input>
+                <el-input style="width:200px;" disabled v-model.trim="tableObj.fieldName"></el-input>
             </el-form-item>
             <el-form-item label="中文名称">
-                <el-input style="width:200px;" disabled v-model.trim="dialogObj.fieldDesc"></el-input>
+                <el-input style="width:200px;" disabled v-model.trim="tableObj.fieldDesc"></el-input>
             </el-form-item>
             <el-form-item label="类型">
-                <el-input style="width:200px;" disabled v-model.trim="dialogObj.type"></el-input>
+                <el-input style="width:200px;" disabled v-model.trim="tableObj.type"></el-input>
             </el-form-item>
             <el-form-item label="长度">
-                <el-input style="width:200px;" disabled v-model.trim="dialogObj.length"></el-input>
+                <el-input style="width:200px;" disabled v-model.trim="tableObj.length"></el-input>
             </el-form-item>
             <el-form-item label="小位数">
-                <el-input style="width:200px;" disabled v-model.trim="dialogObj.point"></el-input>
+                <el-input style="width:200px;" disabled v-model.trim="tableObj.point"></el-input>
             </el-form-item>
             <el-form-item label="主键类型">
-                <el-select style="width:200px;" v-model="dialogObj.fieldPrimy" clearable placeholder="请选择">
+                <el-select style="width:200px;" v-model="tableObj.fieldPrimy" clearable placeholder="请选择">
                     <el-option label="0-非主键" value="0"></el-option>
                     <el-option label="1-自增主键" value="1"></el-option>
                     <el-option label="2-普通主键" value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="是否为空">
-                <el-select style="width:200px;" v-model="dialogObj.fieldNull" clearable placeholder="请选择">
+                <el-select style="width:200px;" v-model="tableObj.fieldNull" clearable placeholder="请选择">
                     <el-option label="1-是" value="1"></el-option>
                     <el-option label="0-否" value="0"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="字段默认值">
-                <el-input style="width:200px;" v-model.trim="dialogObj.fieldDef"></el-input>
+                <el-input style="width:200px;" v-model.trim="tableObj.fieldDef"></el-input>
             </el-form-item>
             <el-form-item label="处理描述">
-                <el-input style="width:200px;" v-model.trim="dialogObj.processDesc"></el-input>
+                <el-input style="width:200px;" v-model.trim="tableObj.processDesc"></el-input>
             </el-form-item>
             <el-form-item label="     ">
                 <el-input style="width:200px;" v-model.trim="query.unitDataCode"></el-input>
@@ -80,35 +80,28 @@
     import SYSTEM from '@views/mixin/system'
     import { deleteKey, deepClone } from '@/utils'
     import FRAMEMANAGE from '@views/mixin/frameManage'
-    import { createTp3004, updateTp3004 } from '@/api/frameManage';
     import { queryUnitDataListForSysId } from '@/api/basedata';
     export default {
         props: {
             showTableField: {
                 type: Boolean
             },
-            type: {
-                type: String,
-                default: 'add'
-            },
             dialogObj: {
                 type: Object
             },
-
         },
         mixins: [SYSTEM, FRAMEMANAGE],
         data() {
             return {
                 check: '',
                 title: '',
-                tableColumnInfoList: [],
-                tableIndexList: [],
                 query: {
                     sysId: "",
                     subSysId: "",
                     pageNum: 1,
                     numPerPage: 10
                 },
+                tableObj:{},
                 data: {
                     total: 0,
 
@@ -144,17 +137,14 @@
                 this.$refs.table.setCurrentRow(row);
             },
             handleCurrentChange(val) {
-                this.$set(this.dialogObj, "fieldName", val.unitDataCode);
-                this.dialogObj.fieldDesc = val.unitDataDesc;
-                this.dialogObj.type = val.type;
-                this.dialogObj.length = val.length;
-                this.dialogObj.point = val.point;
+                this.$set(this.tableObj, "fieldName", val.unitDataCode);
+                this.tableObj.fieldDesc = val.unitDataDesc;
+                this.tableObj.type = val.type;
+                this.tableObj.length = val.length;
+                this.tableObj.point = val.point;
                 this.currentRow = val;
-
-
-
             },
-            clearSearch() {
+            clearSearch() {  //清空查询字段
                 this.query = {
                     unitDataCode: "",
                     unitDataDesc: "",
@@ -162,30 +152,31 @@
                     numPerPage: 10
                 };
             },
-            doCloseTableFieldAction(bol) {
+            doCloseTableFieldAction(bol) {  //
+
                 if (bol) {
                     this.$refs['formTableField'].validate(async valid => {
                         if (valid) {
-                            if (this.type == "add") {
-                                //新增，将数据填写到tableColumnInfoList中，然后在edit页中展现所有新增的字段
+                                    //如tableColumnInfoList不为[]，
+                                if (this.dialogObj.tableColumnInfoList.length > 0) {
+                                    //则为tableColumnInfoList 数组添加值
+                                    this.dialogObj.tableColumnInfoList.push(deepClone(this.tableObj));
 
-                                if (this.tableColumnInfoList.length > 0) {
-
-                                    this.tableColumnInfoList.push(this.dialogObj);
-
-                                    console.log(this.tableColumnInfoList, 11111111);
                                 } else {
+                                    //如tableColumnInfoList为[]，则为tableColumnInfoList 赋初值
+                                    this.dialogObj.tableColumnInfoList = [deepClone(this.tableObj)];
 
-                                    this.tableColumnInfoList = [this.dialogObj];
-                                    console.log(this.tableColumnInfoList, 222222222);
-                                }
-
-                            }
-                            if (this.type == "edit") {
-
-
-
-                            }
+                                }//将tableColumnInfoList 中的数组值 传递给父组件
+                                this.$emit("doTableColumnInfoList", this.dialogObj.tableColumnInfoList);
+                                this.tableObj.fieldName = "";
+                                this.tableObj.fieldDesc = "";
+                                this.tableObj.type = "";
+                                this.tableObj.length = "";
+                                this.tableObj.point = "";
+                                this.tableObj.fieldPrimy = "";
+                                this.tableObj.fieldNull = "";
+                                this.tableObj.fieldDef = "";
+                                this.tableObj.processDesc = "";
                         }
                     });
                 } else {
@@ -227,14 +218,7 @@
 
 
             this.getList(1);
-            // if(this.type == "add"){
-            //     this.title = "新增操作";
-            //     this.check = "确认添加";
-            // }
-            // if(this.type == "edit"){
-            //     this.title = "修改操作";
-            //     this.check = "确认修改";
-            // }
+
         }
     };
 </script>
