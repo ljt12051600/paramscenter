@@ -132,7 +132,7 @@
                     if (!this.required) {
                         this.query.subSysIdSearch = this.query.subSysId;
                     }
-                    console.log(this.subSysObj[this.query.subSysId]);
+               
                     this.query.subSysIdDesc = this.query.subSysId + "-" + this.subSysObj[this.query.subSysId].subSysName
 
                 }

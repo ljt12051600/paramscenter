@@ -3,7 +3,6 @@
         <div style="margin-bottom: 20px;">
             <el-button size="small"   type="primary" @click="addTab">添加组别</el-button>
         </div>
-        {{editableTabsValue}}
         <el-tabs
             @tab-click="changeTab"
             v-model="editableTabsValue"
