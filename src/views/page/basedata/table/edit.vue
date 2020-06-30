@@ -64,53 +64,22 @@
                     <div class="one">
                         <el-button type="primary" @click="doShowTableField()">新增</el-button>
 
-                        <el-table highlight-current-row border ref="table" align="center" :data="baseList"
-                            style="width: 100%;">
+                        <el-table highlight-current-row border ref="table" align="center"
+                            :data="dialogObj.tableColumnInfoList" style="width: 100%;">
                             <el-table-column align="center" type="index" label="序号" width="50" />
 
-                            <el-table-column align="center" prop="fieldName" label="字段">
+                            <el-table-column align="center" prop="fieldName" label="字段" />
+                            <el-table-column align="center" prop="fieldDesc" label="中文名称" />
+                            <el-table-column align="center" prop="type" label="类型" />
+                            <el-table-column align="center" prop="length" label="长度" />
+                            <el-table-column align="center" prop="point" label="小位数" />
+                            <el-table-column align="center" prop="fieldNull" label="是否为空" />
+                            <el-table-column align="center" prop="fieldPrimy" label="主键类型" />
+                            <el-table-column align="center" prop="fieldDef" label="默认值" />
+                            <el-table-column align="center" prop="processDesc" label="处理描述" />
+                            <el-table-column label="操作" align="center" fixed="right" width="160px">
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.fieldName"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="fieldDesc" label="中文名称">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.fieldDesc"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="type" label="类型">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.type"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="length" label="长度">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.length"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="point" label="小位数">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.point"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="fieldNull" label="是否为空">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.fieldNull"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="fieldPrimy" label="主键类型">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.fieldPrimy"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="fieldDef" label="默认值">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.fieldDef"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="processDesc" label="处理描述">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.processDesc"></el-input>
+                                    <el-button @click="doDeleteTableField(scope.$index)" type="danger">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -119,32 +88,20 @@
 
                 <el-tab-pane label="表索引" name="3">
                     <div class="one">
-                        <el-button type="primary" @click="">编辑</el-button>
-                        <el-table readonly border ref="table" align="center" :data="baseList" style="width: 100%;">
+                        <el-button type="primary" @click="doShowIndexList()">新增</el-button>
+                        <el-table readonly border ref="table" highlight-current-row @row-click="handleCurrentChange"
+                            align="center" :data="dialogObj.tableIndexList" style="width: 100%;">
                             <el-table-column align="center" type="index" label="序号" width="50" />
-                            <el-table-column align="center" prop="indexId" label="索引id">
+                            <el-table-column align="center" prop="indexId" label="索引id" />
+                            <el-table-column align="center" prop="indexDesc" label="索引描述" />
+                            <el-table-column align="center" prop="indexField" label="索引字段" />
+                            <el-table-column align="center" prop="isUnique" label="是否唯一索引" />
+                            <el-table-column align="center" prop="remark" label="备注" />
+                            <el-table-column label="操作" align="center" fixed="right" width="160px">
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.indexId"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="indexDesc" label="索引描述">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.indexDesc"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="indexField" label="索引字段">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.indexField"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="isUnique" label="是否唯一索引">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.isUnique"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" prop="remark" label="备注">
-                                <template slot-scope="scope">
-                                    <el-input v-model="scope.row.remark"></el-input>
+                                    <el-button @click="doEditIndex(scope.row,scope.$index)" type="primary">修改
+                                    </el-button>
+                                    <el-button @click="doDeleteIndex(scope.$index)" type="danger">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -158,9 +115,12 @@
             </div>
         </el-dialog>
         <div v-if="showTableField">
-            <tablefield-component  @doClose="doCloseTableField"  :type="type" :dialogObj="dialogObj"
-                 :showTableField="showTableField"   />
-
+            <tablefield-component @doTableColumnInfoList="doTableColumnInfoList" @doClose="doCloseTableField"
+                 :dialogObj="dialogObj"  :showTableField="showTableField" />
+        </div>
+        <div v-if="showIndexList">
+            <indexlist-component @doTableIndexList="doTableIndexList" @doClose="doCloseIndexList"
+                 :indextype="indextype" :dialogObj="dialogObj"  :showIndexList="showIndexList" :index="index" />
         </div>
     </div>
 
@@ -171,9 +131,10 @@
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import systemComponent from '@views/components/domain.component.vue';
     import tablefieldComponent from "./tablefield.vue"
+    import indexlistComponent from "./indexlist.vue"
     import { createTable, updateTable } from '@/api/basedata.js';
     export default {
-        components: { tablefieldComponent, systemComponent },
+        components: { tablefieldComponent, indexlistComponent, systemComponent },
         mixins: [SYSTEM, FRAMEMANAGE],
         props: {
             showAction: {
@@ -192,10 +153,12 @@
             return {
                 check: '',
                 title: '',
+                indextype: "add",
                 isOk: false,
-                baseList: [],
+                index: 0,//索引列表坐标
                 editableTabsValue: "1",
                 showTableField: false,
+                showIndexList: false,
                 query: {
                     sysId: "",
                     subSysId: "",
@@ -287,13 +250,26 @@
         },
 
         methods: {
-            doCloseAction(bol) {
+            setCurrent(row) {
+                this.$refs.table.setCurrentRow(row);
+            },
+            handleCurrentChange(val) {
+                this.currentRow = val;
+            },
+            doTableColumnInfoList(val) { //获得子组件表字段内容
+                this.dialogObj.tableColumnInfoList = val;
+
+            },
+            doTableIndexList(val) {  //获得子组件索引内容
+                this.dialogObj.tableIndexList = val;
+
+            },
+            doCloseAction(bol) {//新增表 或 修改表 是否成功
                 if (bol) {
                     this.$refs['formAction'].validate(async valid => {
                         if (valid) {
                             if (this.type == "add") {
-                                //alert("actionObj-add: " + JSON.stringify(this.actionObj))
-
+                                
                                 let info = await createTable(this.dialogObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
@@ -301,11 +277,7 @@
                                 }
                             }
                             if (this.type == "edit") {
-                                //alert("actionObj-add: " + JSON.stringify(this.actionObj))
-                                //问题 为空还行，有数据 就有问题了，新增直接从dialogObj获得了【】，修改没有获取到
-                                this.dialogObj.tableColumnInfoList = [];
-                                this.dialogObj.tableIndexList = [];
-
+                                
                                 let info = await updateTable(this.dialogObj);
                                 if (info.resCode == "0") {
                                     this.$message.success('修改成功');
@@ -319,30 +291,80 @@
 
                 }
             },
-            changeTab() {
+            changeTab() {  //跳转tab页，判断当前页必选项是否都有值
                 if (this.editableTabsValue === "1") return
                 if (!this.dialogObj.sysId || !this.dialogObj.subSysId || !this.dialogObj.subDomain || !this.dialogObj.tableType
-                || !this.dialogObj.tableName || !this.dialogObj.tableNameDesc) {
+                    || !this.dialogObj.tableName || !this.dialogObj.tableNameDesc) {
                     this.$message.error("请输入必选项内容");
                     this.$nextTick(() => {
                         this.editableTabsValue = "1"
                     })
                 }
             },
-            doCloseTableField(bol) {
+            doCloseTableField(bol) { //设置表字段面板是否展示
                 if (bol) {
-                    this.getList();
                     this.showTableField = false;
                 } else {
                     this.showTableField = false;
                 }
             },
+            
             queryList() {
                 this.query.pageNum = 1;
                 this.getList(1);
             },
-            doShowTableField() {
+            doShowTableField() {  //新增表字段
                 this.showTableField = true;
+            },
+            doEditTableField(item, index) {  //修改表字段
+                this.index = index;
+                this.showTableField = true;
+            },
+            doDeleteTableField(index) {  //删除表字段
+                this.$msgbox({
+                    title: '删除',
+                    message: '确认删除此表字段吗？',
+                    beforeClose: async (action, instance, done) => {
+                        if (action == 'confirm') {
+                            this.dialogObj.tableColumnInfoList.splice(index,1);
+                                this.$message.success('删除成功');
+                            done();
+                        } else {
+                            done();
+                        }
+                    }
+                });
+            },
+            doCloseIndexList(bol) {  //设置索引面板是否展示
+                if (bol) {
+                    this.showIndexList = false;
+                } else {
+                    this.showIndexList = false;
+                }
+            },
+            doShowIndexList() { //新增索引
+                this.indextype = "add";
+                this.showIndexList = true;
+            },
+            doEditIndex(item, index) {  //修改索引
+                this.indextype = "edit";
+                this.index = index;
+                this.showIndexList = true;
+            },
+            doDeleteIndex(index) {  //删除索引
+                this.$msgbox({
+                    title: '删除',
+                    message: '确认删除此条索引吗？',
+                    beforeClose: async (action, instance, done) => {
+                        if (action == 'confirm') {
+                            this.dialogObj.tableIndexList.splice(index,1);
+                                this.$message.success('删除成功');
+                            done();
+                        } else {
+                            done();
+                        }
+                    }
+                });
             },
 
         },
@@ -362,7 +384,7 @@
 
         },
         watch: {
-
+            //根据子域的变化，显示 tableName
             "dialogObj.subDomain"(val) {
                 if (this.type == "add") {
                     if (!val) {

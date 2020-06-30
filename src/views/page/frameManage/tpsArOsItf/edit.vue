@@ -18,9 +18,11 @@
                         <el-table-column align="center" type="index" label="序号" width="50" />
                         <el-table-column align="center" prop="targetSubSys" width="200" label="目标系统">
                             <template slot-scope="scope">
-                                <el-cascader :show-all-levels="false" v-model="scope.row.sysNewId" :options="sysSubSysList"  :props="{ expandTrigger: 'hover' }"></el-cascader>
+                                <el-cascader :show-all-levels="false" v-model="scope.row.sysNewId"
+                                    :options="sysSubSysList" :props="{ expandTrigger: 'hover' }"></el-cascader>
                             </template>
                         </el-table-column>
+
                         <el-table-column align="center" prop="commuType" label="通讯类型">
                             <template slot-scope="scope">
                                 <el-select v-model="scope.row.commuType">
@@ -36,7 +38,7 @@
                         </el-table-column>
                         <el-table-column align="center" prop="port" label="端口">
                             <template slot-scope="scope">
-                                <el-input v-model.trim="scope.row.port"></el-input>
+                                <el-input v-model.number="scope.row.port" />
                             </template>
                         </el-table-column>
                         <el-table-column align="center" prop="itfStandCode" label="接口标准编码">
@@ -47,7 +49,7 @@
                         <el-table-column align="center" label="操作" fixed="right" width="100px">
                             <template slot-scope="scope">
                                 <!-- <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button> -->
-                                <el-button @click="dodelete(scope.row,scope.index)" type="danger">删除</el-button>
+                                <el-button @click="doDelete(scope.$index)" type="danger">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -75,10 +77,9 @@
     import Sortable from "sortablejs";
     import { createTpsArOsItf, updateTpsArOsItf } from '@/api/frameManage';
     import systemComponent from '@views/components/system.component.vue';
-    import targetComponent from './targetSubSys.vue';
     import FRAMEMANAGE from '@views/mixin/frameManage';
     export default {
-        components: { targetComponent, systemComponent },
+        components: { systemComponent },
         props: {
             showAction: {
                 type: Boolean
@@ -98,12 +99,12 @@
                 type: Object
             },
         },
-        mixins: [SYSTEM,FRAMEMANAGE],
+        mixins: [SYSTEM, FRAMEMANAGE],
         data() {
             return {
                 data: [],
                 dialogObj: {
-                
+
                 },
                 rules: {
                     itfCode: [
@@ -114,8 +115,9 @@
                     ],
                 },
                 dataObj: {
-                    targetSubSys: "lgs",
-                    targetSubSysDesc: "lgs-日志中心",
+                    dispSeqno: "",
+                    targetSubSys: "",
+                    targetSubSysDesc: "",
                     commuType: "httpCommunication",
                     url: "",
                     port: "",
@@ -126,16 +128,18 @@
         },
         methods: {
             doAdd() {
-                this.data.push(deepClone(this.dataObj)); (
-                    this.data.forEach((item, index) => {
-                        item.dispSeqno = index + 1;
-                    }))
+                this.data.push(deepClone(this.dataObj));
+                this.data.forEach((item, index) => {
+                    item.dispSeqno = index + 1 + "";
+
+                })
             },
-            dodelete(item) {
-                this.data.pop(deepClone(item));
+            doDelete(index) {
+                this.data.splice(index, 1);
 
             },
             doCloseAction(bol) {
+                let flg = true;
                 if (bol) {
                     this.$refs['formAction'].validate(async valid => {
                         if (valid) {
@@ -147,11 +151,23 @@
                                 this.$message.error('请选择子系统');
                                 return false;
                             };
+                            this.data.forEach(item => {
+                                if(typeof item.port != "number"){
+                                    flg = false;
+                                    this.$message.error('端口号请输入数字');
+                                    return
+                                }
+                            });
+                            if(!flg){
+                                return false;
+                            }
+                            this.data.forEach(item => {
+                                item.targetSubSys = item.sysNewId[1];
+                                item.targetSubSysDesc = this.getSysDes(item.sysNewId[1]);
+                                delete item.sysNewId;
+                            })  
                             
-                            this.data.forEach(item=>{
-                                item.targetSubSysDesc = this.getSysDes(item.targetSubSys);
-                            })
-                            console.log(111,this.data);
+                            
                             this.dialogObj.extension = JSON.stringify(this.data);
                             if (this.type == "add") {
                                 let info = await createTpsArOsItf(this.dialogObj);
@@ -162,7 +178,6 @@
                             }
                             if (this.type == "edit") {
                                 let info = await updateTpsArOsItf(this.dialogObj);
-                                console.log("info.resCode: " + info.resCode)
                                 this.$message.success('修改成功');
                                 this.$emit("doClose", true)
                             }
@@ -177,11 +192,11 @@
         mounted() {
 
             this.dialogObj = deepClone(this.actionObj);
-            
+
             if (this.type == 'edit') {
-                this.data=this.dialogObj.data;
-                console.log(this.data)
-               
+                this.data = this.dialogObj.data;
+                //console.log(this.data)
+
             }
             this.$nextTick(() => {
                 const tbody = document.querySelector(".tpsEdit .el-table__body-wrapper tbody");
