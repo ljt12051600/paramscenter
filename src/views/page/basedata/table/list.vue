@@ -99,9 +99,9 @@
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import SYSTEM from '@views/mixin/system.js'
     import systemComponent from '@views/components/domain.component.vue';
-    import { queryTable,deleteTable } from '@/api/basedata.js';
+    import { queryTable, deleteTable } from '@/api/basedata.js';
     export default {
-        components: { editComponent,systemComponent },
+        components: { editComponent, systemComponent },
         mixins: [FRAMEMANAGE, SYSTEM],
         data() {
             return {
@@ -167,8 +167,8 @@
                     subDomain: "",
                     subSysId: "",
                     sysId: "",
-                    tableColumnInfoList: "",
-                    tableIndexList: "",
+                    tableColumnInfoList: [],
+                    tableIndexList: [],
                     tableName: "",
                     tableNameDesc: "",
                     tableType: "",
@@ -200,12 +200,12 @@
                     numPerPage: 10
                 };
             },
-            
+              //删除表
             doDelete(item) {
                 let postObj = { id: item.id, tableName: item.tableName };
                 this.$msgbox({
                     title: '删除',
-                    message: '确认删除此系统吗？',
+                    message: '确认删除此表吗？',
                     beforeClose: async (action, instance, done) => {
                         if (action == 'confirm') {
                             let info = await deleteTable(postObj);
@@ -257,54 +257,57 @@
                     sysId: "",
                 };
                 this.type = "add";
-                // this.title = "新增操作";
             },
-            doEdit(item) {
-                this.showAction = true;
-                this.type = "edit";
-                //this.title = "修改操作";
-                this.actionObj = {
-                    ascDesc: item.ascDesc,
-                    belongDb: item.belongDb,
-                    checkUser: item.checkUser,
-                    clnCyc: item.clnCyc,
-                    clnDesc: item.clnDesc,
-                    complexity: item.complexity,
-                    createTime: item.createTime,
-                    createUser: item.createUser,
-                    dataBaseName: item.dataBaseName,
-                    dataBaseType: item.dataBaseType,
-                    dataDesc: item.dataDesc,
-                    dataStatus: item.dataStatus,
-                    handleType: item.handleType,
-                    id: item.id,
-                    isHotspot: item.isHotspot,
-                    lastUpdateTime: item.lastUpdateTime,
-                    lastUpdateUser: item.lastUpdateUser,
-                    level: item.level,
-                    processDesc: item.processDesc,
-                    remark: item.remark,
-                    sourceVer: item.sourceVer,
-                    status: item.status,
-                    subDomain: item.subDomain,
-                    subSysId: item.subSysId,
-                    sysId: item.sysId,
-                    tableColumnInfoList: item.tableColumnInfoList,
-                    tableIndexList: item.tableIndexList,
-                    tableName: item.tableName,
-                    tableNameDesc: item.tableNameDesc,
-                    tableType: item.tableType,
-                    taskSeqno: item.taskSeqno,
-                    userId: item.userId,
-                    ver: item.ver,
-                    verStatus: item.verStatus,
-                    weight: item.weight,
+               //修改表，将表中的数据返显到表单中
+            async  doEdit(item) {
+                //查询 tableColumnInfoList isCollection true
+                let info = await queryTable({ tableName: item.tableName, ver: item.ver, isCollection: "true" });
+                if (info.resCode === '0') {
+                    this.actionObj = {
+                        ascDesc: item.ascDesc,
+                        belongDb: item.belongDb,
+                        checkUser: item.checkUser,
+                        clnCyc: item.clnCyc+"",
+                        clnDesc: item.clnDesc,
+                        complexity: item.complexity,
+                        createTime: item.createTime,
+                        createUser: item.createUser,
+                        dataBaseName: item.dataBaseName,
+                        dataBaseType: item.dataBaseType,
+                        dataDesc: item.dataDesc,
+                        dataStatus: item.dataStatus,
+                        handleType: item.handleType,
+                        id: item.id,
+                        isHotspot: item.isHotspot,
+                        lastUpdateTime: item.lastUpdateTime,
+                        lastUpdateUser: item.lastUpdateUser,
+                        level: item.level,
+                        processDesc: item.processDesc,
+                        remark: item.remark,
+                        sourceVer: item.sourceVer,
+                        status: item.status,
+                        subDomain: item.subDomain,
+                        subSysId: item.subSysId,
+                        sysId: item.sysId,
+                        tableColumnInfoList: info.rows[0].tableColumnInfoList,
+                        tableIndexList: info.rows[0].tableIndexList,
+                        tableName: item.tableName,
+                        tableNameDesc: item.tableNameDesc,
+                        tableType: item.tableType,
+                        taskSeqno: item.taskSeqno,
+                        userId: item.userId,
+                        ver: item.ver,
+                        verStatus: item.verStatus,
+                        weight: item.weight,
+                    }
+                    this.showAction = true;
+                    this.type = "edit";
 
                 };
             },
             doCloseAction(bol) {
                 if (bol) {
-                    this.getList();
+                    this.getList(1);
                     this.showAction = false;
                 } else {
                     this.showAction = false;
@@ -337,7 +340,7 @@
             },
         },
         mounted() {
-            this.getList();
+            this.getList(1);
         }
     };
 </script>

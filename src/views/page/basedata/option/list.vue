@@ -135,7 +135,7 @@ export default {
             },
             type: 'add',
             data: {
-                total: 20,
+                total:0,
                 rows: []
             }
         };
@@ -231,8 +231,3 @@ export default {
     }
 };
 </script>
-<style>
-.sortable-ghost {
-    background: red;
-}
-</style>
