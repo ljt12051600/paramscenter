@@ -151,8 +151,19 @@
                                 this.$message.error('请选择子系统');
                                 return false;
                             };
+                            
                             this.data.forEach(item => {
-                                if(typeof item.port != "number"){
+                                if(item.sysNewId == null){
+                                    flg = false;
+                                    this.$message.error('请选择目标系统');
+                                    return
+                                }
+                                if(item.url == ""){
+                                    flg = false;
+                                    this.$message.error('请输入服务器地址');
+                                    return
+                                }
+                                if(item.port != null && item.port != "" && typeof item.port != "number"){
                                     flg = false;
                                     this.$message.error('端口号请输入数字');
                                     return
