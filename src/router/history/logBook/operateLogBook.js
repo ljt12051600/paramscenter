@@ -2,7 +2,7 @@
 const LOGBOOKROUTER=[
     {
         path: '/operateLogBook',
-        component: () => import(/* webpackChunkName: "basedata" */ "@page/logBook/opreateLogBook/list.vue"),
+        component: () => import(/* webpackChunkName: "basedata" */ "@page/history/logBook/opreateLogBook/list.vue"),
         meta: { title: '操作日志查询' }
     },
 ]

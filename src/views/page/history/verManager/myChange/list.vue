@@ -119,7 +119,8 @@
         return changeType;
       },
       clearSearch() {
-        this.query.tblSearch = "";
+        this.query.businessName = "";
+        this.query.changeType = "";
       },      
       async getList(num) {
 

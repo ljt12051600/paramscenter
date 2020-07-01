@@ -31,11 +31,11 @@
           <el-table-column align="center" prop="businessName" label="业务名称" />
           <el-table-column align="center" prop="dspNameValue" label="业务主键" />
           <el-table-column align="center" prop="changeType" label="变更类型" :formatter="formatterChangeType" />
-          <el-table-column align="center" prop="ver" label="版本" />
+          <el-table-column align="center" prop="ver" label="版本" width="70" />
           <el-table-column align="center" prop="changeStatus" label="状态" :formatter="formatterChangeStatus" />
-          <el-table-column align="center" prop="checkoutUser" label="检出用户" />
+          <el-table-column align="center" prop="checkoutUser" label="检出用户" width="80" />
           <el-table-column align="center" prop="checkoutDate" label="检出日期" />
-          <el-table-column align="center" prop="createUser" label="检入用户" />
+          <el-table-column align="center" prop="createUser" label="检入用户" width="80" />
           <el-table-column align="center" prop="createTime" label="检入日期" />
         </el-table>
 
@@ -48,8 +48,6 @@
 
       </div>
     </system-table>
-   
-
   </div>
 </template>
 
@@ -116,7 +114,8 @@
         return changeType;
       },
       clearSearch() {
-        this.query.tblSearch = "";
+        this.query.businessFlag = "";
+        this.query.changeType = "";
       },      
       async getList(num) {
         let postObj = deleteKey(this.query);
