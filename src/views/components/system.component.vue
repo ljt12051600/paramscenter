@@ -2,13 +2,13 @@
     <div style="display:inline-block">
         <el-form-item   :required="required" label="系统">
           
-            <el-select :disabled="disabled.includes('1')" @change="changeSysId" style="width:200px;" v-model="query.sysId" clearable placeholder="请选择">
+            <el-select filterable :disabled="disabled.includes('1')" @change="changeSysId" style="width:200px;" v-model="query.sysId" clearable placeholder="请选择">
                 <el-option  v-for="(item,index) in sysList" :key="index+'yy'" :label="item.sysId+'-'+item.sysName"
                     :value="item.sysId"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item :required="required"  label="子系统">
-            <el-select :disabled="disabled.includes('2')" @change="changeSubSysId" style="width:200px;" v-model="query.subSysId" clearable
+            <el-select filterable :disabled="disabled.includes('2')" @change="changeSubSysId" style="width:200px;" v-model="query.subSysId" clearable
                 placeholder="请选择">
                 <el-option :key="index+'xx'" v-for="(item,index) in subSysList"
                     :label="item.subSysId+'-'+item.subSysName" :value="item.subSysId"></el-option>

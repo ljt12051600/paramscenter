@@ -18,7 +18,7 @@
                         <el-table-column align="center" type="index" label="序号" width="50" />
                         <el-table-column align="center" prop="targetSubSys" width="200" label="目标系统">
                             <template slot-scope="scope">
-                                <el-cascader :show-all-levels="false" v-model="scope.row.sysNewId"
+                                <el-cascader filterable :show-all-levels="false" v-model="scope.row.sysNewId"
                                     :options="sysSubSysList" :props="{ expandTrigger: 'hover' }"></el-cascader>
                             </template>
                         </el-table-column>
