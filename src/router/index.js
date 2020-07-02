@@ -3,10 +3,10 @@ import Router from 'vue-router';
 import BASEDATAROUTER from "./base/basedata";
 import SYSTEMROUTER from "./base/system";
 import FRAMEMANAGEROUTER from './base/frameManage';
-import PUBPARAMROUTER from './systemPubParam/pubParam';
-import LOGBOOKROUTER from './logBook/operateLogBook';
-import MYCHANGEROUTER from './verManager/myChange';
-import VERREPOSITORYROUTER from './verManager/verRepository';
+import PUBPARAMROUTER from './history/systemParam/pubParam';
+import LOGBOOKROUTER from './history/logBook/operateLogBook';
+import MYCHANGEROUTER from './history/verManager/myChange';
+import VERREPOSITORYROUTER from './history/verManager/verRepository';
 Vue.use(Router);
 
 
