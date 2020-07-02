@@ -27,6 +27,14 @@
 .collapse-btn:hover{
     background: #00d1b2!important;
 }
+.el-menu--vertical .el-menu-item{
+    background: #f3f3f3!important;
+    color:rgb(48, 65, 86)!important;
+
+}
+.el-menu.el-menu--popup.el-menu--popup-right-start{
+    background-color: #f3f3f3!important;;
+}
 .sidebar-el-menu  .el-menu-item{
     background: #f3f3f3!important;
     color:rgb(48, 65, 86)!important;
