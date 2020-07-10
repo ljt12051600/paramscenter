@@ -4,8 +4,8 @@
 
         <div class="logo">
             <img
-                style="width:70px;height:70px;diplay:inline-block;vertical-align:top"
-                src="../../assets/kunlun.jpg"
+                style="width:70px;height:70px;diplay:inline-block;vertical-align:top;padding-left:6px"
+                src="../../assets/kunlun.png"
                 alt
             />
             <span style="diplay:inline-block;vertical-align:top">后台管理系统</span>
