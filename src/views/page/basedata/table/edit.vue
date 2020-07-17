@@ -4,7 +4,7 @@
             <el-tabs @tab-click="changeTab" v-model="editableTabsValue">
                 <el-tab-pane label="基础信息" name="1">
                     <el-form ref="formAction" :model="dialogObj" :rules="rules" :inline="true" label-width="120px">
-                        <system-component :required="true" :query="dialogObj" />
+                        <system-component :disabled="type=='add'?'':'123'" :required="true" :query="dialogObj" />
                         <el-form-item required label="表类型" prop="tableType">
                             <el-select style="width:200px;" :disabled="isOk" v-model="dialogObj.tableType" clearable
                                 placeholder="请选择">
@@ -116,7 +116,7 @@
         </el-dialog>
         <div v-if="showTableField">
             <tablefield-component @doTableColumnInfoList="doTableColumnInfoList" @doClose="doCloseTableField"
-                 :dialogObj="dialogObj"  :showTableField="showTableField" />
+                :dialogObj="dialogObj"  :showTableField="showTableField" />
         </div>
         <div v-if="showIndexList">
             <indexlist-component @doTableIndexList="doTableIndexList" @doClose="doCloseIndexList"
@@ -268,8 +268,22 @@
                 if (bol) {
                     this.$refs['formAction'].validate(async valid => {
                         if (valid) {
+                            if (!this.dialogObj.sysId) {
+                                this.$message.error("请选择系统");
+                                return;
+                            }
+                            if (!this.dialogObj.subSysId) {
+                                this.$message.error("请选择子系统");
+                                return;
+                            }
+                            if (!this.dialogObj.subDomain) {
+                                this.$message.error("请选择子域");
+                                return;
+                            }
+
+
                             if (this.type == "add") {
-                                
+
                                 let info = await createTable(this.dialogObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
@@ -277,7 +291,7 @@
                                 }
                             }
                             if (this.type == "edit") {
-                                
+
                                 let info = await updateTable(this.dialogObj);
                                 if (info.resCode == "0") {
                                     this.$message.success('修改成功');
@@ -308,7 +322,7 @@
                     this.showTableField = false;
                 }
             },
-            
+
             queryList() {
                 this.query.pageNum = 1;
                 this.getList(1);
@@ -326,8 +340,8 @@
                     message: '确认删除此表字段吗？',
                     beforeClose: async (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.dialogObj.tableColumnInfoList.splice(index,1);
-                                this.$message.success('删除成功');
+                            this.dialogObj.tableColumnInfoList.splice(index, 1);
+                            this.$message.success('删除成功');
                             done();
                         } else {
                             done();
@@ -357,8 +371,8 @@
                     message: '确认删除此条索引吗？',
                     beforeClose: async (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.dialogObj.tableIndexList.splice(index,1);
-                                this.$message.success('删除成功');
+                            this.dialogObj.tableIndexList.splice(index, 1);
+                            this.$message.success('删除成功');
                             done();
                         } else {
                             done();

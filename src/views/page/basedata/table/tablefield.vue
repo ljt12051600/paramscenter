@@ -1,16 +1,16 @@
 <template>
     <el-dialog :title="title" :visible="showTableField" width="800px" :show-close="false">
-        <el-form ref="formTableField" :inline="true" :model="dialogObj" label-width="140px">
-            <el-form-item label="表名">
+        <el-form ref="formTableField" :inline="true" :rules="rules"  :model="dialogObj" label-width="140px">
+            <el-form-item label="表名" prop="tableName">
                 <el-input style="width:200px;" required disabled v-model.trim="dialogObj.tableName"></el-input>
             </el-form-item>
-            <el-form-item label="字段名">
+            <el-form-item label="字段名" prop="fieldName">
                 <el-input style="width:200px;" disabled v-model.trim="tableObj.fieldName"></el-input>
             </el-form-item>
-            <el-form-item label="中文名称">
+            <el-form-item label="中文名称" prop="fieldDesc">
                 <el-input style="width:200px;" disabled v-model.trim="tableObj.fieldDesc"></el-input>
             </el-form-item>
-            <el-form-item label="类型">
+            <el-form-item label="类型" prop="type">
                 <el-input style="width:200px;" disabled v-model.trim="tableObj.type"></el-input>
             </el-form-item>
             <el-form-item label="长度">
@@ -19,14 +19,14 @@
             <el-form-item label="小位数">
                 <el-input style="width:200px;" disabled v-model.trim="tableObj.point"></el-input>
             </el-form-item>
-            <el-form-item label="主键类型">
+            <el-form-item label="主键类型" prop="fieldPrimy">
                 <el-select style="width:200px;" v-model="tableObj.fieldPrimy" clearable placeholder="请选择">
                     <el-option label="0-非主键" value="0"></el-option>
                     <el-option label="1-自增主键" value="1"></el-option>
                     <el-option label="2-普通主键" value="2"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="是否为空">
+            <el-form-item label="是否为空" prop="fieldNull">
                 <el-select style="width:200px;" v-model="tableObj.fieldNull" clearable placeholder="请选择">
                     <el-option label="1-是" value="1"></el-option>
                     <el-option label="0-否" value="0"></el-option>
@@ -143,6 +143,7 @@
                 this.tableObj.length = val.length;
                 this.tableObj.point = val.point;
                 this.currentRow = val;
+                this.$refs['formTableField'].clearValidate()
             },
             clearSearch() {  //清空查询字段
                 this.query = {
