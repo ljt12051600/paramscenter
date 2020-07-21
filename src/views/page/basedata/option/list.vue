@@ -11,8 +11,8 @@
                             clearable
                             placeholder="请选择"
                         >
-                            <el-option label="未发布" value="-1"></el-option>
-                            <el-option label="已发布" value="9"></el-option>
+                            <el-option label="-1-未发布" value="-1"></el-option>
+                            <el-option label="9-已发布" value="9"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="数据标准">
@@ -68,16 +68,28 @@
                     <el-table-column align="center" prop="userSex" label="子系统">
                         <template slot-scope="scope">{{subSysObj[scope.row.subSysId]}}</template>
                     </el-table-column>
+                    <el-table-column class="el-icon-star-on" align="center" prop="issueStatus" label="发布状态">
+                        <template slot-scope="scope">
+                            <el-tooltip class="item" effect="light" :content="contentIssue" placement="bottom-start">
+                                <i class="el-icon-star-on" :style="styleColor"></i>
+                            </el-tooltip>
+                            <!-- <el-tooltip class="item" effect="light" content="修改未发布" placement="bottom">
+                                <i class="el-icon-star-on" style="color:purple;"></i>
+                            </el-tooltip> -->
+                            
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" prop="optionCode" label="选项代码" />
                     <el-table-column align="center" prop="optionName" label="选项名称" />
                     <el-table-column align="center" prop="optionValue" label="选项值" />
                     <el-table-column align="center" prop="optionDesc" label="选项描述" />
                     <el-table-column align="center" prop="optionGroup" label="选项组别" />
                     <el-table-column align="center" prop="groupName" label="组别名称" />
-                    <el-table-column label="操作" width="300" align="center" fixed="right">
+                    <el-table-column label="操作" width="300px" align="center" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
-                            <el-button @click="doDelete(scope.row,scope.index)" type="danger">删除</el-button>
+                            <el-button @click="doAddGroup(scope.row,scope.index)" type="primary">新建组别</el-button>
+                            <el-button @click="doEditGroup(scope.row,scope.index)" type="primary">修改组别</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -128,6 +140,9 @@ export default {
                 optionValue: '',
                 optionDesc: ''
             },
+            issueStatus:"",
+            contentIssue:"",
+            styleColor:"",
             showDialog: false,
             actionObj:{
                  sysId:"",
@@ -202,7 +217,19 @@ export default {
                     total: info.total,
                     rows: info.rows || []
                 };
-            }
+            };
+            if(issueStatus==9){
+                contentIssue="已发布";
+                styleColor="color:green;";
+            };
+            if(issueStatus==0){
+                contentIssue="新增未发布";
+                styleColor="color:red;";
+            };
+            if(issueStatus==1){
+                contentIssue="修改未发布";
+                styleColor="color:purple;";
+            };
         },
         queryList() {
             this.query.pageNum = 1;
