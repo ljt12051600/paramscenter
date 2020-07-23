@@ -178,6 +178,9 @@ a {
 .noshowtabs .el-tabs__header.is-top {
     display: none
 }
+.noshowtabs .yesshowtabs .el-tabs__header.is-top{
+    display: block;
+}
 
 .content .el-input-number.is-without-controls .el-input__inner {
     text-align: left;
