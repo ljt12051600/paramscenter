@@ -1,16 +1,16 @@
 <template>
     <el-dialog :title="title" :visible="showIndexList" width="800px" :show-close="false">
-        <el-form ref="formIndexList" :inline="true" :model="dialogObj" label-width="140px">
-            <el-form-item label="表名">
+        <el-form ref="formIndexList" :inline="true" :rules="rules" :model="indexObj" label-width="140px">
+            <el-form-item label="表名" required>
                 <el-input style="width:200px;" required disabled v-model.trim="dialogObj.tableName"></el-input>
             </el-form-item>
-            <el-form-item label="索引id">
+            <el-form-item label="索引id" prop="indexId">
                 <el-input style="width:200px;" v-model.trim="indexObj.indexId" clearable></el-input>
             </el-form-item>
             <el-form-item label="索引描述">
                 <el-input style="width:200px;" v-model.trim="indexObj.indexDesc" clearable></el-input>
             </el-form-item>
-            <el-form-item label="是否唯一索引">
+            <el-form-item label="是否唯一索引" prop="isUnique">
                 <el-select style="width:200px;" v-model="indexObj.isUnique" clearable placeholder="请选择">
                     <el-option label="1-是" value="1"></el-option>
                     <el-option label="0-否" value="0"></el-option>
@@ -32,7 +32,7 @@
         </el-form>
 
         <div slot="footer" class="dialog-footer">
-            <el-button @click="doCloseIndexListAction(false)">取 消</el-button>
+            <el-button @click="doCloseIndexListAction(false)">关 闭</el-button>
             <el-button type="primary" @click="doCloseIndexListAction(true)">{{check}}</el-button>
         </div>
     </el-dialog>
@@ -104,11 +104,13 @@
 
                                 }//tableIndexList 中的数组值 传递给父组件
                                 this.$emit("doTableIndexList", this.dialogObj.tableIndexList);
+                                this.$message.success("添加成功,可继续添加")
                             }else if(this.indextype=="edit"){  //修改
                                 this.dialogObj.tableIndexList[this.index].indexField =  this.tableFieldList.join(",");
                                 this.dialogObj.tableIndexList[this.index].indexDesc = this.indexObj.indexDesc;
                                 this.dialogObj.tableIndexList[this.index].isUnique = this.indexObj.isUnique;
                                 this.dialogObj.tableIndexList[this.index].remark = this.indexObj.remark;
+                                this.$message.success("修改成功")
                             }
 
                             this.indexObj.indexId = "";

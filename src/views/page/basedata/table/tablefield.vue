@@ -1,7 +1,7 @@
 <template>
     <el-dialog :title="title" :visible="showTableField" width="800px" :show-close="false">
-        <el-form ref="formTableField" :inline="true" :rules="rules"  :model="dialogObj" label-width="140px">
-            <el-form-item label="表名" prop="tableName">
+        <el-form ref="formTableField" :inline="true" :rules="rules"  :model="tableObj" label-width="140px">
+            <el-form-item label="表名" required>
                 <el-input style="width:200px;" required disabled v-model.trim="dialogObj.tableName"></el-input>
             </el-form-item>
             <el-form-item label="字段名" prop="fieldName">
@@ -70,7 +70,7 @@
                 @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
         </div>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="doCloseTableFieldAction(false)">取 消</el-button>
+            <el-button @click="doCloseTableFieldAction(false)">关 闭</el-button>
             <el-button type="primary" @click="doCloseTableFieldAction(true)">添 加</el-button>
         </div>
     </el-dialog>
@@ -174,10 +174,12 @@
                                 this.tableObj.type = "";
                                 this.tableObj.length = "";
                                 this.tableObj.point = "";
-                                this.tableObj.fieldPrimy = "";
-                                this.tableObj.fieldNull = "";
+                                this.tableObj.fieldPrimy = "0";
+                                this.tableObj.fieldNull = "1";
                                 this.tableObj.fieldDef = "";
                                 this.tableObj.processDesc = "";
+                                this.$refs['formTableField'].clearValidate()
+                                this.$message.success("添加成功,可继续添加")
                         }
                     });
                 } else {
