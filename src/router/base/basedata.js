@@ -23,7 +23,7 @@ const BASEDATAROUTER=[
     {
         path: '/option',
         component: () => import(/* webpackChunkName: "basedata" */ "@page/basedata/option/list.vue"),
-        meta: { title: '选项代码' }
+        meta: { title: '选项代码2.0' }
     },
     {
         path: '/datatable',

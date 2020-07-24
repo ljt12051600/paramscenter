@@ -13,7 +13,7 @@
             <el-tab-pane
                 v-for=" ( item, index)  in groupList"
                 :key="index+'cc'"
-                :label="item.optionDesc"
+                :label="item.groupName"
                 :name="index+''"
             >
                 <el-form ref="form" :inline="true" label-width="140px">
@@ -28,13 +28,15 @@
                         <el-input
                             maxlength="20"
                             style="width:220px;"
-                            v-model.trim="item.optionDesc"
+                            v-model.trim="item.groupName"
                         ></el-input>
                     </el-form-item>
                 </el-form>
                 <el-row :gutter="20">
                     <el-col :span="10">
-                        <el-table :data="item.leftchildren" style="width: 100%;">
+                        <el-table ref="leftTable" :data="item.leftchildren" style="width: 100%;" 
+                                    @selection-change="handleSelectionChangeLeft">
+                                    
                             <el-table-column type="selection" width="55"></el-table-column>
                            
                             <el-table-column align="center" prop="optionValue" label="选项值" />
@@ -44,18 +46,20 @@
                     </el-col>
                     <el-col :span="2">
                         <div>
-                            <el-button type="primary">左移</el-button>
+                            <el-button type="primary" @click="leftMove(index)">左移</el-button>
                         </div>
                         <div style="margin-top:20px">
-                            <el-button type="primary">右移</el-button>
+                            <el-button type="primary" @click="rightMove(index)">右移</el-button>
                         </div>
                     </el-col>
                     <el-col :span="10">
                         <div :class="'table'+index">
+                            <!-- :ref="'table'+index" -->
                             <el-table
-                                :ref="'table'+index"
+                                ref="rightTable"
                                 :data="item.children"
                                 style="width: 100%;"
+                                @selection-change="handleSelectionChangeRight"
                             >
                                 <el-table-column type="selection" width="55"></el-table-column>
                                 <el-table-column align="center" prop="optionValue" label="选项值" />
@@ -96,19 +100,104 @@ export default {
         return {
             dialogObj: {},
             groupListNew: [],
-            editableTabsValue: ''
+            editableTabsValue: '',
+            multipleSelectionLeft:[],
+            multipleSelectionRight:[],
+            children:[],
+            optionValueList:[],
+            count: -2,
+            
         };
     },
     methods: {
         addTab() {
+            this.count += 1;
+            if(this.count != -1){
+                if(this.groupList[this.count].children.length == this.baseList.length){
+                    return this.$message.error("不能包含所有选项值")
+                }
+                if(this.groupList[this.count].children.length == 0){
+                    return this.$message.error("至少包含一项选项值")
+                }
+            }
+
+            this.optionValueList = deepClone(this.baseList);
             this.groupList.push({
                 optionGroup: '',
-                optionDesc: '组别' + (this.groupList.length+1),
+                groupName: '组别' + (this.groupList.length+1),
                 children: [],
-                leftchildren: this.baseList
+                leftchildren: this.optionValueList
             });
             this.editableTabsValue = this.groupList.length-1+"";
         },
+        //左表格保存选中结果
+        handleSelectionChangeLeft(val) {
+            this.multipleSelectionLeft= val;
+        },
+        //右表格保存选中结果
+        handleSelectionChangeRight(val) {
+            this.multipleSelectionRight = val;
+        },
+        //右移---把左边表格的选中项移到右边表格
+        rightMove(index) {
+            //不能全选 + 也不能全不选
+            if(this.multipleSelectionLeft.length == this.optionValueList.length){
+                return this.$message.error("不能包含所有的选项值");
+            }
+            if(this.multipleSelectionLeft.length == 0){
+                return this.$message.error("请选择选项值");
+            }
+            this.multipleSelectionLeft.forEach(item => {
+                this.groupList[index].children.push(item)
+            });
+
+            var arr1 = this.groupList[index].leftchildren;
+            var arr2 = this.multipleSelectionLeft;
+
+            function remove(arr1, arr2) {
+                for (let i = 0; i < arr2.length; i++) {
+                    for (let j = 0; j < arr1.length; j++) {
+                        if (arr2[i] == arr1[j]) {
+                            let indexs = arr1.indexOf(arr1[j]);
+                            arr1.splice(indexs, 1);
+                        }
+                    }
+                }
+                return arr1
+            }
+            //调用：
+            this.groupList[index].leftchildren = remove(arr1, arr2);
+        },
+        //左移是把右边表格选中项移到左边表格
+        leftMove(index){
+            console.log("右表格数据")
+            console.log(this.multipleSelectionRight);
+
+            if(this.multipleSelectionRight.length == 0){
+                return this.$message.error("无选项值");
+            }
+            this.multipleSelectionLeft.forEach(item => {
+                this.groupList[index].children.push(item)
+            });
+
+            var arr1 = this.groupList[index].leftchildren;
+            var arr2 = this.multipleSelectionLeft;
+
+            function remove(arr1, arr2) {
+                for (let i = 0; i < arr2.length; i++) {
+                    for (let j = 0; j < arr1.length; j++) {
+                        if (arr2[i] == arr1[j]) {
+                            let indexs = arr1.indexOf(arr1[j]);
+                            arr1.splice(indexs, 1);
+                        }
+                    }
+                }
+                return arr1
+            }
+            //调用：
+            this.groupList[index].leftchildren = remove(arr1, arr2);
+        },
+        
         removeTab(val) {
            this.groupList.splice(val,1)
         },
@@ -137,20 +226,24 @@ export default {
         }
     },
     mounted() {
-        this.groupListNew = [
-            {
-                optionGroup: '123',
-                optionDesc: 'TEST',
-                children: [{ optionValue: '123' }, { optionValue: '123123' }],
-                leftchildren: this.baseList
-            },
-            {
-                optionGroup: '123',
-                optionDesc: 'TEST',
-                children: [{ optionValue: '123' }, { optionValue: '123123123123' }],
-                leftchildren: this.baseList
-            }
-        ];
+        // alert("baseList: "+ JSON.stringify(this.baseList));
+
+        // this.optionValueList = deepClone(this.baseList);
+        // alert("optionValueList: "+ JSON.stringify(this.optionValueList));
+        // this.groupListNew = [
+        //     {
+        //         optionGroup: '123',
+        //         optionDesc: 'TEST',
+        //         children: [{ optionValue: '123' }, { optionValue: '123123' }],
+        //         leftchildren: this.baseList
+        //     },
+        //     {
+        //         optionGroup: '123',
+        //         optionDesc: 'TEST',
+        //         children: [{ optionValue: '123' }, { optionValue: '123123123123' }],
+        //         leftchildren: this.baseList
+        //     }
+        // ];
     },
     watch: {}
 };

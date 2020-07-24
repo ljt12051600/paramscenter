@@ -18,6 +18,11 @@ let SYSTEM = {
             typeList: [],
             subSysObj: {},
             subSysAllObj: {},
+            issueStatusObj: {
+                "9": "9-已发布",
+                "0": "0-新增未发布",
+                "1": "1-修改未发布",
+            },
             dataStandObj: {
                 "1": "企业级",
                 "2": "应用级"
