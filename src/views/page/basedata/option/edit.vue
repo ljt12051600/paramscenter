@@ -159,80 +159,88 @@
         },
         methods: {
             async doClose(bol) {
+                debugger
                 if (!bol) this.$emit('doClose', true);//点击取消关闭弹框
-                if (!this.dialogObj.sysId) {
-                    this.$message.error("请选择系统");
-                    return;
-                }
-                if (!this.dialogObj.subSysId) {
-                    this.$message.error("请选择子系统");
-                    return;
-                }
-                if (!this.dialogObj.optionCode || !this.dialogObj.optionName) {
-                    this.$message.error("请选择选项代码和选项名称");
-                    return;
-                }
-                if (!this.dialogObj.dataStand) {
-                    this.$message.error("请选择数据标准");
-                    return;
-                }
-                // console.log(this.baseList)
-                if (this.baseList.length == 0) {
-                    this.$message.error("每个选项代码至少定义一个选项值");
-                    return;
-                }
-                //判断选项组别页签的选项值不为空
-                let count = this.groupList.length - 1;
-                if (this.groupList.length != 0 && this.groupList[count].children.length == 0) {
-                    this.$message.error("至少包含一个选项值");
-                    return;
-                } else {
-                    // console.log(this.dialogObj)
-                    // console.log("dialogObj:  " + JSON.stringify(this.dialogObj))
-                    // console.log(this.baseList)
-                    // console.log("baseList:  " + JSON.stringify(this.baseList))
-                    // console.log(this.groupList)
-                    // console.log("groupList:  " + JSON.stringify(this.groupList))
-
-                    this.baseList.forEach((item, index) => {
-                        let newObj = { ...this.dialogObj, ...item };
-                        newObj.displaySeqno = index + 1;
-                        this.rows.push(newObj)
-                    })
-                    this.addObj.rows = this.rows;
-
-                   // console.log("addObj: " + JSON.stringify(this.addObj))
-
-                    this.groupList.forEach((item, index) => {
-                        let rightchildren = deepClone(item.children);
-                        delete item.children;
-                        delete item.leftchildren;
-                        rightchildren.forEach((itemTwo, indexTwo) => {
-                            let groupObject = {...item,...itemTwo};
-                            groupObject.sysId = this.dialogObj.sysId;
-                            groupObject.subSysId = this.dialogObj.subSysId;
-                            groupObject.optionCode = this.dialogObj.optionCode;
-                            groupObject.displaySeqno = indexTwo+1;
-                            
-                            this.groupRows.push(groupObject);
-                        })
-                        //this.groupRows.push(this.groupListNew[index]);
-                    })
-
-                    console.log("groupRows: "+this.groupRows);
-                    this.addObj.groupRows = this.groupRows;
-
-                    console.log("addObj: " + JSON.stringify(this.addObj));
-
-                    let info = await createOptionDetail(this.addObj);
-                    if (info.resCode === '0') {
-                        this.$message.success('添加成功');
-                        this.$emit('doClose', true);
+                if (bol) {
+                    if (!this.dialogObj.sysId) {
+                        this.$message.error("请选择系统");
+                        return;
                     }
-                    
+                    if (!this.dialogObj.subSysId) {
+                        this.$message.error("请选择子系统");
+                        return;
+                    }
+                    if (!this.dialogObj.optionCode || !this.dialogObj.optionName) {
+                        this.$message.error("请选择选项代码和选项名称");
+                        return;
+                    }
+                    if (!this.dialogObj.dataStand) {
+                        this.$message.error("请选择数据标准");
+                        return;
+                    }
+                    // console.log(this.baseList)
+                    if (this.baseList.length == 0) {
+                        this.$message.error("每个选项代码至少定义一个选项值");
+                        return;
+                    }
+                    //判断选项组别页签的选项值不为空
+                    let count = this.groupList.length - 1;
+                    if (this.groupList.length != 0 && this.groupList[count].children.length == 0) {
+                        this.$message.error("至少包含一个选项值");
+                        return;
+                    } else {
+                        // console.log(this.dialogObj)
+                        // console.log("dialogObj:  " + JSON.stringify(this.dialogObj))
+                        // console.log(this.baseList)
+                        // console.log("baseList:  " + JSON.stringify(this.baseList))
+                        // console.log(this.groupList)
+                        // console.log("groupList:  " + JSON.stringify(this.groupList))
+
+                        this.baseList.forEach((item, index) => {
+                            let newObj = { ...this.dialogObj, ...item };
+                            newObj.displaySeqno = index + 1;
+                            this.rows.push(newObj)
+                        })
+                        this.addObj.rows = this.rows;
+
+                        // console.log("addObj: " + JSON.stringify(this.addObj))
+
+                        this.groupList.forEach((item, index) => {
+                            let rightchildren = deepClone(item.children);
+                            delete item.children;
+                            delete item.leftchildren;
+                            rightchildren.forEach((itemTwo, indexTwo) => {
+                                let groupObject = { ...item, ...itemTwo };
+                                groupObject.sysId = this.dialogObj.sysId;
+                                groupObject.subSysId = this.dialogObj.subSysId;
+                                groupObject.optionCode = this.dialogObj.optionCode;
+                                groupObject.displaySeqno = indexTwo + 1;
+
+                                this.groupRows.push(groupObject);
+                            })
+                            //this.groupRows.push(this.groupListNew[index]);
+                        })
+
+                        console.log("groupRows: " + this.groupRows);
+                        this.addObj.groupRows = this.groupRows;
+
+                        console.log("addObj: " + JSON.stringify(this.addObj));
+
+                        let info = await createOptionDetail(this.addObj);
+                        if (info.resCode === '0') {
+                            this.$message.success('添加成功');
+                            this.$emit('doClose', true);
+                        }
+
+                    }
                 }
+
             },
             changeTab() {
+                console.log("baseList:  "+ JSON.stringify(this.baseList))
+                
+                console.log("children:  "+ JSON.stringify(this.groupList))
+                
                 if (this.editableTabsValue === '1') return;
                 if (!this.dialogObj.sysId || !this.dialogObj.subSysId || !this.dialogObj.optionCode || !this.dialogObj.optionName || !this.dialogObj.dataStand) {
                     this.$message.error('选项代码不能为空');
