@@ -68,15 +68,20 @@
                     <el-table-column align="center" prop="userSex" label="子系统">
                         <template slot-scope="scope">{{subSysObj[scope.row.subSysId]}}</template>
                     </el-table-column>
-                    <el-table-column class="el-icon-star-on" align="center" prop="issueStatus" label="发布状态">
-                        <template slot-scope="scope">
-                            <el-tooltip class="item" effect="light" :content="contentIssue" placement="bottom-start">
-                                <i class="el-icon-star-on" :style="styleColor"></i>
+                    <el-table-column class="el-icon-star-on" align="center" prop="issueStatus" label="发布状态" width="80">
+                        <template slot-scope="scope" >
+                            <el-tooltip v-if="scope.row.issueStatus=='9'" class="item" effect="light" content="已发布" placement="right">
+                                <i class="el-icon-star-on" style="color:green;font-size:18px;"></i>
+                            </el-tooltip> 
+                            <el-tooltip v-if="scope.row.issueStatus=='0'" class="item" effect="light" content="新增未发布" placement="right">
+                                <i class="el-icon-star-on" style="color:purple;font-size:18px;"></i>
                             </el-tooltip>
-                            <!-- <el-tooltip class="item" effect="light" content="修改未发布" placement="bottom">
-                                <i class="el-icon-star-on" style="color:purple;"></i>
-                            </el-tooltip> -->
-                            
+                            <el-tooltip v-if="scope.row.issueStatus=='1'" class="item" effect="light" content="修改未发布" placement="right">
+                                <i class="el-icon-star-on" style="color:red;font-size:18px;"></i>
+                            </el-tooltip> 
+                            <el-tooltip v-if="scope.row.issueStatus=='2'" class="item" effect="light" content="删除未发布" placement="right">
+                                <i class="el-icon-star-on" style="color:black;font-size:18px;"></i>
+                            </el-tooltip>   
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="optionCode" label="选项代码" />
@@ -85,11 +90,12 @@
                     <el-table-column align="center" prop="optionDesc" label="选项描述" />
                     <el-table-column align="center" prop="optionGroup" label="选项组别" />
                     <el-table-column align="center" prop="groupName" label="组别名称" />
-                    <el-table-column label="操作" width="300px" align="center" fixed="right">
+                    <el-table-column label="操作" width="180px" align="center" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="doEdit(scope.row,scope.index)" type="primary">修改</el-button>
-                            <el-button @click="doAddGroup(scope.row,scope.index)" type="primary">新建组别</el-button>
-                            <el-button @click="doEditGroup(scope.row,scope.index)" type="primary">修改组别</el-button>
+                            <el-button @click="doDelete(scope.row,scope.index)" type="danger    ">删除</el-button>
+                            <!-- <el-button @click="doAddGroup(scope.row,scope.index)" type="primary">新建组别</el-button>
+                            <el-button @click="doEditGroup(scope.row,scope.index)" type="primary">修改组别</el-button> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -114,7 +120,11 @@
         </div>
     </div>
 </template>
-
+<style>
+    /* .item:hover {
+        transform:rotate(180deg);
+    } */
+</style>
 <script>
 import { deleteKey, deepClone } from '@/utils';
 import systemComponent from '@views/components/system.component.vue';
@@ -217,18 +227,6 @@ export default {
                     total: info.total,
                     rows: info.rows || []
                 };
-            };
-            if(issueStatus==9){
-                contentIssue="已发布";
-                styleColor="color:green;";
-            };
-            if(issueStatus==0){
-                contentIssue="新增未发布";
-                styleColor="color:red;";
-            };
-            if(issueStatus==1){
-                contentIssue="修改未发布";
-                styleColor="color:purple;";
             };
         },
         queryList() {

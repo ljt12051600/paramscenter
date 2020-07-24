@@ -1,68 +1,39 @@
 <template>
     <div>
-        <el-dialog :show-close="false" style="max-height：400px" :visible="showDialog">
+        <el-dialog :show-close="false" style="max-height：400px" width="800px" :visible="showDialog">
             <el-tabs v-model="editableTabsValue" @tab-click="changeTab">
                 <el-tab-pane name="1" label="基础信息">
                     <el-form ref="form" :inline="true" label-width="140px">
-                        <system-component
-                            :disabled="type=='add'?'':'12'"
-                            :required="true"
-                            :query="dialogObj"
-                        />
+                        <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
 
                         <el-form-item required label="选项代码">
-                            <el-input
-                                :disabled="type!='add'"
-                                style="width:160px"
-                                v-model.trim="dialogObj.optionCode"
-                            ></el-input>
-                            <el-button
-                                type="primary"
-                                @click="queryUnitDataDialog"
-                                v-show="type=='add'"
-                            >选择</el-button>
+                            <el-input :disabled="type!='add'" style="width:140px" v-model.trim="dialogObj.optionCode">
+                            </el-input>
+                            <el-button type="primary" @click="queryUnitDataDialog" v-show="type=='add'">选择</el-button>
                         </el-form-item>
                         <el-form-item required label="选项名称">
-                            <el-input style="width:220px;" v-model.trim="dialogObj.optionName"></el-input>
+                            <el-input v-model.trim="dialogObj.optionName"></el-input>
                         </el-form-item>
                         <el-form-item required label="数据标准">
-                            <el-select
-                                style="width:220px;"
-                                v-model="dialogObj.dataStand"
-                                clearable
-                                placeholder="请选择"
-                            >
-                                <el-option
-                                    :key="index+'cc'"
-                                    v-for="(item,index) in dataStandList"
-                                    :label="item.value+'-'+item.name"
-                                    :value="item.value"
-                                ></el-option>
+                            <el-select style="width:200px;" v-model="dialogObj.dataStand" clearable placeholder="请选择">
+                                <el-option :key="index+'cc'" v-for="(item,index) in dataStandList"
+                                    :label="item.value+'-'+item.name" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="备注">
-                            <el-input style="width:220px;" v-model.trim="dialogObj.optionGroup"></el-input>
+                            <el-input style="width:200px;" v-model.trim="dialogObj.remark"></el-input>
                         </el-form-item>
                     </el-form>
                     <el-card>
                         <div class="one">
                             <el-button type="primary" @click="addBaseList">新增</el-button>
-                            <el-table
-                                highlight-current-row
-                                border
-                                ref="table"
-                                align="center"
-                                :data="baseList"
-                                style="width: 100%;"
-                            >
+                            <el-table highlight-current-row border ref="table" align="center" :data="baseList"
+                                style="width: 100%;">
                                 <el-table-column align="center" type="index" label="序号" width="50" />
-
                                 <el-table-column align="center" prop="optionValue" label="选项值">
                                     <template slot-scope="scope">
-                                        <el-input
-                                            @blur="checkCopy(scope.row.optionValue,scope.$index)"
-                                            v-model="scope.row.optionValue"
-                                        ></el-input>
+                                        <el-input @blur="checkCopy(scope.row.optionValue,scope.$index)"
+                                            v-model="scope.row.optionValue"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="optionDesc" label="选项描述">
@@ -75,25 +46,16 @@
                                         <el-input v-model="scope.row.anotherName"></el-input>
                                     </template>
                                 </el-table-column>
-                                <el-table-column
-                                    label="操作"
-                                    width="100"
-                                    align="center"
-                                    fixed="right"
-                                >
+                                <el-table-column label="操作" width="100" align="center" fixed="right">
                                     <template slot-scope="scope">
-                                        <el-button
-                                            @click="doDeleteOption(scope.$index)"
-                                            type="primary"
-                                        >删除</el-button>
+                                        <el-button @click="doDeleteOption(scope.$index)" type="primary">删除
+                                        </el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
                         </div>
-                        <div
-                            v-if="type=='add'||type=='edit'"
-                            style=" color:red;font:12px"
-                        >tips:1.拖动表格行可以进行排序,2.修改已经在组别的选项值，组别对应的选项值会默认删除</div>
+                        <div v-if="type=='add'||type=='edit'" style=" color:red;font:12px">
+                            tips:1.拖动表格行可以进行排序,2.修改已经在组别的选项值，组别对应的选项值会默认删除</div>
                     </el-card>
                 </el-tab-pane>
                 <el-tab-pane name="2" label="选项组别">
@@ -132,16 +94,9 @@
                     </el-table-column>
                 </el-table>
                 <div v-if="data.total" class="pagination">
-                    <el-pagination
-                        background
-                        layout="total,pager,jumper,sizes"
-                        :current-page="query.pageNum"
-                        :page-sizes="[10,25,50]"
-                        :page-size="query.numPerPage"
-                        :total="data.total"
-                        @current-change="handlePageChange"
-                        @size-change="handleSizeChange"
-                    ></el-pagination>
+                    <el-pagination background layout="total,pager,jumper,sizes" :current-page="query.pageNum"
+                        :page-sizes="[10,25,50]" :page-size="query.numPerPage" :total="data.total"
+                        @current-change="handlePageChange" @size-change="handleSizeChange"></el-pagination>
                 </div>
             </div>
         </el-drawer>
@@ -149,183 +104,264 @@
 </template>
 
 <script>
-import { deleteKey, deepClone } from '@/utils';
-import SYSTEM from '@views/mixin/system';
-import { queryUnitDataListForSysId } from '@/api/basedata';
-import Sortable from 'sortablejs';
-import groupEdit from './group.vue';
+    import { deleteKey, deepClone } from '@/utils';
+    import SYSTEM from '@views/mixin/system';
+    import { queryUnitDataListForSysId, createOptionDetail } from '@/api/basedata';
+    import Sortable from 'sortablejs';
+    import groupEdit from './group.vue';
 
-import systemComponent from '@views/components/system.component.vue';
-export default {
-    components: { systemComponent, groupEdit },
-    mixins: [SYSTEM],
-    props: {
-        showDialog: {
-            type: Boolean
-        },
+    import systemComponent from '@views/components/system.component.vue';
+    export default {
+        components: { systemComponent, groupEdit },
+        mixins: [SYSTEM],
+        props: {
+            showDialog: {
+                type: Boolean
+            },
 
-        type: {
-            type: String,
-            default: 'add'
-        },
-        actionObj: {
-            type: Object
-        }
-    },
-    data() {
-        return {
-            dialogObj: {
-                sysId: '',
-                subSysId: '',
-                unitDataDesc: '',
-                unitDataCode: ''
+            type: {
+                type: String,
+                default: 'add'
             },
-            editableTabsValue: '1',
-            title: '',
-            drawer: false,
-            query: {
-                sysId: '',
-                subSysId: '',
-                pageNum: 1,
-                numPerPage: 10
-            },
-            baseList: [],
-            data: {
-                total: 0,
-                rows: []
-            },
-            groupList: []
-        };
-    },
-    methods: {
-        doClose(bol) {
-            this.$emit('doClose', bol);
-        },
-        changeTab() {
-            if (this.editableTabsValue === '1') return;
-            if (!this.baseList.length) {
-                this.$message.error('选项值列表不能为空');
-                this.$nextTick(() => {
-                    this.editableTabsValue = '1';
-                });
-            }
-            let index = this.baseList.findIndex(item => {
-                return item.optionValue == '';
-            });
-
-            if (index > -1) {
-                this.$message.error(`第${index + 1}选项值为空`);
-                this.$nextTick(() => {
-                    this.editableTabsValue = '1';
-                });
+            actionObj: {
+                type: Object
             }
         },
-        checkCopy(val, index) {
-            if (!val) {
-                return this.$message.error('选项值不能为空');
-            }
-            let num = 0;
-            this.baseList.forEach(item => {
-                if (item.optionValue == val) {
-                    num++;
+        data() {
+            return {
+                dialogObj: {
+                    sysId: '',
+                    subSysId: '',
+                    unitDataDesc: '',
+                    unitDataCode: ''
+                },
+                editableTabsValue: '1',
+                title: '',
+                drawer: false,
+                query: {
+                    sysId: '',
+                    subSysId: '',
+                    pageNum: 1,
+                    numPerPage: 10
+                },
+                baseList: [],
+                data: {
+                    total: 0,
+                    rows: []
+                },
+                groupList: [],
+                optionValue: [],
+                addObj: {},
+                rows: [],
+                groupRows: [],
+                groupListNew: [],
+            };
+        },
+        methods: {
+            async doClose(bol) {
+                if (!bol) this.$emit('doClose', true);//点击取消关闭弹框
+                if (!this.dialogObj.sysId) {
+                    this.$message.error("请选择系统");
+                    return;
                 }
-            });
-            if (num == 2) {
-                this.baseList[index].optionValue = '';
-                return this.$message.error('选项值重复请重新输入');
-            }
-            this.getLeftRightChildren();
-        },
-        doDeleteOption(ind){
-            this.baseList.splice(ind,1)
-        },
-        getLeftRightChildren(){
+                if (!this.dialogObj.subSysId) {
+                    this.$message.error("请选择子系统");
+                    return;
+                }
+                if (!this.dialogObj.optionCode || !this.dialogObj.optionName) {
+                    this.$message.error("请选择选项代码和选项名称");
+                    return;
+                }
+                if (!this.dialogObj.dataStand) {
+                    this.$message.error("请选择数据标准");
+                    return;
+                }
+                // console.log(this.baseList)
+                if (this.baseList.length == 0) {
+                    this.$message.error("每个选项代码至少定义一个选项值");
+                    return;
+                }
+                //判断选项组别页签的选项值不为空
+                let count = this.groupList.length - 1;
+                if (this.groupList.length != 0 && this.groupList[count].children.length == 0) {
+                    this.$message.error("至少包含一个选项值");
+                    return;
+                } else {
+                    // console.log(this.dialogObj)
+                    // console.log("dialogObj:  " + JSON.stringify(this.dialogObj))
+                    // console.log(this.baseList)
+                    // console.log("baseList:  " + JSON.stringify(this.baseList))
+                    // console.log(this.groupList)
+                    // console.log("groupList:  " + JSON.stringify(this.groupList))
 
+                    this.baseList.forEach((item, index) => {
+                        let newObj = { ...this.dialogObj, ...item };
+                        newObj.displaySeqno = index + 1;
+                        this.rows.push(newObj)
+                    })
+                    this.addObj.rows = this.rows;
 
-        },
-        
+                   // console.log("addObj: " + JSON.stringify(this.addObj))
 
-        addBaseList() {
-            this.baseList.push({
-                optionValue: '',
-                optionDesc: '',
-                anotherName: ''
-            });
-        },
+                    this.groupList.forEach((item, index) => {
+                        let rightchildren = deepClone(item.children);
+                        delete item.children;
+                        delete item.leftchildren;
+                        rightchildren.forEach((itemTwo, indexTwo) => {
+                            let groupObject = {...item,...itemTwo};
+                            groupObject.sysId = this.dialogObj.sysId;
+                            groupObject.subSysId = this.dialogObj.subSysId;
+                            groupObject.optionCode = this.dialogObj.optionCode;
+                            groupObject.displaySeqno = indexTwo+1;
+                            
+                            this.groupRows.push(groupObject);
+                        })
+                        //this.groupRows.push(this.groupListNew[index]);
+                    })
 
-        queryUnitDataDialog() {
-            if (!this.dialogObj.subSysId) {
-                return this.$message.error('请选择子系统');
-            }
-            this.queryList();
-            this.drawer = true;
-        }, //获取元数据代码
-        doChooseUnitDate(item) {
-            this.dialogObj.optionCode = item.unitDataCode;
-            this.dialogObj.optionName = item.unitDataDesc;
-            this.drawer = false;
-        },
-        async getList(num) {
-            let postObj = deleteKey(this.query);
-            postObj.sysId = this.dialogObj.sysId;
-            postObj.subSysId = this.dialogObj.subSysId;
-            postObj.pageNum--;
+                    console.log("groupRows: "+this.groupRows);
+                    this.addObj.groupRows = this.groupRows;
 
-            let info = await queryUnitDataListForSysId(postObj);
-            if (info.resCode === '0') {
-                this.data = {
-                    total: info.total,
-                    rows: info.rows || []
-                };
-            }
-        },
-        queryList() {
-            this.query.pageNum = 1;
-            this.getList(1);
-        },
-        handlePageChange(num) {
-            this.query.pageNum = num;
-            this.getList(num);
-        },
-        handleSizeChange(num) {
-            this.query.pageNum = 1;
-            this.query.numPerPage = num;
-            this.getList(num);
-        } //获取元数据代码结束
-    },
-    mounted() {
-        this.changeTab(0);
+                    console.log("addObj: " + JSON.stringify(this.addObj));
 
-        if (this.type == 'add') {
-            this.dialogObj = deepClone(this.actionObj);
-        } else {
-            return;
-        }
-
-        this.$nextTick(() => {
-            const tbody = document.querySelector('.one tbody');
-
-            Sortable.create(tbody, {
-                ghostClass: 'sortable-ghost',
-                onEnd: ({ newIndex, oldIndex }) => {
-                    let newArr = deepClone(this.baseList);
-                    const currRow = newArr.splice(oldIndex, 1)[0];
-                    newArr.splice(newIndex, 0, currRow);
-                    // 重新排序完的表格数据
-                    this.baseList = [];
-                    this.$nextTick(function() {
-                        this.baseList = newArr;
+                    let info = await createOptionDetail(this.addObj);
+                    if (info.resCode === '0') {
+                        this.$message.success('添加成功');
+                        this.$emit('doClose', true);
+                    }
+                    
+                }
+            },
+            changeTab() {
+                if (this.editableTabsValue === '1') return;
+                if (!this.dialogObj.sysId || !this.dialogObj.subSysId || !this.dialogObj.optionCode || !this.dialogObj.optionName || !this.dialogObj.dataStand) {
+                    this.$message.error('选项代码不能为空');
+                    this.$nextTick(() => {
+                        this.editableTabsValue = '1';
+                    });
+                } else if (!this.baseList.length) {
+                    this.$message.error('选项值列表不能为空');
+                    this.$nextTick(() => {
+                        this.editableTabsValue = '1';
                     });
                 }
-            });
-        });
-    },
-    watch: {
-        baseList(val) {
-            if (!this.groupList.length) {
+                let index = this.baseList.findIndex(item => {
+                    return item.optionValue == '';
+                });
+
+                if (index > -1) {
+                    this.$message.error(`第${index + 1}选项值为空`);
+                    this.$nextTick(() => {
+                        this.editableTabsValue = '1';
+                    });
+                }
+            },
+            checkCopy(val, index) {
+                if (!val) {
+                    return this.$message.error('选项值不能为空');
+                }
+                let num = 0;
+                this.baseList.forEach(item => {
+                    if (item.optionValue == val) {
+                        num++;
+                    }
+                });
+                if (num == 2) {
+                    this.baseList[index].optionValue = '';
+                    return this.$message.error('选项值重复请重新输入');
+                }
+                this.getLeftRightChildren();
+            },
+            doDeleteOption(ind) {
+                this.baseList.splice(ind, 1)
+            },
+            getLeftRightChildren() {
+
+
+            },
+
+
+            addBaseList() {
+                this.baseList.push({
+                    optionValue: '',
+                    optionDesc: '',
+                    anotherName: ''
+                });
+            },
+
+            queryUnitDataDialog() {
+                if (!this.dialogObj.subSysId) {
+                    return this.$message.error('请选择子系统');
+                }
+                this.queryList();
+                this.drawer = true;
+            }, //获取元数据代码
+            doChooseUnitDate(item) {
+                this.dialogObj.optionCode = item.unitDataCode;
+                this.dialogObj.optionName = item.unitDataDesc;
+                this.drawer = false;
+            },
+            async getList(num) {
+                let postObj = deleteKey(this.query);
+                postObj.sysId = this.dialogObj.sysId;
+                postObj.subSysId = this.dialogObj.subSysId;
+                postObj.pageNum--;
+
+                let info = await queryUnitDataListForSysId(postObj);
+                if (info.resCode === '0') {
+                    this.data = {
+                        total: info.total,
+                        rows: info.rows || []
+                    };
+                }
+            },
+            queryList() {
+                this.query.pageNum = 1;
+                this.getList(1);
+            },
+            handlePageChange(num) {
+                this.query.pageNum = num;
+                this.getList(num);
+            },
+            handleSizeChange(num) {
+                this.query.pageNum = 1;
+                this.query.numPerPage = num;
+                this.getList(num);
+            } //获取元数据代码结束
+        },
+        mounted() {
+            this.changeTab(0);
+
+            if (this.type == 'add') {
+                this.dialogObj = deepClone(this.actionObj);
+            } else {
                 return;
             }
+
+            this.$nextTick(() => {
+                const tbody = document.querySelector('.one tbody');
+
+                Sortable.create(tbody, {
+                    ghostClass: 'sortable-ghost',
+                    onEnd: ({ newIndex, oldIndex }) => {
+                        let newArr = deepClone(this.baseList);
+                        const currRow = newArr.splice(oldIndex, 1)[0];
+                        newArr.splice(newIndex, 0, currRow);
+                        // 重新排序完的表格数据
+                        this.baseList = [];
+                        this.$nextTick(function () {
+                            this.baseList = newArr;
+                        });
+                    }
+                });
+            });
+        },
+        watch: {
+            baseList(val) {
+                if (!this.groupList.length) {
+                    return;
+                }
+            }
         }
-    }
-};
+    };
 </script>

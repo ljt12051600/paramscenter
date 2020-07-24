@@ -214,6 +214,14 @@ export const queryUnitDataListForSysId=async (data)=>{
         datas: data,
     })
 }
+//新增选项代码和选项组别
+export const createOptionDetail=async (data)=>{
+    return await request({
+        url: '/optionDetail/createOptionDetail',
+        method: 'post',
+        datas: data,
+    })
+}
 //数据表定义
 export const queryTable = async (data) => {
     return await request({
