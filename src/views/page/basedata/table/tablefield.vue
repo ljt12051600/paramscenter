@@ -39,10 +39,10 @@
                 <el-input style="width:200px;" v-model.trim="tableObj.processDesc"></el-input>
             </el-form-item>
             <el-form-item label="     ">
-                <el-input style="width:200px;" v-model.trim="query.unitDataCode"></el-input>
+                <el-input style="width:200px;" v-model.trim="query.unitDataCode" placeholder="请输入元数据代码"> </el-input>
             </el-form-item>
             <el-form-item label="">
-                <el-input style="width:200px;" v-model.trim="query.unitDataDesc"></el-input>
+                <el-input style="width:200px;" v-model.trim="query.unitDataDesc" placeholder="请输入中文名称"></el-input>
             </el-form-item>
             <el-form-item label="">
                 <el-button @click="queryList" type="primary">查询</el-button>
