@@ -404,7 +404,7 @@
                         if (valid) {
                            
                             if (!/^[a-zA-Z][a-zA-Z0-9]{1,100}$/.test(this.editObj.unitDataCode)) {
-                                return this.$message.error("格式错误")
+                                return this.$message.error("元数据格式错误")
 
                             }
                             if(this.editObj.optionCode.includes("&&&&")){//因爲後端傳的數據不規範，只能這麽處理了
@@ -414,7 +414,7 @@
                             else{
                                 this.editObj.optionGroup=""
                             }
-                            this.editObj.unitDataCode = this.editObj.unitDataCode.toLowerCase()
+                            
                             let info = await updateUnitData(this.editObj);
                             if (info.resCode === '0') {
                                 this.$message.success('修改成功');
@@ -484,8 +484,8 @@
 
             },
             clearCombin(item) {
-                this.addObj.dictCode = "";
-                this.editObj.dictCode = "";
+                this.addObj.unitDataCode = "";
+                this.editObj.unitDataCode = "";
                 this.addObj.unitDataDesc = ""
                 this.editObj.unitDataDesc = ""
             },
