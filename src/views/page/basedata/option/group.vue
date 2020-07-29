@@ -39,7 +39,7 @@
                                     
                             <el-table-column type="selection" width="55"></el-table-column>
                            
-                            <el-table-column align="center" prop="optionValue" label="选项值" />
+                            <el-table-column align="center" prop="optionValue" label="未选-选项值" />
                             <el-table-column align="center" prop="optionDesc" label="选项描述" />
                             <el-table-column align="center" prop="anotherName" label="别名" />
                         </el-table>
@@ -62,7 +62,7 @@
                                 @selection-change="handleSelectionChangeRight"
                             >
                                 <el-table-column type="selection" width="55"></el-table-column>
-                                <el-table-column align="center" prop="optionValue" label="选项值" />
+                                <el-table-column align="center" prop="optionValue" label="已选-选项值" />
 
                                 <el-table-column align="center" prop="optionDesc" label="选项描述" />
 
@@ -147,6 +147,9 @@ export default {
             if(this.multipleSelectionLeft.length == 0){
                 return this.$message.error("请选择选项值");
             }
+            if(this.multipleSelectionLeft.length == this.groupList[index].leftchildren.length){
+                return this.$message.error("不能包含所有的选项值");
+            }
             this.multipleSelectionLeft.forEach(item => {
                 this.groupList[index].children.push(item)
             });
@@ -167,21 +170,23 @@ export default {
             }
             //调用：
             this.groupList[index].leftchildren = remove(arr1, arr2);
+            console.log(JSON.stringify(this.groupList),222)
         },
         //左移是把右边表格选中项移到左边表格
         leftMove(index){
             console.log("右表格数据")
             console.log(this.multipleSelectionRight);
+            console.log(this.groupList[index].leftchildren,111);
 
             if(this.multipleSelectionRight.length == 0){
                 return this.$message.error("无选项值");
             }
-            this.multipleSelectionLeft.forEach(item => {
-                this.groupList[index].children.push(item)
+            this.multipleSelectionRight.forEach(item => {
+                this.groupList[index].leftchildren.push(item)
             });
-
-            var arr1 = this.groupList[index].leftchildren;
-            var arr2 = this.multipleSelectionLeft;
+            console.log(JSON.stringify(this.groupList[index].leftchildren),222);   
+            var arr1 = this.groupList[index].children;
+            var arr2 = this.multipleSelectionRight;
 
             function remove(arr1, arr2) {
                 for (let i = 0; i < arr2.length; i++) {
@@ -195,7 +200,7 @@ export default {
                 return arr1
             }
             //调用：
-            this.groupList[index].leftchildren = remove(arr1, arr2);
+            this.groupList[index].children = remove(arr1, arr2);
         },
         
         removeTab(val) {

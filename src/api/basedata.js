@@ -207,6 +207,38 @@ export const queryOptionDetailList=async (data)=>{
         datas: data,
     })
 }
+//查询选项值列表-参数：optionCode: "itfStandName"
+export const queryOptionCodeList=async (data)=>{
+    return await request({
+        url: '/optionDetail/queryOptionCodeList/',
+        method: 'post',
+        datas: data,
+    })
+}
+//查询选项组别列表-参数：optionCode: "itfStandName"    optionGroup: "excel"
+export const queryTp1009List=async (data)=>{
+    return await request({
+        url: '/tp1009/queryTp1009List/',
+        method: 'post',
+        datas: data,
+    })
+}
+//删除选项列表
+export const deleteOptionDetail=async (data)=>{
+    return await request({
+        url: '/optionDetail/deleteOptionDetail/',
+        method: 'post',
+        datas: data,
+    })
+}
+//修改选项列表
+export const updateOptionDetail=async (data)=>{
+    return await request({
+        url: '/optionDetail/updateOptionDetail/',
+        method: 'post',
+        datas: data,
+    })
+}
 export const queryUnitDataListForSysId=async (data)=>{
     return await request({
         url: '/unitData/queryUnitDataListForSysId',

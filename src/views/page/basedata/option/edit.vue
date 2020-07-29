@@ -1,13 +1,13 @@
 <template>
     <div>
-        <el-dialog :show-close="false" style="max-height：400px" width="800px" :visible="showDialog">
+        <el-dialog :title="title" :show-close="false" style="max-height：400px;" width="800px" :visible="showDialog">
             <el-tabs v-model="editableTabsValue" @tab-click="changeTab">
                 <el-tab-pane name="1" label="基础信息">
                     <el-form ref="form" :inline="true" label-width="140px">
                         <system-component :disabled="type=='add'?'':'12'" :required="true" :query="dialogObj" />
 
                         <el-form-item required label="选项代码">
-                            <el-input :disabled="type!='add'" style="width:140px" v-model.trim="dialogObj.optionCode">
+                            <el-input :disabled="type!='add'" style="width:140px;" v-model.trim="dialogObj.optionCode">
                             </el-input>
                             <el-button type="primary" @click="queryUnitDataDialog" v-show="type=='add'">选择</el-button>
                         </el-form-item>
@@ -33,22 +33,23 @@
                                 <el-table-column align="center" prop="optionValue" label="选项值">
                                     <template slot-scope="scope">
                                         <el-input @blur="checkCopy(scope.row.optionValue,scope.$index)"
-                                            v-model="scope.row.optionValue"></el-input>
+                                            v-model="scope.row.optionValue"
+                                            ></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="optionDesc" label="选项描述">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.optionDesc"></el-input>
+                                        <el-input v-model="scope.row.optionDesc" ></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="anotherName" label="别名">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.anotherName"></el-input>
+                                        <el-input v-model="scope.row.anotherName" ></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="操作" width="100" align="center" fixed="right">
                                     <template slot-scope="scope">
-                                        <el-button @click="doDeleteOption(scope.$index)" type="primary">删除
+                                        <el-button @click="doDeleteOption(scope.row,scope.$index)" type="primary">删除
                                         </el-button>
                                     </template>
                                 </el-table-column>
@@ -66,7 +67,7 @@
             </el-tabs>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="doClose(false)">取 消</el-button>
-                <el-button type="primary" @click="doClose(true)">确认添加</el-button>
+                <el-button type="primary" @click="doClose(true)">{{check}}</el-button>
             </div>
         </el-dialog>
 
@@ -106,7 +107,7 @@
 <script>
     import { deleteKey, deepClone } from '@/utils';
     import SYSTEM from '@views/mixin/system';
-    import { queryUnitDataListForSysId, createOptionDetail } from '@/api/basedata';
+    import { queryUnitDataListForSysId, createOptionDetail, updateOptionDetail } from '@/api/basedata';
     import Sortable from 'sortablejs';
     import groupEdit from './group.vue';
 
@@ -125,10 +126,19 @@
             },
             actionObj: {
                 type: Object
+            },
+            optionValues: {
+                type: Array
+            },
+            optionGroupList: {
+                type: Array
             }
         },
         data() {
             return {
+                check: '',
+                flg:true,
+                title: '',
                 dialogObj: {
                     sysId: '',
                     subSysId: '',
@@ -159,8 +169,20 @@
         },
         methods: {
             async doClose(bol) {
-                debugger
-                if (!bol) this.$emit('doClose', true);//点击取消关闭弹框
+                //debugger
+                if (!bol) {
+
+                    this.$confirm('是否放弃修改?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$emit('doClose', true);//点击取消关闭弹框
+                    }).catch(() => {
+
+
+                    });
+                }
                 if (bol) {
                     if (!this.dialogObj.sysId) {
                         this.$message.error("请选择系统");
@@ -183,18 +205,27 @@
                         this.$message.error("每个选项代码至少定义一个选项值");
                         return;
                     }
+                    if (this.groupList.length != 0) {
+                        this.groupList.forEach(item => {
+                            console.log(item.optionGroup, 111)
+                            if (item.optionGroup == "" || item.groupName == "") {
+                                this.$message.error("组别不能为空！");
+                                this.flg = false;
+                            }
+                        })
+                    }
+                    if(this.flg == false) return;
                     //判断选项组别页签的选项值不为空
                     let count = this.groupList.length - 1;
                     if (this.groupList.length != 0 && this.groupList[count].children.length == 0) {
                         this.$message.error("至少包含一个选项值");
                         return;
-                    } else {
-                        // console.log(this.dialogObj)
-                        // console.log("dialogObj:  " + JSON.stringify(this.dialogObj))
-                        // console.log(this.baseList)
-                        // console.log("baseList:  " + JSON.stringify(this.baseList))
-                        // console.log(this.groupList)
-                        // console.log("groupList:  " + JSON.stringify(this.groupList))
+                    }
+                    this.$confirm('是否确认提交?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(async () => {
 
                         this.baseList.forEach((item, index) => {
                             let newObj = { ...this.dialogObj, ...item };
@@ -202,8 +233,6 @@
                             this.rows.push(newObj)
                         })
                         this.addObj.rows = this.rows;
-
-                        // console.log("addObj: " + JSON.stringify(this.addObj))
 
                         this.groupList.forEach((item, index) => {
                             let rightchildren = deepClone(item.children);
@@ -218,32 +247,59 @@
 
                                 this.groupRows.push(groupObject);
                             })
-                            //this.groupRows.push(this.groupListNew[index]);
                         })
-
-                        console.log("groupRows: " + this.groupRows);
                         this.addObj.groupRows = this.groupRows;
-
-                        console.log("addObj: " + JSON.stringify(this.addObj));
-
-                        let info = await createOptionDetail(this.addObj);
-                        if (info.resCode === '0') {
-                            this.$message.success('添加成功');
-                            this.$emit('doClose', true);
+                        if (this.type == "add") {
+                            let info = await createOptionDetail(this.addObj);
+                            if (info.resCode === '0') {
+                                this.$message.success('添加成功');
+                                this.$emit('doClose', true);
+                            }
+                        }
+                        if (this.type == "edit") {
+                            let info = await updateOptionDetail(this.addObj);
+                            if (info.resCode === '0') {
+                                this.$message.success('修改成功');
+                                this.$emit('doClose', true);
+                            }
                         }
 
-                    }
+                    }).catch(() => {
+
+                    });
+
                 }
 
             },
             changeTab() {
-                console.log("baseList:  "+ JSON.stringify(this.baseList))
-                
-                console.log("children:  "+ JSON.stringify(this.groupList))
-                
+                if (this.editableTabsValue === '2' && this.groupList.length != 0) {
+                    // console.log(this.groupList, 999)
+                    // console.log(this.baseList, 333)
+                    var newChildren = deepClone(this.groupList[0].children);
+                    var newLeftchildren = deepClone(this.groupList[0].leftchildren);
+                    newLeftchildren.forEach(item => {
+                        newChildren.push(item);
+                    })
+                    console.log(newChildren, 111);
+                    this.baseList.forEach(item => {
+                        var i = 0;
+                        newChildren.forEach(item2 => {
+                            if (JSON.stringify(item) != JSON.stringify(item2)) {
+                                i++;
+                            }
+                        })
+                        if (i == newChildren.length) {
+                            this.groupList.forEach(item3 => {
+                                item3.leftchildren.push(item);
+                            })
+                        }
+                    })
+                    //console.log(this.groupList, 888)
+                }
+
                 if (this.editableTabsValue === '1') return;
                 if (!this.dialogObj.sysId || !this.dialogObj.subSysId || !this.dialogObj.optionCode || !this.dialogObj.optionName || !this.dialogObj.dataStand) {
-                    this.$message.error('选项代码不能为空');
+                    this.$message.error('请完成必输项');
                     this.$nextTick(() => {
                         this.editableTabsValue = '1';
                     });
@@ -264,6 +320,12 @@
                     });
                 }
             },
+            copyObj(val){
+                console.log(val,22222)
+                var copyValue = deepClone(val)
+                console.log(copyValue,11111)
+
+            },
             checkCopy(val, index) {
                 if (!val) {
                     return this.$message.error('选项值不能为空');
@@ -280,8 +342,40 @@
                 }
                 this.getLeftRightChildren();
             },
-            doDeleteOption(ind) {
-                this.baseList.splice(ind, 1)
+            doDeleteOption(item, ind) {
+
+                this.$confirm('组别中包含该选项值, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.baseList.splice(ind, 1);
+                    this.groupList.forEach(item2 => {
+                        item2.children.forEach((item3, index3) => {
+                            if (item3.optionValue == item.optionValue && item3.optionDesc == item.optionDesc && item3.anotherName == item.anotherName) {
+                                item2.children.splice(index3, 1);
+                            }
+                        })
+                        item2.leftchildren.forEach((item4, index4) => {
+                            if (item4.optionValue == item.optionValue && item4.optionDesc == item.optionDesc && item4.anotherName == item.anotherName) {
+                                item2.leftchildren.splice(index4, 1);
+                            }
+                        })
+                    })
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
+
+
+                //console.log(item,111)
             },
             getLeftRightChildren() {
 
@@ -341,9 +435,19 @@
             this.changeTab(0);
 
             if (this.type == 'add') {
+                this.title = "新增操作";
+                this.check = "确认添加";
                 this.dialogObj = deepClone(this.actionObj);
-            } else {
-                return;
+
+            }
+            if (this.type == 'edit') {
+                this.title = "修改操作";
+                this.check = "确认修改";
+                this.dialogObj = deepClone(this.actionObj);
+                this.baseList = deepClone(this.optionValues);
+                this.groupList = deepClone(this.optionGroupList);
+                //console.log("baseList:" + JSON.stringify(this.optionValues));
+
             }
 
             this.$nextTick(() => {
