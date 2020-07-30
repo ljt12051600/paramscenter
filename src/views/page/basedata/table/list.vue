@@ -46,9 +46,9 @@
                 <!--表格渲染-->
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
                     <el-table-column align="center" type="index" label="序号" width="50" />
-                    <el-table-column align="center" prop="dataStatus" label="状态">
-                        <template slot-scope="scope">
-                            {{tableTypeDescObj[scope.row.dataStatus]}}
+                    <el-table-column align="center" prop="status" label="状态">
+                    <template slot-scope="scope">
+                            {{tableTypeDescObj[scope.row.status]}}
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="subSysId" label="子系统">
@@ -118,14 +118,19 @@
                     numPerPage: 10
                 },
                 tableTypeDescObj: {
-                    "0": '定义类',
-                    "1": '账户类',
-                    "2": '明细类',
-                    "3": '登记簿类',
-                    "4": '流水类',
-                    "5": '报表类',
-                    "6": '历史类',
-                    "7": '临时类'
+                    
+                    "1": '新增',
+                    "2": '修改',
+                    "3": '删除',
+
+                    "80":'检出',
+                    "81":'检出-已修改',
+                    "82":'检出-已删除',
+                    "89":'检入',
+                    "90":'提交审批',
+                    "92":'撤销',
+                    "99":'审批通过',
+
                 },
                 rules: {
                     sysId: [
