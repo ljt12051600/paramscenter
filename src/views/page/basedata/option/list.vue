@@ -261,7 +261,7 @@
                         optionValue:item.optionValue,optionDesc:item.optionDesc,anotherName:item.anotherName
                     })
                 })
-                console.log(this.optionValues,888)
+                //console.log(this.optionValues,888)
                 //this.optionValues = this.dataValues.rowsValues;
         
                 this.itemList = this.dataGroups.rowsGroups;
@@ -284,7 +284,7 @@
                                         arr2[i].optionDesc == arr1[j].optionDesc &&
                                         arr2[i].anotherName == arr1[j].anotherName 
                                         ) {
-                                        console.log("相同")
+                                        //console.log("相同")
                                         let indexs = arr1.indexOf(arr1[j]);
                                         arr1.splice(indexs, 1);
                                     }
@@ -292,8 +292,8 @@
                             }
                             this.leftchildren = arr1;
 
-                            console.log("this.leftchildren")
-                            console.log(this.leftchildren)
+                            // console.log("this.leftchildren")
+                            // console.log(this.leftchildren)
                             if (this.leftchildren.length != 0) {
                                 this.optionGroupList.push({
                                     optionGroup: this.itemList[i - 1].optionGroup, groupName: this.itemList[i - 1].groupName,

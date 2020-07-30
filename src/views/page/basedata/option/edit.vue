@@ -28,23 +28,24 @@
                         <div class="one">
                             <el-button type="primary" @click="addBaseList">新增</el-button>
                             <el-table highlight-current-row border ref="table" align="center" :data="baseList"
-                                style="width: 100%;">
+                                style="width: 100%;" >
                                 <el-table-column align="center" type="index" label="序号" width="50" />
                                 <el-table-column align="center" prop="optionValue" label="选项值">
                                     <template slot-scope="scope">
-                                        <el-input @blur="checkCopy(scope.row.optionValue,scope.$index)"
+                                        <el-input @blur="checkCopy(scope.row.optionValue,scope.$index);blurObj(scope.row)"
                                             v-model="scope.row.optionValue"
+                                            @focus="focusObj(scope.row)"
                                             ></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="optionDesc" label="选项描述">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.optionDesc" ></el-input>
+                                        <el-input v-model="scope.row.optionDesc" @focus="focusObj(scope.row)" @blur="blurObj(scope.row)"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" prop="anotherName" label="别名">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.anotherName" ></el-input>
+                                        <el-input v-model="scope.row.anotherName" @focus="focusObj(scope.row)" @blur="blurObj(scope.row)"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="操作" width="100" align="center" fixed="right">
@@ -61,7 +62,7 @@
                 </el-tab-pane>
                 <el-tab-pane name="2" label="选项组别">
                     <div v-if="editableTabsValue==2">
-                        <group-edit :baseList="baseList" :groupList="groupList" />
+                        <group-edit :baseList="baseList" :groupList="groupList" :type="type"/>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -165,9 +166,38 @@
                 rows: [],
                 groupRows: [],
                 groupListNew: [],
+                focusValue:{},
+                blurValue:{},
             };
         },
         methods: {
+            focusObj(val){
+                //console.log(val,22222)
+                this.focusValue = deepClone(val)
+                //console.log(this.focusValue,11111)
+
+            },
+            blurObj(val){
+                this.blurValue = deepClone(val)
+                console.log(this.blurValue,33333)
+                this.groupList.forEach(item =>{
+                    item.children.forEach(item2 =>{
+                        if(this.focusValue.optionValue == item2.optionValue&&this.focusValue.optionDesc == item2.optionDesc&&this.focusValue.anotherName == item2.anotherName){
+                            item2.optionValue = this.blurValue.optionValue;
+                            item2.optionDesc = this.blurValue.optionDesc;
+                            item2.anotherName = this.blurValue.anotherName;
+                        }
+                    })
+                    item.leftchildren.forEach(item3 =>{
+                        if(this.focusValue.optionValue == item3.optionValue&&this.focusValue.optionDesc == item3.optionDesc&&this.focusValue.anotherName == item3.anotherName){
+                            item3.optionValue = this.blurValue.optionValue;
+                            item3.optionDesc = this.blurValue.optionDesc;
+                            item3.anotherName = this.blurValue.anotherName;
+                        }
+                    })
+                })
+
+            },
             async doClose(bol) {
                 //debugger
                 if (!bol) {
@@ -184,6 +214,7 @@
                     });
                 }
                 if (bol) {
+                    this.flg = true;
                     if (!this.dialogObj.sysId) {
                         this.$message.error("请选择系统");
                         return;
@@ -207,7 +238,7 @@
                     }
                     if (this.groupList.length != 0) {
                         this.groupList.forEach(item => {
-                            console.log(item.optionGroup, 111)
+                            //console.log(item.optionGroup, 111)
                             if (item.optionGroup == "" || item.groupName == "") {
                                 this.$message.error("组别不能为空！");
                                 this.flg = false;
@@ -273,14 +304,12 @@
             },
             changeTab() {
                 if (this.editableTabsValue === '2' && this.groupList.length != 0) {
-                    // console.log(this.groupList, 999)
-                    // console.log(this.baseList, 333)
                     var newChildren = deepClone(this.groupList[0].children);
                     var newLeftchildren = deepClone(this.groupList[0].leftchildren);
                     newLeftchildren.forEach(item => {
                         newChildren.push(item);
                     })
-                    console.log(newChildren, 111);
+                    //console.log(newChildren, 111);
                     this.baseList.forEach(item => {
                         var i = 0;
                         newChildren.forEach(item2 => {
@@ -320,12 +349,7 @@
                     });
                 }
             },
-            copyObj(val){
-                console.log(val,22222)
-                var copyValue = deepClone(val)
-                console.log(copyValue,11111)
-
-            },
+            
             checkCopy(val, index) {
                 if (!val) {
                     return this.$message.error('选项值不能为空');
