@@ -211,29 +211,11 @@
                         }
                     });
                 });
-            }
+            },
+
         },
         mounted() {
-
-            this.$nextTick(() => {
-                let tbody = document.querySelector('.table' + 0 + ' tbody');
-                console.log(tbody);
-
-                Sortable.create(tbody, {
-                    ghostClass: 'sortable-ghost',
-                    onEnd: ({ newIndex, oldIndex }) => {
-                        let newArr = deepClone(this.groupList[0].children);
-                        const currRow = newArr.splice(oldIndex, 1)[0];
-                        newArr.splice(newIndex, 0, currRow);
-                        // 重新排序完的表格数据
-                        this.groupList[0].children = [];
-                        this.$nextTick(function () {
-                            this.groupList[0].children = newArr;
-                        });
-                    }
-                });
-            });
-            // alert("baseList: "+ JSON.stringify(this.baseList));
+            this.changeTab()
 
             // this.optionValueList = deepClone(this.baseList);
             // alert("optionValueList: "+ JSON.stringify(this.optionValueList));
