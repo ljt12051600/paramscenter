@@ -8,7 +8,7 @@
                 :name="index+''">
                 <el-form ref="form" :inline="true" label-width="140px">
                     <el-form-item required label="组别">
-                        <el-input :disabled="type!='add'" maxlength="12" style="width:220px;"
+                        <el-input :disabled="type!='add'&&index!=count" maxlength="12" style="width:220px;"
                             v-model.trim="item.optionGroup"></el-input>
                     </el-form-item>
                     <el-form-item required label="组别名称">
@@ -88,19 +88,29 @@
                 multipleSelectionRight: [],
                 children: [],
                 optionValueList: [],
-                count: -2,
+                count: this.groupList.length,
+                type2:'',
+                index2:-1,
 
             };
         },
         methods: {
             addTab() {
-                this.count += 1;
-                if (this.count != -1) {
-                    if (this.groupList[this.count].children.length == this.baseList.length) {
-                        return this.$message.error("不能包含所有选项值")
-                    }
-                    if (this.groupList[this.count].children.length == 0) {
+                this.count = this.groupList.length;
+                //alert(this.count);
+                //this.count += 1;
+                if (this.count != 0) {
+                    if (this.groupList[this.count-1].children.length == 0) {
+                        this.count -= 1
                         return this.$message.error("至少包含一项选项值")
+                    }
+                    if (this.groupList[this.count-1].optionGroup == "") {
+                        this.count -= 1
+                        return this.$message.error("组别不能为空")
+                    }
+                    if (this.groupList[this.count-1].groupName == "") {
+                        this.count -= 1
+                        return this.$message.error("组别名称不能为空")
                     }
                 }
 
@@ -190,27 +200,31 @@
                 this.groupList.splice(val, 1)
             },
             changeTab() {
-                let index = this.editableTabsValue;
-                console.log(index, 123123);
+                if (this.groupList.length != 0) {
+                    let index = this.editableTabsValue;
+                    console.log(index, 123123);
 
-                this.$nextTick(() => {
-                    let tbody = document.querySelector('.table' + index + ' tbody');
-                    console.log(tbody);
+                    this.$nextTick(() => {
+                        let tbody = document.querySelector('.table' + index + ' tbody');
+                        console.log(tbody);
 
-                    Sortable.create(tbody, {
-                        ghostClass: 'sortable-ghost',
-                        onEnd: ({ newIndex, oldIndex }) => {
-                            let newArr = deepClone(this.groupList[index].children);
-                            const currRow = newArr.splice(oldIndex, 1)[0];
-                            newArr.splice(newIndex, 0, currRow);
-                            // 重新排序完的表格数据
-                            this.groupList[index].children = [];
-                            this.$nextTick(function () {
-                                this.groupList[index].children = newArr;
-                            });
-                        }
+                        Sortable.create(tbody, {
+                            ghostClass: 'sortable-ghost',
+                            onEnd: ({ newIndex, oldIndex }) => {
+                                let newArr = deepClone(this.groupList[index].children);
+                                const currRow = newArr.splice(oldIndex, 1)[0];
+                                newArr.splice(newIndex, 0, currRow);
+                                // 重新排序完的表格数据
+                                this.groupList[index].children = [];
+                                this.$nextTick(function () {
+                                    this.groupList[index].children = newArr;
+                                });
+                            }
+                        });
                     });
-                });
+
+                }
+
             },
 
         },

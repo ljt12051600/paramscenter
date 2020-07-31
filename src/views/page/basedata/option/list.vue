@@ -198,21 +198,41 @@
             },
             doDelete(item) {
                 let postObj = { optionCode: item.optionCode };
-                this.$msgbox({
-                    title: '确认删除此选项代码吗？对应选项值和选项组别将一并删除',
-                    beforeClose: async (action, instance, done) => {
-                        if (action == 'confirm') {
-                            let info = await deleteOptionDetail(postObj);
-                            if (info.resCode === '0') {
-                                this.$message.success('删除成功');
-                                this.getList();
-                            }
-                            done();
-                        } else {
-                            done();
-                        }
+
+                this.$confirm('对应选项值和选项组别将一并删除,确认删除吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(async () => {
+                    let info = await deleteOptionDetail(postObj);
+                    if (info.resCode === '0') {
+                        this.$message.success('删除成功');
+                        this.getList();
                     }
+
+                }).catch(() => {
+                    // this.$message({
+                    //     type: 'info',
+                    //     message: '已取消删除'
+                    // });
                 });
+
+
+                // this.$msgbox({
+                //     title: '对应选项值和选项组别将一并删除,确认删除吗？',
+                //     beforeClose: async (action, instance, done) => {
+                //         if (action == 'confirm') {
+                //             let info = await deleteOptionDetail(postObj);
+                //             if (info.resCode === '0') {
+                //                 this.$message.success('删除成功');
+                //                 this.getList();
+                //             }
+                //             done();
+                //         } else {
+                //             done();
+                //         }
+                //     }
+                // });
             },
             doAdd() {
                 this.showDialog = true;
@@ -223,6 +243,22 @@
                     unitDataCode: "",
                     unitDataDesc: ""
                 }
+            },
+            remove(arr1, arr2) {
+                for (let i = 0; i < arr2.length; i++) {
+                    for (let j = 0; j < arr1.length; j++) {
+                        if (arr2[i].optionValue == arr1[j].optionValue &&
+                            arr2[i].optionDesc == arr1[j].optionDesc &&
+                            arr2[i].anotherName == arr1[j].anotherName
+                        ) {
+                            //console.log("相同")
+                            let indexs = arr1.indexOf(arr1[j]);
+                            arr1.splice(indexs, 1);
+                        }
+                    }
+                }
+                return arr1;
+
             },
             async doEdit(item) {
                 this.optionValues = [];
@@ -256,44 +292,57 @@
                     dataStand: item.dataStand,
                     renmark: item.remark,
                 }
-                this.dataValues.rowsValues.forEach(item =>{
+                this.dataValues.rowsValues.forEach(item => {
                     this.optionValues.push({
-                        optionValue:item.optionValue,optionDesc:item.optionDesc,anotherName:item.anotherName
+                        optionValue: item.optionValue, optionDesc: item.optionDesc, anotherName: item.anotherName
                     })
                 })
-                //console.log(this.optionValues,888)
-                //this.optionValues = this.dataValues.rowsValues;
-        
+
                 this.itemList = this.dataGroups.rowsGroups;
-                
+
                 for (var i = 0; i < this.itemList.length; i++) {
-                    if (i == 0) {
+                    if (i == 0 && i != this.itemList.length - 1) {
                         this.children.push({ optionValue: this.itemList[0].optionValue, optionDesc: this.itemList[0].optionDesc, anotherName: this.itemList[0].anotherName })
+                    }
+                    if (i == 0 && i == this.itemList.length - 1) {
+                        this.children.push({ optionValue: this.itemList[0].optionValue, optionDesc: this.itemList[0].optionDesc, anotherName: this.itemList[0].anotherName })
+                        var arr1 = deepClone(this.optionValues);
+                        var arr2 = this.children;
+                        this.leftchildren = this.remove(arr1,arr2);
+                        
+                        if (this.leftchildren.length != 0) {
+                            this.optionGroupList.push({
+                                optionGroup: this.itemList[0].optionGroup, groupName: this.itemList[0].groupName,
+                                children: this.children, leftchildren: this.leftchildren
+                            })
+                        }
                     }
                     if (i > 0) {
 
-                        if (this.itemList[i].optionGroup == this.itemList[i - 1].optionGroup || i == this.itemList.length - 1) {
+
+                        if (this.itemList[i].optionGroup == this.itemList[i - 1].optionGroup && i != this.itemList.length - 1) {
                             this.children.push({ optionValue: this.itemList[i].optionValue, optionDesc: this.itemList[i].optionDesc, anotherName: this.itemList[i].anotherName })
                         }
-                        if (this.itemList[i].optionGroup != this.itemList[i - 1].optionGroup || i == this.itemList.length - 1) {
-                            var arr1 = deepClone(this.optionValues);                   
+                        if (this.itemList[i].optionGroup == this.itemList[i - 1].optionGroup && i == this.itemList.length - 1) {
+                            this.children.push({ optionValue: this.itemList[i].optionValue, optionDesc: this.itemList[i].optionDesc, anotherName: this.itemList[i].anotherName })
+                            var arr1 = deepClone(this.optionValues);
                             var arr2 = this.children;
-                            for (let i = 0; i < arr2.length; i++) {
-                                for (let j = 0; j < arr1.length; j++) {
-                                    if (arr2[i].optionValue == arr1[j].optionValue &&
-                                        arr2[i].optionDesc == arr1[j].optionDesc &&
-                                        arr2[i].anotherName == arr1[j].anotherName 
-                                        ) {
-                                        //console.log("相同")
-                                        let indexs = arr1.indexOf(arr1[j]);
-                                        arr1.splice(indexs, 1);
-                                    }
-                                }
+                            this.leftchildren = this.remove(arr1,arr2);
+                            
+                            if (this.leftchildren.length != 0) {
+                                this.optionGroupList.push({
+                                    optionGroup: this.itemList[i].optionGroup, groupName: this.itemList[i].groupName,
+                                    children: this.children, leftchildren: this.leftchildren
+                                })
                             }
-                            this.leftchildren = arr1;
+                        }
 
-                            // console.log("this.leftchildren")
-                            // console.log(this.leftchildren)
+
+                        if (this.itemList[i].optionGroup != this.itemList[i - 1].optionGroup && i != this.itemList.length - 1) {
+                            var arr1 = deepClone(this.optionValues);
+                            var arr2 = this.children;
+                            this.leftchildren = this.remove(arr1,arr2);
+                            
                             if (this.leftchildren.length != 0) {
                                 this.optionGroupList.push({
                                     optionGroup: this.itemList[i - 1].optionGroup, groupName: this.itemList[i - 1].groupName,
@@ -304,8 +353,51 @@
                             this.children = [];
                             this.children.push({ optionValue: this.itemList[i].optionValue, optionDesc: this.itemList[i].optionDesc, anotherName: this.itemList[i].anotherName })
                         }
+                        if (this.itemList[i].optionGroup != this.itemList[i - 1].optionGroup && i == this.itemList.length - 1) {
+                            var arr1 = deepClone(this.optionValues);
+                            var arr2 = this.children;
+                            this.leftchildren = this.remove(arr1,arr2);
+                            
+                            if (this.leftchildren.length != 0) {
+                                this.optionGroupList.push({
+                                    optionGroup: this.itemList[i - 1].optionGroup, groupName: this.itemList[i - 1].groupName,
+                                    children: this.children, leftchildren: this.leftchildren
+                                })
+                            }
+
+                            this.children = [];
+                            this.children.push({ optionValue: this.itemList[i].optionValue, optionDesc: this.itemList[i].optionDesc, anotherName: this.itemList[i].anotherName });
+
+
+                            var arr1 = deepClone(this.optionValues);
+                            var arr2 = this.children;
+                            this.leftchildren = this.remove(arr1,arr2);
+                            // for (let i = 0; i < arr2.length; i++) {
+                            //     for (let j = 0; j < arr1.length; j++) {
+                            //         if (arr2[i].optionValue == arr1[j].optionValue &&
+                            //             arr2[i].optionDesc == arr1[j].optionDesc &&
+                            //             arr2[i].anotherName == arr1[j].anotherName
+                            //         ) {
+                            //             //console.log("相同")
+                            //             let indexs = arr1.indexOf(arr1[j]);
+                            //             arr1.splice(indexs, 1);
+                            //         }
+                            //     }
+                            // }
+                            // this.leftchildren = arr1;
+
+                            // console.log("this.leftchildren")
+                            // console.log(this.leftchildren)
+                            if (this.leftchildren.length != 0) {
+                                this.optionGroupList.push({
+                                    optionGroup: this.itemList[i].optionGroup, groupName: this.itemList[i].groupName,
+                                    children: this.children, leftchildren: this.leftchildren
+                                })
+                            }
+                        }
                     }
                 }
+
             },
             closeAdd(bol) {
                 if (bol) {
