@@ -32,7 +32,9 @@
                     <span class="btn-bell-badge" v-if="message"></span>
                 </div>-->
                 <!-- 用户头像 -->
-            
+            <div class="header-search">
+                    <el-button @click="openUrl" type="primary">核心开发</el-button>
+                </div>
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
@@ -110,6 +112,9 @@ export default {
     },
 
     methods: {
+         openUrl(){
+            window.open("http://18.141.65.134:8080/webtools/");
+        },
         doClosePassword(bol) {
             if (bol) {
                 this.$refs['form'].validate(async valid => {
