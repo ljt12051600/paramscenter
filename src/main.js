@@ -1,5 +1,3 @@
-
-
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
@@ -9,29 +7,26 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 
-let a,b;
-if(localStorage.getItem("color")==1){
-   a="./assets/css/theme-green/index.css";
-   b="./assets/css/theme-green/color-green.css";
-}
-else{
-    a="./assets/css/main.css"
-    b="./assets/css/color-dark.css"
+let a, b;
+if (localStorage.getItem("color") == 1) {
+    a = "./assets/css/theme-green/index.css";
+    b = "./assets/css/theme-green/color-green.css";
+} else {
+    a = "./assets/css/main.css"
+    b = "./assets/css/color-dark.css"
 }
 import './assets/css/icon.css';
 import './assets/css/font.css';
-try{
-    import (`${a}`) ; 
+try {
+    import (`${a}`);
     import (`${b}`)
-}
-
-catch(e){
+} catch (e) {
 
 }
-if(window.location.href.includes('index.html')){
-    window.location.href=window.location.href.replace("index.html","")
- }
- 
+if (window.location.href.includes('index.html')) {
+    window.location.href = window.location.href.replace("index.html", "")
+}
+
 
 
 
@@ -51,12 +46,12 @@ import './views/common/directives';
 import 'babel-polyfill';
 import store from './store'
 import systemTable from '@views/components/table.component.vue';
-Vue.component('systemTable',systemTable);
-Vue.prototype.klbTop=function(){
-    document.querySelector(".content").scrollTop=0
+Vue.component('systemTable', systemTable);
+Vue.prototype.klbTop = function() {
+    document.querySelector(".content").scrollTop = 0
 }
-Vue.prototype.contentHeight=(num=120)=>{
-    return {height:window.innerHeight-num+"px",overflow:'auto',"overflow-x":"hidden"};
+Vue.prototype.contentHeight = (num = 120) => {
+    return { height: window.innerHeight - num + "px", overflow: 'auto', "overflow-x": "hidden" };
 
 }
 

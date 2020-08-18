@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import Vue from 'vue';
-import {getSessionId,deleteKey} from "./index.js"
+import { getSessionId, deleteKey } from "./index.js"
 
 
 
@@ -39,7 +39,7 @@ const buildErrorResponse = (err) => {
     return res
 }
 
-export let request = async ({
+export let request = async({
     url = '',
     method = 'GET',
     datas = {},
@@ -49,32 +49,36 @@ export let request = async ({
     headers = {
         'Content-Type': 'application/json'
     },
-   
+
 }, {
     autoToastError = true
 } = {}) => {
 
     let res
     let baseUrl;
-    let data=deleteKey(datas);
-    if(method=="GET"){
-        params.env="dev";
-        params.pjCode="klb3.0",
-        params.userId=data.userId||getSessionId();
-        
-    }
-    else{
-        data.env="dev";
-        data.pjCode="klb3.0",
-        data.userId=data.userId||getSessionId();
+    let clickMenuId = sessionStorage.getItem("clickMenuId");
+
+    let data = deleteKey(datas);
+
+    if (method == "GET") {
+        params.env = "dev";
+        params.pjCode = "klb3.0",
+            params.userId = data.userId || getSessionId();
+
+
+    } else {
+        data.env = "dev";
+        data.pjCode = "klb3.0",
+            data.userId = data.userId || getSessionId();
+        data.clickMenuId = clickMenuId
 
     }
 
-    
+
     // return;
 
-    try { 
-        baseUrl=process.env.NODE_ENV === 'development' ?  "/tcnp-web": process.env.VUE_APP_BASE_API+"/tcnp-web"
+    try {
+        baseUrl = process.env.NODE_ENV === 'development' ? "/tcnp-web" : process.env.VUE_APP_BASE_API + "/tcnp-web"
 
         res = await axios({
             url: `${baseUrl}${url}`,
@@ -88,7 +92,7 @@ export let request = async ({
         })
     } catch (err) {
 
-        
+
         res = buildErrorResponse(err)
     }
 
@@ -96,20 +100,19 @@ export let request = async ({
     if (autoToastError) {
 
         // return;
-        
+
 
         try {
             if (res.data.resCode == 999) {
-               
+
                 Vue.prototype.$notify.error({
                     title: '网络错误',
-                    message:res.data.resMsg
+                    message: res.data.resMsg
                 });
                 // return $app.$Message.error("登录已失效请重新登录")
 
 
-            }
-            else if (res.data.resCode !== '0') {
+            } else if (res.data.resCode !== '0') {
                 Vue.prototype.$notify.error({
                     title: '错误',
                     message: res.data.resMsg

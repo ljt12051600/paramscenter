@@ -1,6 +1,4 @@
-import {
-    mapState
-} from "vuex";
+import { mapState, mapMutations } from "vuex";
 let itemsss = {}
 
 function getItem(arr, path) {
@@ -16,21 +14,23 @@ function getItem(arr, path) {
     })
 
 }
+
 let MIXIN = {
+
     data() {
         return {
             name: 'mixin',
             clickMenuId: "",
-            PERMISSON:{
-            },
+            PERMISSON: {},
         }
     },
     created() {
+        this.getMenuNode();
 
 
     },
     mounted() {
-        this.getMenuNode();
+
 
 
     },
@@ -38,21 +38,18 @@ let MIXIN = {
         getMenuNode() {
             getItem(this.items, this.$route.path.substr(1));
             console.log(itemsss)
-           
+
             this.clickMenuId = itemsss.menuId;
+            sessionStorage.setItem("clickMenuId", this.clickMenuId)
             if (itemsss.buttonPerms && itemsss.buttonPerms.length > 0) {
-                let list=itemsss.buttonPerms.split(",");
-                list.forEach(item=>{
-                    this.$set(this.PERMISSON,item,true)
+                let list = itemsss.buttonPerms.split(",");
+                list.forEach(item => {
+                    this.$set(this.PERMISSON, item, true)
                 })
             }
             console.log(this.PERMISSON)
 
         },
-
-
-
-
 
     },
     watch: {

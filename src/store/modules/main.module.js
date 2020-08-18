@@ -2,11 +2,11 @@
  * main.module
  * 主布局相关state
  */
-import {loginUser} from "@/api/system"
+import { loginUser } from "@/api/system"
 const state = () => {
     return {
         items: [],
-        username:"",
+        username: "",
         pageBtns: [
             // {
             //   label: '新建',
@@ -23,7 +23,7 @@ const getters = {
     userInfo: state => state.userInfo
 };
 
-const getMainInfo = async ({
+const getMainInfo = async({
     commit
 }, data) => {
     // let res = await requestMainInfo(data)
@@ -31,7 +31,7 @@ const getMainInfo = async ({
     await commit("updateMainInfo");
 };
 
-const setPageBtns = async ({
+const setPageBtns = async({
     commit
 }, {
     btns
@@ -49,11 +49,12 @@ const actions = {
 // mutations
 const mutations = {
     async updateMainInfo(state, data) {
-      
-        
+
+
+
         state.username = data.name;
-       
-       
+
+
         state.items = data.items;
 
     },
