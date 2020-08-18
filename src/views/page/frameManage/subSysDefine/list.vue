@@ -100,12 +100,13 @@
 <script>
     import { deleteKey } from '@/utils';
     import SYSTEM from '@views/mixin/system'
+    import MIXIN from "@views/mixin/button"
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import editComponent from "./edit.vue"
     import { queryTp3004List, createTp3004, updateTp3004, deleteTp3004 } from '@/api/frameManage';
     export default {
         components: { editComponent },
-        mixins: [SYSTEM, FRAMEMANAGE],
+        mixins: [SYSTEM, FRAMEMANAGE,MIXIN],
         data() {
             return {
                 //check: '',

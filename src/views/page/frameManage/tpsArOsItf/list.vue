@@ -69,10 +69,11 @@
     import systemComponent from '@views/components/system.component.vue';
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import SYSTEM from '@views/mixin/system'
+    import MIXIN from "@views/mixin/button"
     import { queryTpsArOsItfList, deleteTpsArOsItf } from '@/api/frameManage';
     export default {
         components: { editComponent,systemComponent },
-        mixins: [FRAMEMANAGE,SYSTEM],
+        mixins: [FRAMEMANAGE,SYSTEM,MIXIN],
         data() {
             return {
                 //subSysObj: {},

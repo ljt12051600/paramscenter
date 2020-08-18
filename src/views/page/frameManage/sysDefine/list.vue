@@ -77,10 +77,11 @@
     import { deleteKey } from '@/utils'
     import editComponent from "./edit.vue"
     import FRAMEMANAGE from '@views/mixin/frameManage'
+    import MIXIN from "@views/mixin/button"
     import { queryTp3003List, createTp3003, updateTp3003, deleteTp3003 } from '@/api/frameManage';
     export default {
         components: { editComponent },
-        mixins: [FRAMEMANAGE],
+        mixins: [FRAMEMANAGE,MIXIN],
         data() {
             return {
                 title: "",

@@ -64,6 +64,7 @@
 
 <script>
     import SYSTEM from '@views/mixin/system'
+    import MIXIN from "@views/mixin/button"
     import systemComponent from '@views/components/system.component.vue';
     import { deleteKey } from '@/utils'
     import editComponent from "./edit.vue"  
@@ -71,7 +72,7 @@
     import { queryTp3005List, deleteTp3005 } from '@/api/frameManage';
     export default {
         components: { systemComponent ,editComponent },
-        mixins: [SYSTEM,FRAMEMANAGE],
+        mixins: [SYSTEM,FRAMEMANAGE,MIXIN],
         data() {
             return {
                 type: "add",

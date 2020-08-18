@@ -134,7 +134,7 @@
     import { deleteKey, deepClone } from "@/utils"
     import { queryMenu, createMenu, deleteMenu, querySysButtonsListAll, updateMenu, queryMenuForTree } from "@/api/system"
     export default {
-          mixins: [MIXIN],
+        mixins: [MIXIN],
         data() {
             return {
                 TreeData: [],

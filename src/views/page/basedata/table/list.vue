@@ -98,11 +98,12 @@
     import tablefieldComponent from "./tablefield.vue"
     import FRAMEMANAGE from '@views/mixin/frameManage'
     import SYSTEM from '@views/mixin/system.js'
+    import MIXIN from "@views/mixin/button"
     import systemComponent from '@views/components/domain.component.vue';
     import { queryTable, deleteTable } from '@/api/basedata.js';
     export default {
         components: { editComponent, systemComponent },
-        mixins: [FRAMEMANAGE, SYSTEM],
+        mixins: [FRAMEMANAGE, SYSTEM,MIXIN],
         data() {
             return {
                 type: "add",

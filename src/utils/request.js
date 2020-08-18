@@ -49,6 +49,7 @@ export let request = async({
     headers = {
         'Content-Type': 'application/json'
     },
+    needMenu = true,
 
 }, {
     autoToastError = true
@@ -70,7 +71,11 @@ export let request = async({
         data.env = "dev";
         data.pjCode = "klb3.0",
             data.userId = data.userId || getSessionId();
-        data.clickMenuId = clickMenuId
+        if (needMenu) {
+            data.clickMenuId = clickMenuId
+
+        }
+
 
     }
 

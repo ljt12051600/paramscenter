@@ -37,9 +37,11 @@ let MIXIN = {
     methods: {
         getMenuNode() {
             getItem(this.items, this.$route.path.substr(1));
-            console.log(itemsss)
+
 
             this.clickMenuId = itemsss.menuId;
+            console.log(this.clickMenuId)
+
             sessionStorage.setItem("clickMenuId", this.clickMenuId)
             if (itemsss.buttonPerms && itemsss.buttonPerms.length > 0) {
                 let list = itemsss.buttonPerms.split(",");
