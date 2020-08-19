@@ -83,7 +83,7 @@ export let request = async({
     // return;
 
     try {
-        baseUrl = process.env.NODE_ENV === 'development' ? "/tcnp-web" : process.env.VUE_APP_BASE_API + "/tcnp-web"
+        baseUrl = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_BASE_PATH : process.env.VUE_APP_BASE_API + process.env.VUE_APP_BASE_PATH
 
         res = await axios({
             url: `${baseUrl}${url}`,
