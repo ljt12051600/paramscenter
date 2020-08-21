@@ -46,7 +46,9 @@ import './views/common/directives';
 import 'babel-polyfill';
 import store from './store'
 import systemTable from '@views/components/table.component.vue';
+import systemTab from '@views/components/tab.component.vue';
 Vue.component('systemTable', systemTable);
+Vue.component('systemTab', systemTab);
 Vue.prototype.klbTop = function() {
     document.querySelector(".content").scrollTop = 0
 }
