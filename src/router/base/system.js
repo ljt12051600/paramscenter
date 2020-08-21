@@ -34,7 +34,7 @@ let SYSTEMROUTER = [{
         path: '/swagger',
         component: () =>
             import ( /* webpackChunkName: "system" */ '@page/system/swagger.vue'),
-        meta: { title: '系统权限' }
+        meta: { title: '接口文档' }
     },
 
 

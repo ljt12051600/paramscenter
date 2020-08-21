@@ -1,7 +1,7 @@
 <template>
   <div  style="width:100%;height:100%">
 
-       <iframe style="width:100%;height:100%" :src="url" frameborder="0"></iframe>
+       <iframe style="width:100%;height:100%" :src="url" border="0" frameborder="0"></iframe>
       
  
 
