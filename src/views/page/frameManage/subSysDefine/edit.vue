@@ -134,7 +134,6 @@
                     this.$refs['formAction'].validate(async valid => {
                         if (valid) {
                             if(this.type == "add"){
-                                //alert("actionObj-add: " + JSON.stringify(this.actionObj))
                                 let info = await createTp3004(this.actionObj);
                                 if (info.resCode == '0') {
                                     this.$message.success('添加成功');
@@ -142,7 +141,6 @@
                                 }
                             }
                             if(this.type == "edit"){
-                                //alert("actionObj-add: " + JSON.stringify(this.actionObj))
                                 let info = await updateTp3004(this.actionObj);
                                 console.log("info.resCode: "+info.resCode)
                                 this.$message.success('修改成功');

@@ -57,7 +57,7 @@
         },
         methods: {
             changeSystem1(){
-                alert(1);
+              
             },
             async getSysList() {
                 let info = await queryTp3003();

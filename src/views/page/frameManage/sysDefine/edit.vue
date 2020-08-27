@@ -117,7 +117,6 @@
             //     this.title = "修改操作";
             //     this.check = "确认修改";
             // }
-            // alert(JSON.stringify(this.$parent))
         }
     };
 </script>

@@ -66,8 +66,6 @@ export default {
             }
         },
         async init() {
-            // alert(1)
-
             let data = {};
             if (!getSessionId('username')) {
                 return this.$router.push('/login');

@@ -97,8 +97,6 @@
         methods: {
             addTab() {
                 this.count = this.groupList.length;
-                //alert(this.count);
-                //this.count += 1;
                 if (this.count != 0) {
                     if (this.groupList[this.count-1].children.length == 0) {
                         this.count -= 1
@@ -230,23 +228,6 @@
         },
         mounted() {
             this.changeTab()
-
-            // this.optionValueList = deepClone(this.baseList);
-            // alert("optionValueList: "+ JSON.stringify(this.optionValueList));
-            // this.groupListNew = [
-            //     {
-            //         optionGroup: '123',
-            //         optionDesc: 'TEST',
-            //         children: [{ optionValue: '123' }, { optionValue: '123123' }],
-            //         leftchildren: this.baseList
-            //     },
-            //     {
-            //         optionGroup: '123',
-            //         optionDesc: 'TEST',
-            //         children: [{ optionValue: '123' }, { optionValue: '123123123123' }],
-            //         leftchildren: this.baseList
-            //     }
-            // ];
         },
         watch: {}
     };
