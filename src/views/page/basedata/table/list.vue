@@ -39,6 +39,7 @@
 
             <div slot="action">
                 <el-button @click="doAdd" type="primary">添加</el-button>
+                <el-button @click="doPublist" type="primary">发布</el-button>
             </div>
             <div slot="body">
                 <!--表单渲染-->

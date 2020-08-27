@@ -22,7 +22,7 @@
             <el-transfer :props="{
                 key: 'value',
                 label: 'desc'
-              }" style="margin-left:100px;" filterable v-model="tableFieldList" :titles="['可选按钮', '已选按钮']"
+              }" style="margin-left:100px;" filterable v-model="tableFieldList" :titles="['可选索引', '已选索引']"
                 :data="allTableFieldList">
 
             </el-transfer>
