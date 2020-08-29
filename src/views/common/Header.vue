@@ -84,7 +84,7 @@
 <script>
 import bus from '../common/bus';
 import { updatePassword } from '@/api/system';
-import { deleteKey } from '@/utils';
+import { deleteKey, clearSession } from '@/utils';
 import { mapState, mapMutations } from 'vuex';
 export default {
     data() {
@@ -137,6 +137,7 @@ export default {
         // 用户名下拉菜单选择事件
         handleCommand(command) {
             if (command == 'loginout') {
+                clearSession();
                 window.location.href = './#/login';
                 window.location.reload();
             } else if (command == 'changeColor') {
