@@ -6,7 +6,7 @@
                  <el-card :style="contentHeight(120)">
                     <div slot="header" class="clearfix">
                         <span>菜单结构</span>
-                        <el-button @click="doAdd(true)" size="big"  v-if="PERMISSON.add"
+                        <el-button @click="doAdd(true)" size="big" 
                             style="float: right; padding: 3px 0;width: 100px;height: 30px;margin-left:20px;"
                             type="primary">
                             新增一级菜单</el-button>
@@ -28,13 +28,13 @@
 
 
                             <div v-if="!actionType">
-                                <el-button v-if="PERMISSON.remove" @click="doDelete" size="big" class="button_style" type="danger">
+                                <el-button @click="doDelete" size="big" class="button_style" type="danger">
                                     <i class="el-icon-lx-redpacket_fill"></i>删除菜单</el-button>
 
-                                <el-button v-if="PERMISSON.update"  @click="edit" size="big" class="button_style" type="warning">
+                                <el-button   @click="edit" size="big" class="button_style" type="warning">
                                     <i class="el-icon-edit"></i>修改</el-button>
 
-                                <el-button v-if="PERMISSON.add" @click="doAdd(false)" size="big" class="button_style" type="primary">
+                                <el-button @click="doAdd(false)" size="big" class="button_style" type="primary">
                                     <i class="el-icon-plus"></i>新增子菜单</el-button>
                             </div>
                             <div v-if="actionType=='edit'">
