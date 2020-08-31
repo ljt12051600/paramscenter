@@ -18,13 +18,14 @@ let children = [
     ...LOGBOOKROUTER,
     ...MYCHANGEROUTER,
     ...VERREPOSITORYROUTER,
+    ...VERMANAGERTAROUTER,
 
 
 ]
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
-}//解决404重复跳转控制台报错，如有问题请修改掉
+        return originalPush.call(this, location).catch(err => err)
+    } //解决404重复跳转控制台报错，如有问题请修改掉
 
 
 
@@ -35,7 +36,8 @@ export default new Router({
         },
         {
             path: '/',
-            component: () => import( /* webpackChunkName: "home" */ '@/views/common/Home.vue'),
+            component: () =>
+                import ( /* webpackChunkName: "home" */ '@/views/common/Home.vue'),
             meta: {
                 title: 'test'
             },
@@ -43,7 +45,8 @@ export default new Router({
         },
         {
             path: '/login',
-            component: () => import( /* webpackChunkName: "login" */ '@page/Login.vue'),
+            component: () =>
+                import ( /* webpackChunkName: "login" */ '@page/Login.vue'),
             meta: {
                 title: '登录'
             }
