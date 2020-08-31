@@ -47,8 +47,10 @@ import 'babel-polyfill';
 import store from './store'
 import systemTable from '@views/components/table.component.vue';
 import systemTab from '@views/components/tab.component.vue';
+import systemButton from '@views/components/button.component.vue';
 Vue.component('systemTable', systemTable);
 Vue.component('systemTab', systemTab);
+Vue.component('systemButton', systemButton);
 Vue.prototype.klbTop = function() {
     document.querySelector(".content").scrollTop = 0
 }

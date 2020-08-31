@@ -41,6 +41,7 @@
             </div>
             <div slot="action">
                 <el-button @click="doAdd" type="primary">添加</el-button>
+                  <system-button></system-button>
             </div>
             <div slot="body">
                 <el-table border ref="table" align="center" :data="data.rows" style="width: 100%;">
