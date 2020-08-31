@@ -203,21 +203,12 @@ export default {
 
                 rows: []
             },
-            chooseArray: []
+           
         };
     },
 
     methods: {
-        checkOne() {
-            if (this.chooseArray.length > 1) {
-                this.$message.error('只能选择一条数据');
-                return false;
-            } else if (this.chooseArray.length === 0) {
-                this.$message.error('请选择数据后操作');
-                return false;
-            }
-            return true;
-        },
+       
         clearSearch() {
             this.query = {
                 tableTypeDesc: '',
@@ -289,10 +280,7 @@ export default {
             };
             this.type = 'add';
         },
-        changeChoose(arr) {
-            this.chooseArray = arr;
-            console.log(arr);
-        },
+     
         //修改表，将表中的数据返显到表单中
         async doEdit(item) {
             //查询 tableColumnInfoList isCollection true

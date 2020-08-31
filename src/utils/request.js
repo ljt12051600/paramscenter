@@ -1,7 +1,10 @@
 import axios from 'axios'
 import router from '@/router'
 import Vue from 'vue';
-import { getSessionId, deleteKey } from "./index.js"
+import {
+    getSessionId,
+    deleteKey
+} from "./index.js"
 
 
 
@@ -72,7 +75,7 @@ export let request = async({
         data.pjCode = "klb3.0",
             data.userId = data.userId || getSessionId();
         if (needMenu) {
-            data.clickMenuId = clickMenuId
+            data.clickMenuId = clickMenuId || data.clickMenuId
 
         }
 
