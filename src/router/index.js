@@ -18,7 +18,6 @@ let children = [
     ...LOGBOOKROUTER,
     ...MYCHANGEROUTER,
     ...VERREPOSITORYROUTER,
-    ...VERMANAGERTAROUTER,
 
 
 ]
