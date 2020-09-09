@@ -7,6 +7,7 @@ import PUBPARAMROUTER from './history/systemParam/pubParam';
 import LOGBOOKROUTER from './history/logBook/operateLogBook';
 import MYCHANGEROUTER from './history/verManager/myChange';
 import VERREPOSITORYROUTER from './history/verManager/verRepository';
+import COPMROUTER from "./base/comp";
 Vue.use(Router);
 
 
@@ -18,6 +19,7 @@ let children = [
     ...LOGBOOKROUTER,
     ...MYCHANGEROUTER,
     ...VERREPOSITORYROUTER,
+    ...COPMROUTER,
 
 
 ]

@@ -110,7 +110,7 @@
                 console.log(obj);
                 let info = await createTp0003(obj);
                 if (info.resCode === "0") {
-                    this.$message.success("保存成功");
+                    this.$message.success("成功");
                    
                 }
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <system-table>
+        <system-table :activeName="activeName">
 
             <div slot="top">
                 <el-form ref="form" :inline="true" label-width="100px">

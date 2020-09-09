@@ -10,7 +10,7 @@ INSERT INTO `tps_sy_menu_info` VALUES (8, '001002', '用户管理', '', '001', '
 INSERT INTO `tps_sy_menu_info` VALUES (9, '001002001', '用户管理', '/pages/sysadmin/user.html', '001002', 'L', 'add,update,remove,query,save,pwdReset', '', '0', NULL, '2017-11-30', '13:39:06', 'admin');
 INSERT INTO `tps_sy_menu_info` VALUES (10, '001002002', '角色管理', '/pages/sysadmin/role.html', '001002', 'L', 'add,update,remove,query,save', '', '0', NULL, '2017-10-20', '10:13:45', 'admin');
 INSERT INTO `tps_sy_menu_info` VALUES (11, '001002003', '用户角色分配', '/pages/sysadmin/user-role.html', '001002', 'L', 'save', '', '0', NULL, '2017-12-20', '14:44:12', 'admin');
-INSERT INTO `tps_sy_menu_info` VALUES (12, '001002004', '角色与子系统关系', '/pages/sysadmin/tp0003.html', '001002', 'L', 'save', '', '0', NULL, '2019-08-20', '15:50:09', 'admin');
+INSERT INTO `tps_sy_menu_info` VALUES (12, '001002004', '子系统关系', '/pages/sysadmin/tp0003.html', '001002', 'L', 'save', '', '0', NULL, '2019-08-20', '15:50:09', 'admin');
 INSERT INTO `tps_sy_menu_info` VALUES (13, '001003', '系统参数', '', '001', 'F', '', '', '0', NULL, '2017-10-20', '10:11:21', 'admin');
 INSERT INTO `tps_sy_menu_info` VALUES (14, '001003001', '参数管理', '/pages/sysadmin/pubParam.html', '001003', 'L', 'add,update,remove,query,save', '', '0', NULL, '2019-08-05', '17:58:28', 'admin');
 INSERT INTO `tps_sy_menu_info` VALUES (15, '001003002', 'excel模版', '/pages/sysadmin/excelModel.html', '001003', 'L', 'add,update,remove,query,save', '', '0', NULL, '2019-08-01', '15:27:39', 'admin');

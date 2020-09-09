@@ -201,7 +201,7 @@
                     respLevel: [{ required: true, message: '请选择响应等级', trigger: 'change' }],
                     respInfo: [{ required: true, message: '请输入', trigger: 'blur' }],
                     solution: [{ required: true, message: '请输入', trigger: 'blur' }],
-                    reason: [{ required: true, message: '不能为空', trigger: 'blur' }],
+                    reason: [{ required: true, message: '不能为', trigger: 'blur' }],
                     issueStatus: [{ required: true, message: '请选择发布状态', trigger: 'blur' }],
 
                 }
